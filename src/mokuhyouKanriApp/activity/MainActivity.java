@@ -11,6 +11,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+/**
+ * メインアクティビティクラス
+ *
+ * @author global.chimpanzee
+ * @version 1.0
+ * @since	2015
+ */
 public class MainActivity extends AppCompatActivity {
 
 	/** TabLayoutコンポーネント */
@@ -18,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
 		super.onCreate(savedInstanceState);
 
 		// レイアウトファイル"activity_main.xml"を紐付ける
@@ -78,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 			switch (tab.getPosition()) {
 
 			// 左のタブが選択された場合
-			case 0:
+			case 1:
 
 				// 目標設定画面を表示
 				EditGoalTab editGoalTab = new EditGoalTab();
@@ -90,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 				break;
 
 			// 中央のタブが選択された場合
-			case 1:
+			case 0:
 
 				// SwipeTabフラグメントを表示
 				SwipeTab swipeTab = new SwipeTab();

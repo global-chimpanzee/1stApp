@@ -10,6 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+/**
+ * タブ設定フラグメント
+ *
+ * @author global.chimpanzee
+ * @version 1.0
+ * @since	2015
+ */
 public class SwipeTab extends Fragment {
 
 	/** ViewPagerコンポーネント */

@@ -23,11 +23,58 @@ public final class R {
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
+        public static final int text_day_line=0x7f020001;
+        public static final int text_month_line=0x7f020002;
+        public static final int text_now_line=0x7f020003;
+        public static final int text_week_line=0x7f020004;
     }
     public static final class id {
-        public static final int action_settings=0x7f080002;
+        public static final int action_settings=0x7f08002d;
+        public static final int five_fr_text=0x7f08002a;
+        public static final int five_mo_text=0x7f080026;
+        public static final int five_sa_text=0x7f08002b;
+        public static final int five_su_text=0x7f080025;
+        public static final int five_th_text=0x7f080029;
+        public static final int five_tu_text=0x7f080027;
+        public static final int five_we_text=0x7f080028;
+        public static final int four_fr_text=0x7f080023;
+        public static final int four_mo_text=0x7f08001f;
+        public static final int four_sa_text=0x7f080024;
+        public static final int four_su_text=0x7f08001e;
+        public static final int four_th_text=0x7f080022;
+        public static final int four_tu_text=0x7f080020;
+        public static final int four_we_text=0x7f080021;
+        public static final int header_fr_text=0x7f080007;
+        public static final int header_mo_text=0x7f080003;
+        public static final int header_month_text=0x7f080001;
+        public static final int header_sa_text=0x7f080008;
+        public static final int header_su_text=0x7f080002;
+        public static final int header_th_text=0x7f080006;
+        public static final int header_tu_text=0x7f080004;
+        public static final int header_we_text=0x7f080005;
+        public static final int one_fr_text=0x7f08000e;
+        public static final int one_mo_text=0x7f08000a;
+        public static final int one_sa_text=0x7f08000f;
+        public static final int one_su_text=0x7f080009;
+        public static final int one_th_text=0x7f08000d;
+        public static final int one_tu_text=0x7f08000b;
+        public static final int one_we_text=0x7f08000c;
         public static final int tabLayout=0x7f080000;
-        public static final int viewPager=0x7f080001;
+        public static final int three_fr_text=0x7f08001c;
+        public static final int three_mo_text=0x7f080018;
+        public static final int three_sa_text=0x7f08001d;
+        public static final int three_su_text=0x7f080017;
+        public static final int three_th_text=0x7f08001b;
+        public static final int three_tu_text=0x7f080019;
+        public static final int three_we_text=0x7f08001a;
+        public static final int two_fr_text=0x7f080015;
+        public static final int two_mo_text=0x7f080011;
+        public static final int two_sa_text=0x7f080016;
+        public static final int two_su_text=0x7f080010;
+        public static final int two_th_text=0x7f080014;
+        public static final int two_tu_text=0x7f080012;
+        public static final int two_we_text=0x7f080013;
+        public static final int viewPager=0x7f08002c;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -42,7 +89,15 @@ public final class R {
     public static final class string {
         public static final int action_settings=0x7f050002;
         public static final int app_name=0x7f050000;
+        public static final int day=0x7f050005;
+        public static final int fri=0x7f050009;
         public static final int hello_world=0x7f050001;
+        public static final int month=0x7f050004;
+        public static final int sat=0x7f05000a;
+        public static final int thu=0x7f050008;
+        public static final int tue=0x7f050006;
+        public static final int wed=0x7f050007;
+        public static final int year=0x7f050003;
     }
     public static final class style {
         /** 

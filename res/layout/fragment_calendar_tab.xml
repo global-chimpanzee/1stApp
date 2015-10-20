@@ -1,7 +1,629 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
+
+    <!-- 年月ヘッダー -->
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="2"
+		android:background="@drawable/text_month_line"
+        android:orientation="horizontal" >
+        	<TextView
+        	    android:id="@+id/header_month_text"
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="fill_parent"
+        	    android:gravity="fill"
+        	    android:textSize="25sp"/>
+	</LinearLayout>
+
+	<!-- 曜日ラベル -->
+    <LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1"
+        android:orientation="horizontal" >
+
+	    <TextView
+	        android:id="@+id/header_su_text"
+	        android:layout_width="0dp"
+	        android:layout_height="fill_parent"
+	        android:layout_weight="1"
+	        android:background="@drawable/text_week_line"
+	        android:gravity="center"
+	        android:text="@string/day" />
+
+		<TextView
+		    android:id="@+id/header_mo_text"
+		    android:layout_width="0dp"
+		    android:layout_height="fill_parent"
+		    android:layout_weight="1"
+		    android:background="@drawable/text_week_line"
+		    android:gravity="center"
+		    android:text="@string/month" />
+
+	    <TextView
+	        android:id="@+id/header_tu_text"
+	        android:layout_width="0dp"
+	        android:layout_height="fill_parent"
+	        android:layout_weight="1"
+	        android:background="@drawable/text_week_line"
+	        android:gravity="center"
+	        android:text="@string/tue" />
+
+		<TextView
+		    android:id="@+id/header_we_text"
+		    android:layout_width="0dp"
+		    android:layout_height="fill_parent"
+		    android:layout_weight="1"
+		    android:background="@drawable/text_week_line"
+		    android:gravity="center"
+		    android:text="@string/wed" />
+
+	    <TextView
+	        android:id="@+id/header_th_text"
+	        android:layout_width="0dp"
+	        android:layout_height="fill_parent"
+	        android:layout_weight="1"
+	        android:background="@drawable/text_week_line"
+	        android:gravity="center"
+	        android:text="@string/thu" />
+
+	    <TextView
+	        android:id="@+id/header_fr_text"
+	        android:layout_width="0dp"
+	        android:layout_height="fill_parent"
+	        android:layout_weight="1"
+	        android:background="@drawable/text_week_line"
+	        android:gravity="center"
+	        android:text="@string/fri" />
+
+	    <TextView
+	        android:id="@+id/header_sa_text"
+	        android:layout_width="0dp"
+	        android:layout_height="fill_parent"
+	        android:layout_weight="1"
+	        android:background="@drawable/text_week_line"
+	        android:gravity="center"
+	        android:text="@string/sat" />
+
+	</LinearLayout>
+
+	<!-- 第1週目 -->
+    <LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="3"
+        android:orientation="horizontal" >
+
+	    <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/one_su_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/one_mo_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/one_tu_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/one_we_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/one_th_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/one_fr_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/one_sa_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+	</LinearLayout>
+
+    <!-- 第2週目 -->
+    <LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="3"
+        android:orientation="horizontal" >
+
+	    <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/two_su_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/two_mo_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/two_tu_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/two_we_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/two_th_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/two_fr_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/two_sa_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+	</LinearLayout>
+
+	<!-- 第3週目 -->
+    <LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="3"
+        android:orientation="horizontal" >
+
+	    <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/three_su_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/three_mo_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/three_tu_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/three_we_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/three_th_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/three_fr_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/three_sa_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+	</LinearLayout>
+
+	<!-- 第4週目 -->
+    <LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="3"
+        android:orientation="horizontal" >
+
+	    <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/four_su_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/four_mo_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/four_tu_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/four_we_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/four_th_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/four_fr_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/four_sa_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+	</LinearLayout>
+
+	<!-- 第5週目 -->
+    <LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="3"
+        android:orientation="horizontal" >
+
+	    <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/five_su_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/five_mo_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/five_tu_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/five_we_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/five_th_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/five_fr_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+				android:id="@+id/five_sa_text"
+				android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="left"
+				android:background="@drawable/text_day_line"
+	            android:text="1" />
+        </LinearLayout>
+
+	</LinearLayout>
 
 </LinearLayout>
