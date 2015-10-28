@@ -31,7 +31,7 @@ public class CalendarTab extends Fragment {
 	private static int initPageNum = -1;
 
 	/** 相対ページナンバー */
-	private static int relativePageNum;
+	private int relativePageNum;
 
 	/** 年月表示テキストビュー */
 	private TextView headerMonthText = null;
@@ -92,7 +92,7 @@ public class CalendarTab extends Fragment {
 	private void initializeControl() {
 
 		// 年月表示ヘッダーを取得
-		this.headerMonthText = (TextView) view.findViewById(R.id.header_month_text);
+		this.headerMonthText = (TextView) this.view.findViewById(R.id.header_month_text);
 
 		// 変数を初期化
 		DayTextViewInfo info = null;
@@ -208,14 +208,14 @@ public class CalendarTab extends Fragment {
 //				textView.setOnClickListener(eaa);
 
 				// 背景を設定
-				textView.setBackgroundResource(R.drawable.text_day_line);
+				textView.setBackgroundResource(R.drawable.text_line);
 
-				// 日曜日の場合、背景色を変更する
+				// 日曜日の場合、文字色を変更する
 				if (k == 0) {
 					textView.setTextColor(Color.RED);
 				}
 
-				// 土曜日の場合、背景色を変更する
+				// 土曜日の場合、文字色を変更する
 				if (k == 6) {
 					textView.setTextColor(Color.BLUE);
 				}
@@ -230,7 +230,7 @@ public class CalendarTab extends Fragment {
 
 		}
 
-		this.SetCalendar(relativePageNum);
+		setCalendar(relativePageNum);
 
 	}
 
@@ -239,47 +239,62 @@ public class CalendarTab extends Fragment {
 	 *
 	 * @param offset 相対ページナンバー
 	 */
-	private void SetCalendar(int offset) {
+	private void setCalendar(int offset) {
 
-		// 現在の表示月を取得ページの表示月に調整
+		int monthAdjust = 0;
+		int yearAdjust = 0;
+
+		// 取得ページの表示月を計算
 		this.displayedMonth += offset;
 
-		// 表示する月を修正
-		if(displayedMonth > 12){
+		if(this.displayedMonth%12 != 0){
 
-			this.displayedYear += 1;
-			this.displayedMonth = 1;
+			if(this.displayedMonth > 0){
 
-		}else if(displayedMonth == 0){
+				monthAdjust = this.displayedMonth%12;
+				yearAdjust = (this.displayedMonth - monthAdjust)/12;
 
-			this.displayedYear -= 1;
-			this.displayedMonth = 12;
+			}else{
+
+				monthAdjust = (12 + this.displayedMonth%12);
+				yearAdjust = (this.displayedMonth + (12 - monthAdjust))/12 - 1;
+
+			}
+
+		}else{
+
+			monthAdjust = 12;
+			yearAdjust = this.displayedMonth/12 - 1;
 
 		}
+
+		// 表示月をフィールドにセット
+		this.displayedMonth = monthAdjust;
+		this.displayedYear += yearAdjust;
 
 		// テキスト表示情報初期化
 		for(int i = 0 ; i < this.dayTextList.size(); i++) {
 
-			DayTextViewInfo tg = this.dayTextList.get(i);
+			DayTextViewInfo dtvi = this.dayTextList.get(i);
 
 			// 当日or選択日判定
-			if(tg.isNowDay() || tg.isSelected() ) {
+			if(dtvi.isNowDay() || dtvi.isSelected() ) {
 
 				//当日と選択日は背景色を変更
-				tg.getTextObject().setBackgroundResource(R.drawable.text_day_line);
+				dtvi.getTextObject().setBackgroundResource(R.drawable.text_line);
 
 			}
 
 			// DayTextViewInfoインスタンスのフィールドを初期化
-			tg.setNowDay(false);
-			tg.setDayNum(0);
-			tg.setSelected(false);
-			tg.getTextObject().setText(tg.getDispString());
+			dtvi.setNowDay(false);
+			dtvi.setDayNum(0);
+			dtvi.setSelected(false);
+			dtvi.getTextObject().setText(dtvi.getDispString());
 
 		}
 
 		//カレンダーテーブル作成
-		CalendarInfo cl = new CalendarInfo(displayedYear, displayedMonth);
+		CalendarInfo ci = new CalendarInfo(displayedYear, displayedMonth);
 
 		// 行カウンターを初期化
 		int row = 0;
@@ -290,27 +305,27 @@ public class CalendarTab extends Fragment {
 		// 5×7でループ
 		for(int i = 0 ; i < this.dayTextList.size(); i++) {
 
-			DayTextViewInfo tg = this.dayTextList.get(i);
+			DayTextViewInfo dtvi = this.dayTextList.get(i);
 
 			// 日付テキスト設定
-			if(cl.calendarMatrix[row][col] != 0) {
+			if(ci.calendarMatrix[row][col] != 0) {
 
 				// 日付を設定
-				tg.setDayNum(cl.calendarMatrix[row][col]);
+				dtvi.setDayNum(ci.calendarMatrix[row][col]);
 
 				// 日付テキストをテキストビューコンポーネントにセット
-				tg.getTextObject().setText(tg.getDispString());
+				dtvi.getTextObject().setText(dtvi.getDispString());
 
 				// 当日判定
 				if(this.currentYear == this.displayedYear
 					&& this.currentMonth == this.displayedMonth
-					&& cl.calendarMatrix[row][col] == this.currentDate) {
+					&& this.currentDate == ci.calendarMatrix[row][col]) {
 
 					// 当日フラグを設定
 					this.dayTextList.get(i).setNowDay(true);
 
 					// 当日の背景色を変更
-					tg.getTextObject().setBackgroundResource(R.drawable.text_now_line);
+					dtvi.getTextObject().setBackgroundResource(R.drawable.text_now_line);
 
 				}
 
@@ -326,8 +341,8 @@ public class CalendarTab extends Fragment {
 		}
 
 		// 年月表示
-		this.headerMonthText.setText(String.valueOf(this.currentYear)
-				+ "年" + String.valueOf(this.currentMonth) + "月" );
+		this.headerMonthText.setText(String.valueOf(this.displayedYear)
+				+ "年" + String.valueOf(this.displayedMonth) + "月" );
 
 	}
 

@@ -127,7 +127,7 @@ public class DayTextViewInfo {
 
 		if (this.dayNum != 0) {
 
-			return String.valueOf(this.dayNum) + "\n";
+			return String.valueOf(this.dayNum);
 
 		} else {
 

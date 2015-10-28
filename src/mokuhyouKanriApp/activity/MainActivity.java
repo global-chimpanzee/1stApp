@@ -10,6 +10,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.widget.ImageView;
 
 /**
  * メインアクティビティクラス
@@ -28,21 +30,24 @@ public class MainActivity extends AppCompatActivity {
 
 		super.onCreate(savedInstanceState);
 
+		// タイトルバーを非表示にする
+		supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+
 		// レイアウトファイル"activity_main.xml"を紐付ける
 		setContentView(R.layout.activity_main);
+
+		//getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar);
 
 		// TabLayoutコンポーネントを取得
 		tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
-		// タブを追加
-		tabLayout.addTab(tabLayout.newTab().setText("目標設定"));
-		tabLayout.addTab(tabLayout.newTab().setText("成果記録"));
-		tabLayout.addTab(tabLayout.newTab().setText("達成度"));
-
 		// リスナーをセット
 		tabLayout.setOnTabSelectedListener(new TabAdapter());
 
-		// デフォルトタブを設定
+		// タブを追加（中央のタブをデフォルトに設定）
+		tabLayout.addTab(tabLayout.newTab().setCustomView(R.layout.left_tab_icon), false);
+		tabLayout.addTab(tabLayout.newTab().setCustomView(R.layout.center_tab_icon), true);
+		tabLayout.addTab(tabLayout.newTab().setCustomView(R.layout.right_tab_icon), false);
 
 	}
 
@@ -68,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 	/**
 	 * TabAdapterインナークラス
 	 */
-	class TabAdapter implements TabLayout.OnTabSelectedListener {
+	public class TabAdapter implements TabLayout.OnTabSelectedListener {
 
 		/**
 		 * タブ選択時処理メソッド
@@ -82,15 +87,21 @@ public class MainActivity extends AppCompatActivity {
 			FragmentManager fm = getSupportFragmentManager();
 			FragmentTransaction ft = fm.beginTransaction();
 
+			ImageView icon = null;
+
 			// 選択されたタブに応じたフラグメントを表示
 			switch (tab.getPosition()) {
 
 			// 左のタブが選択された場合
-			case 1:
+			case 0:
+
+				// タブのアイコンを変更
+				icon = (ImageView) findViewById(R.id.leftIcon);
+				icon.setImageResource(R.drawable.mokuhyou_active);
 
 				// 目標設定画面を表示
 				EditGoalTab editGoalTab = new EditGoalTab();
-				ft.add(editGoalTab, "rightTab");
+				ft.replace(R.id.main_container, editGoalTab, "rightTab");
 
 				// コミット
 				ft.commit();
@@ -98,11 +109,15 @@ public class MainActivity extends AppCompatActivity {
 				break;
 
 			// 中央のタブが選択された場合
-			case 0:
+			case 1:
+
+				// タブのアイコンを変更
+				icon  = (ImageView) findViewById(R.id.centerIcon);
+				icon.setImageResource(R.drawable.seika_active);
 
 				// SwipeTabフラグメントを表示
 				SwipeTab swipeTab = new SwipeTab();
-				ft.add(swipeTab, "centerTab");
+				ft.replace(R.id.main_container, swipeTab, "centerTab");
 
 				// コミット
 				ft.commit();
@@ -112,9 +127,13 @@ public class MainActivity extends AppCompatActivity {
 			// 右のタブが選択された場合
 			case 2:
 
+				// タブのアイコンを変更
+				icon = (ImageView) findViewById(R.id.rightIcon);
+				icon.setImageResource(R.drawable.tasseido_active);
+
 				//  進捗確認画面を表示
 				CheckRecordTab checkRecordTab = new CheckRecordTab();
-				ft.add(checkRecordTab, "leftTab");
+				ft.replace(R.id.main_container, checkRecordTab, "leftTab");
 
 				// コミット
 				ft.commit();
@@ -127,6 +146,40 @@ public class MainActivity extends AppCompatActivity {
 
 		@Override
 		public void onTabUnselected(TabLayout.Tab tab) {
+
+			ImageView icon = null;
+
+			// 選択が外されたタブのアイコンを変更
+			switch (tab.getPosition()) {
+
+			// 左のタブが選択された場合
+			case 0:
+
+				// タブのアイコンを変更
+				icon = (ImageView) findViewById(R.id.leftIcon);
+				icon.setImageResource(R.drawable.mokuhyou_non_active);
+
+				break;
+
+			// 中央のタブが選択された場合
+			case 1:
+
+				// タブのアイコンを変更
+				icon  = (ImageView) findViewById(R.id.centerIcon);
+				icon.setImageResource(R.drawable.seika_non_active);
+
+				break;
+
+			// 右のタブが選択された場合
+			case 2:
+
+				// タブのアイコンを変更
+				icon = (ImageView) findViewById(R.id.rightIcon);
+				icon.setImageResource(R.drawable.tasseido_non_active);
+
+				break;
+
+			}
 
 		}
 

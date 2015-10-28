@@ -12,6 +12,11 @@
     <string name ="thu">木</string>
     <string name ="fri">金</string>
     <string name ="sat">土</string>
+    <string name="tasseido_icon_string">達成度アイコン</string>
+    <string name="seika_icon_string">成果記録アイコン</string>
+    <string name="mokuhyou_icon_string">目標設定アイコン</string>
+    <string name="goal_genre">目標ジャンル</string>
+    <string name="goal">目標</string>
 
 
 </resources>

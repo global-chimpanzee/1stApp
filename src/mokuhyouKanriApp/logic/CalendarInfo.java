@@ -28,8 +28,11 @@ public class CalendarInfo {
 
 	/**
 	 * コンストラクタ
-	 * @param year 西暦年
-	 * @param month 月
+	 *
+	 * @param year
+	 *            西暦年
+	 * @param month
+	 *            月
 	 */
 	public CalendarInfo(int year, int month) {
 
@@ -69,40 +72,40 @@ public class CalendarInfo {
 		boolean isEnd = false;
 
 		// 5×7のループでカレンダー配列作成
-		for(int i = 0; i < 5; i++) {
-			for(int k = 0; k < 7 ; k++) {
+		for (int i = 0; i < 5; i++) {
+			for (int k = 0; k < 7; k++) {
 
 				// 初期値セット
 				this.calendarMatrix[i][k] = 0;
 
 				// 先頭曜日確認
-				if(isStart == false && (this.startDay -1 ) == i) {
+				if (isStart == false && (this.startDay - 1) == k) {
 
-					//日にちセット開始
+					// 日にちセット開始
 					isStart = true;
 
 				}
 
 				// 日にちカウント開始フラグ判定
-				if(isStart) {
+				if (isStart) {
 
-					//日にちカウント終了フラグ判定
-					if(!isEnd) {
+					// 日にちカウント終了フラグ判定
+					if (!isEnd) {
 
 						// <日にちカウント終了フラグがfalseの場合>
 
 						// カレンダー配列に日付をセット
 						this.calendarMatrix[i][k] = dayCount;
 
-					}
+						// カウンターをインクリメント
+						dayCount++;
 
-					// カウンターをインクリメント
-					dayCount++;
+						// カウント終了チェック
+						if (dayCount > this.lastDate) {
 
-					// カウント終了チェック
-					if(dayCount > this.lastDate){
+							isEnd = true;
 
-						isEnd = true;
+						}
 
 					}
 
