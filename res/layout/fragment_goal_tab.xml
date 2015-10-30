@@ -1,8 +1,214 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
+
+    <!-- タイトルバー -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="horizontal"
+        android:background="@drawable/text_month_line" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="fill"
+            android:text="@string/goal_tab_title"
+            android:textSize="25sp"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
+
+    <!-- ボディー -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="16"
+        android:orientation="vertical" >
+
+        <!-- ボタンrow -->
+        <Button
+            android:id="@+id/register_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="end"
+            android:background="#FFD961"
+            android:text="@string/register" />
+
+        <!-- 目標ジャンルrow -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:background="@drawable/stroke_for_top"
+            android:orientation="horizontal" >
+
+            <!-- 目標ジャンルラベル -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="fill"
+                android:text="@string/goal_genre"
+                android:textSize="20sp" />
+
+            <!-- 目標ジャンルテキスト -->
+            <TextView
+                android:id="@+id/goal_genre_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="fill"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+
+        <!-- 目標row -->
+       <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:background="@drawable/stroke_except_top"
+            android:orientation="horizontal" >
+
+            <!-- 目標ラベル -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="fill"
+                android:text="@string/goal"
+                android:textSize="20sp" />
+
+            <!-- 目標テキスト -->
+            <TextView
+                android:id="@+id/goal_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="fill"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+
+        <!-- 目標数row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:background="@drawable/stroke_except_top"
+            android:orientation="horizontal" >
+
+            <!-- 目標数ラベル -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="fill"
+                android:text="@string/goal_num"
+                android:textSize="20sp" />
+
+            <!-- 目標数テキスト -->
+            <TextView
+                android:id="@+id/goal_num_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="fill"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+
+        <!-- 達成期限row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:background="@drawable/stroke_except_top"
+            android:orientation="horizontal" >
+
+            <!-- 達成期限ラベル -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="fill"
+                android:text="@string/achievement_due"
+                android:textSize="20sp" />
+
+            <!-- 達成期限テキスト -->
+            <TextView
+                android:id="@+id/due_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="fill"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+
+        <!-- メモrow -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:background="@drawable/stroke_except_top"
+            android:orientation="horizontal" >
+
+            <!-- メモラベル -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="fill"
+                android:text="@string/memo"
+                android:textSize="20sp" />
+
+            <!-- メモテキスト -->
+            <TextView
+                android:id="@+id/memo_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="fill"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

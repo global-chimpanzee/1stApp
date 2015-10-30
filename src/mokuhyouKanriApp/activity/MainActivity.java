@@ -1,5 +1,6 @@
 package mokuhyouKanriApp.activity;
 
+import mokuhyouKanriApp.dialog.fragment.ResetDialog;
 import mokuhyouKanriApp.fragment.CheckRecordTab;
 import mokuhyouKanriApp.fragment.EditGoalTab;
 import mokuhyouKanriApp.fragment.SwipeTab;
@@ -65,6 +66,11 @@ public class MainActivity extends AppCompatActivity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
+			// FragmentManager fm = getSupportFragmentManager();
+			ResetDialog resetDialog = new ResetDialog();
+			resetDialog.show(getSupportFragmentManager(), "reset");
+			// resetDialog.show(fm, "fragment");
+
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
