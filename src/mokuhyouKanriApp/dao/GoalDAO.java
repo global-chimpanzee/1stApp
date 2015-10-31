@@ -9,9 +9,12 @@ import android.database.sqlite.SQLiteDatabase;
 import mokuhyouKanriApp.bean.dataMokuhyoJohoBean;
 
 /**
- * 目標登録情報テーブルにデータを検索・登録・削除する実行処理群クラス
+ * 目標登録情報を検索・登録・削除する処理実行クラス
+ *
+ * @author global.chimpanzee
+ * @version 1.0
+ * @since	2015
  */
-
 public class GoalDAO {
 
 
@@ -20,9 +23,9 @@ public class GoalDAO {
 
 	/**
 	 * テーブルに編集データを追加
-	 * @param db
-	 * @param dataMokuhyoJohoBean
-	 * @param hasDataNothingDB
+	 * @param SQLiteDatabase db
+	 * @param dataMokuhyoJohoBean bean
+	 * @param boolean hasDataNothingDB
 	 */
 	public static String goalInsertUpdate(SQLiteDatabase db, dataMokuhyoJohoBean bean, boolean hasDataNothingDB) {
 
@@ -58,7 +61,8 @@ public class GoalDAO {
 	}
 
 	/**
-	 * テーブルから全データを取得
+	 * テーブルから全データを取得するクラス
+	 * @param SQLiteDatabase db
 	 */
 	public static List<dataMokuhyoJohoBean> goalSelect(SQLiteDatabase db) {
 

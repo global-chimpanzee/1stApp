@@ -12,10 +12,12 @@ import android.database.sqlite.SQLiteDatabase;
 import mokuhyouKanriApp.bean.dataAchieveJohoBean;
 
 /**
- * 日次実績情報テーブルにデータを検索・登録・削除する実行処理群クラス
+ * 日次実績情報を検索・登録・削除する実行処理クラス
+ *
+ * @author global.chimpanzee
+ * @version 1.0
+ * @since	2015
  */
-
-
 public class AchieveDAO {
 
 
@@ -27,9 +29,9 @@ public class AchieveDAO {
 
 	/**
 	 * テーブルに編集データを追加
-	 * @param db
-	 * @param dataAchieveJohoBean
-	 * @param hasDataNothingDB
+	 * @param SQLiteDatabase db
+	 * @param dataAchieveJohoBean bean
+	 * @param boolean hasDataNothingDB
 	 */
 	public static String achieveInsertUpdate(SQLiteDatabase db, dataAchieveJohoBean bean, boolean hasDataNothingDB) {
 
@@ -72,7 +74,8 @@ public class AchieveDAO {
 	}
 
 	/**
-	 * テーブルから全データを取得
+	 * テーブルから全データを取得するクラス
+	 * @param SQLiteDatabase db
 	 */
 	public static List<dataAchieveJohoBean> achieveSelect(SQLiteDatabase db) {
 
@@ -105,6 +108,12 @@ public class AchieveDAO {
 		return tableDataList;
 	}
 
+	/**
+	 * テーブルから選択した日付データを削除するクラス
+	 * @param SQLiteDatabase db
+	 * @param dataAchieveJohoBean bean
+	 * @param boolean hasDataNothingDB
+	 */
 	public static void achieveDelete(SQLiteDatabase db, dataAchieveJohoBean bean, boolean hasDataNothingDB) {
 
 		//選択日付を設定する

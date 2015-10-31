@@ -10,7 +10,6 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import mokuhyouKanriApp.activity.R;
@@ -25,7 +24,6 @@ import mokuhyouKanriApp.dao.MySQLiteOpenHelper;
  * @version 1.0
  * @since	2015
  */
-
 public class GoalEditDialog extends DialogFragment implements OnClickListener {
 
 	OnUpdateMokuhyoJohoListener mListener;
@@ -47,6 +45,7 @@ public class GoalEditDialog extends DialogFragment implements OnClickListener {
 
 	/**
 	 * ダイアログ生成時イベント
+	 * @param Bundle savedInstanceState
 	 */
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -83,43 +82,49 @@ public class GoalEditDialog extends DialogFragment implements OnClickListener {
 
 
 		//登録ボタンを取得
-        Button registerGoalButton = (Button) dialog.findViewById(R.id.registergoalbutton);
+        //Button registerGoalButton = (Button) dialog.findViewById(R.id.registergoalbutton);
 
         // 自インスタンスをリスナーとしてセット
-        registerGoalButton.setOnClickListener(this);
+        //registerGoalButton.setOnClickListener(this);
 
         //ダイアログを返却
 		return dialog;
 	}
 
-
+	/**
+	 * 目標登録ダイアログインナークラス
+	 * @param View v
+	 */
 	public void onClick(View v) {
 
-		// 未入力状態はNG 目標ジャンル・目標数・達成期限のチェック
-		if (goalGenreText.getText() == null || goalGenreText.getText().length() == 0
-				|| goalNumberText.getText() == null || goalNumberText.getText().length() == 0) {
+		if(v.getId() == R.id.registergoalbutton){
+			// 未入力状態はNG 目標ジャンル・目標数・達成期限のチェック
+			if (goalGenreText.getText() == null || goalGenreText.getText().length() == 0
+					|| goalNumberText.getText() == null || goalNumberText.getText().length() == 0) {
 
-			//未入力項目がある場合、エラーメッセージをセットする
-			Toast.makeText(getActivity(), "未入力項目を入力してください", Toast.LENGTH_SHORT).show();
+				//未入力項目がある場合、エラーメッセージをセットする
+				Toast.makeText(getActivity(), "未入力項目を入力してください", Toast.LENGTH_SHORT).show();
 
-			return;
+				return;
+			}
+
+
+			// DBオープン処理
+			mHelper = new MySQLiteOpenHelper(getActivity());
+			mDb = mHelper.getWritableDatabase();
+
+			// 編集後のデータをまとめる
+			final dataMokuhyoJohoBean bean = new dataMokuhyoJohoBean(goalGenreText.getText().toString(),
+					goalText.getText().toString(), goalNumberText.getText().toString(), goalDueText.getText().toString(),
+					memoText.getText().toString());
+
+			// データ挿入
+			String msg = GoalDAO.goalInsertUpdate(mDb, bean, mHasDataNothingDB);
+			Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+
+			// アクティビティへイベントを飛ばす
+			mListener.onUpdateEditData();
 		}
-
-		// DBオープン処理
-		mHelper = new MySQLiteOpenHelper(getActivity());
-		mDb = mHelper.getWritableDatabase();
-
-		// 編集後のデータをまとめる
-		final dataMokuhyoJohoBean bean = new dataMokuhyoJohoBean(goalGenreText.getText().toString(),
-				goalText.getText().toString(), goalNumberText.getText().toString(), goalDueText.getText().toString(),
-				memoText.getText().toString());
-
-		// データ挿入
-		String msg = GoalDAO.goalInsertUpdate(mDb, bean, mHasDataNothingDB);
-		Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-
-		// アクティビティへイベントを飛ばす
-		mListener.onUpdateEditData();
 
 		// ダイアログを閉じる
 		dismiss();
@@ -141,7 +146,8 @@ public class GoalEditDialog extends DialogFragment implements OnClickListener {
 	}
 
 	/**
-	 * ここでダイアログのサイズを指定してやる
+	 * ダイアログのサイズ指定クラス
+	 * @param Bundle savedInstanceState
 	 */
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -152,8 +158,9 @@ public class GoalEditDialog extends DialogFragment implements OnClickListener {
 	}
 
 	/**
-	 * GoalEditDialogFragmentのインスタンス生成(できる限りMainActivityには書かない)
-	 * @param data
+	 * GoalEditDialogFragmentのインスタンス生成クラス
+	 * @param dataMokuhyoJohoBean bean
+	 * @param boolean hasDataNothingDB
 	 */
 	public static GoalEditDialog newInstance(dataMokuhyoJohoBean bean, boolean hasDataNothingDB) {
 
@@ -180,8 +187,8 @@ public class GoalEditDialog extends DialogFragment implements OnClickListener {
 	}
 
 	/**
-	 * Dialogウィンドウのカスタマイズ
-	 * @param dialog
+	 * Dialogウィンドウのカスタマイズクラス
+	 * @param Dialog dialog
 	 */
 	private void customDialogWindow(Dialog dialog) {
 

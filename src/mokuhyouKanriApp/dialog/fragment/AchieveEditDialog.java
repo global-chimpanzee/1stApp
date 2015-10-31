@@ -24,7 +24,6 @@ import mokuhyouKanriApp.dao.MySQLiteOpenHelper;
  * @version 1.0
  * @since	2015
  */
-
 public class AchieveEditDialog extends DialogFragment implements OnClickListener {
 
 	OnUpdateAchieveEditListener mListener;
@@ -45,7 +44,8 @@ public class AchieveEditDialog extends DialogFragment implements OnClickListener
 	boolean mHasDataNothingDB;
 
 	/**
-	 * ダイアログ生成時イベント
+	 * ダイアログ生成時イベントクラス
+	 * @param Bundle savedInstanceState
 	 */
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -92,7 +92,10 @@ public class AchieveEditDialog extends DialogFragment implements OnClickListener
 		return dialog;
 	}
 
-
+	/**
+	 * ボタンイベントクラス
+	 * @param View v
+	 */
 	public void onClick(View v) {
 
 		//各ボタンが押された場合で処理を分ける
@@ -182,7 +185,8 @@ public class AchieveEditDialog extends DialogFragment implements OnClickListener
 	}
 
 	/**
-	 * ここでダイアログのサイズを指定してやる
+	 * ダイアログサイズ指定クラス
+	 * @param Bundle savedInstanceState
 	 */
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -193,8 +197,9 @@ public class AchieveEditDialog extends DialogFragment implements OnClickListener
 	}
 
 	/**
-	 * AchieveEditDialogFragmentのインスタンス生成(できる限りMainActivityには書かない)
-	 * @param data
+	 * AchieveEditDialogFragmentのインスタンス生成するクラス
+	 * @param dataAchieveJohoBean bean
+	 * @param boolean hasDataNothingDB
 	 */
 	public static AchieveEditDialog newInstance(dataAchieveJohoBean bean, boolean hasDataNothingDB) {
 
@@ -221,8 +226,8 @@ public class AchieveEditDialog extends DialogFragment implements OnClickListener
 	}
 
 	/**
-	 * Dialogウィンドウのカスタマイズ
-	 * @param dialog
+	 * Dialogウィンドウカスタマイズクラス
+	 * @param Dialog dialog
 	 */
 	private void AchieveDialogWindow(Dialog dialog) {
 

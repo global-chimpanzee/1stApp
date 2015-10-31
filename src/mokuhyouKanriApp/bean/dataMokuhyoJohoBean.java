@@ -2,8 +2,11 @@ package mokuhyouKanriApp.bean;
 
 
 /**
- * 目標登録データ格納用クラス
+ * 目標登録情報格納クラス
  *
+ * @author global.chimpanzee
+ * @version 1.0
+ * @since	2015
  */
 final public class dataMokuhyoJohoBean {
 
@@ -15,6 +18,9 @@ final public class dataMokuhyoJohoBean {
 	private  String memo;
 	private  String timeStamp;
 
+    /**
+	 * コンストラクタクラス
+	 */
 	public dataMokuhyoJohoBean(String goalGenre, String goal, String goalNumber,
 			String goalDue, String memo){
 
