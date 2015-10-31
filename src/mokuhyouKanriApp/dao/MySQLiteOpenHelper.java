@@ -4,6 +4,13 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * SQLiteOpenHelperクラス
+ *
+ * @author global.chimpanzee
+ * @version 1.0
+ * @since	2015
+ */
 public class MySQLiteOpenHelper extends SQLiteOpenHelper{
 
 
@@ -15,17 +22,17 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper{
 										"M_GENRE text not null," +
 										"GOAL text not null," +
 										"G_NUMBER real not null" +
-										"G_DUE real not null" +
+										"G_DUE text not null" +
 										"G_MEMO text " +
-										"TIMESTAMP real not null" +
+										"TIMESTAMP text not null" +
 										");";
 
 	private static final String CREATE_TABLE2 =  "create table achieveInfoTable ( " +
 			"GOAL_ID integer not null, " +
-			"A_DATE real primary key," +
+			"A_DATE text primary key," +
 			"A_NUMBER real not null," +
-			"A_COMMENT real" +
-			"TIMESTAMP real not null" +
+			"A_COMMENT text" +
+			"TIMESTAMP text not null" +
 			");";
 
 	private static final String DROP_TABLE1 = "drop table goalInfoTable;";
@@ -36,7 +43,8 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper{
 	}
 
 	/**
-	 * データベースファイル初回使用時に実行される処理
+	 * データベースファイル初回使用時に実行される処理クラス
+	 * @param SQLLiteDatabase db
 	 */
 	@Override
 	public void onCreate(SQLiteDatabase db) {
@@ -46,7 +54,10 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper{
 	}
 
 	/**
-	 * データベースのバージョンアップ時に実行される処理
+	 * データベースのバージョンアップ時に実行される処理クラス
+	 * @param SQLiteDatabase db
+	 * @param int oldVersion
+	 * @param int newVersion
 	 */
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

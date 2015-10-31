@@ -2,10 +2,12 @@ package mokuhyouKanriApp.bean;
 
 
 /**
- * 日次実績データ格納用クラス
+ * 日次実績情報格納クラス
  *
+ * @author global.chimpanzee
+ * @version 1.0
+ * @since	2015
  */
-
 public class dataAchieveJohoBean {
 
 	private String goalId;
@@ -17,7 +19,9 @@ public class dataAchieveJohoBean {
 	private String selectDay;
 	private String timeStamp;
 
-
+	/**
+	 * コンストラクタクラス
+	 */
 	public dataAchieveJohoBean(String achieveNumber, String comment,
 			String selectMonth, String selectDate, String selectDay){
 
