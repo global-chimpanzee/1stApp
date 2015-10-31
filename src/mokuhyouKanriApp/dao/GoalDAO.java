@@ -17,48 +17,74 @@ import mokuhyouKanriApp.bean.dataMokuhyoJohoBean;
  */
 public class GoalDAO {
 
-
-	// インスタンス化不可
+	/** インスタンス化不可 */
 	private GoalDAO() {}
 
 	/**
-	 * テーブルに編集データを追加
+	 * テーブルに編集データを新規追加する
 	 * @param SQLiteDatabase db
 	 * @param dataMokuhyoJohoBean bean
 	 * @param boolean hasDataNothingDB
 	 */
-	public static String goalInsertUpdate(SQLiteDatabase db, dataMokuhyoJohoBean bean, boolean hasDataNothingDB) {
+	public static boolean goalInsert(SQLiteDatabase db, ContentValues values) {
 
-		// ContentValuesにデータを格納
-		ContentValues values = new ContentValues();
-		values.put("goalGenre", bean.getGoalGenre());
-		values.put("goal", bean.getGoal());
-		values.put("goalNumber", bean.getGoalNumber());
-		values.put("goalDue", bean.getGoalDue());
-		values.put("memo", bean.getMemo());
+		/** DBアクセス実行結果 */
+		boolean dbExecuteResult = false;
 
-		// 新規の場合テーブルにデータ追加
-		if(hasDataNothingDB) {
+		/** データの挿入 */
+		long result;
 
-			// データの挿入
-			db.insert("goalInfoTable", null, values);
-			return "新規登録しました";
+		result = db.insert("goalInfoTable", null, values);
+
+		/** 結果判定処理 */
+		if(result == 1){
+
+			dbExecuteResult = true;
+
+		} else {
+
+			dbExecuteResult = false;
+
 		}
-		// 既にデータがある場合は更新
-		else {
 
-			// データの更新
-			final String UPSATE_QUERY = "update goalInfoTable " +
-										"set goalgenre = '" + bean.getGoalGenre() +
-										"', goal = '" + bean.getGoal() +
-										"', goalNumber = '" + bean.getGoalNumber() +
-										"', goalDue = '" + bean.getGoalDue() +
-										"', memo = '" + bean.getMemo() +
-										"' where _id = (select max(_id) from goalInfoTable)";
-			db.execSQL(UPSATE_QUERY);
-			return "データを更新しました";
-		}
+		return dbExecuteResult;
+
 	}
+
+	/**
+	 * テーブルに編集データを更新する
+	 * @param SQLiteDatabase db
+	 * @param dataMokuhyoJohoBean bean
+	 * @param boolean hasDataNothingDB
+	 */
+	public static boolean goalUpdate(SQLiteDatabase db, ContentValues values, int goalId) {
+
+		/** DBアクセス実行結果 */
+		boolean dbExecuteResult = false;
+
+		/** データの更新 */
+		int result;
+
+		String whereClause = "GOAL_ID = ?";
+        String whereArgs[] = new String[1];
+        whereArgs[0] = String.valueOf(goalId);
+		result = db.update("goalInfoTable", values, whereClause, whereArgs);
+
+		/** 結果判定処理 */
+		if(result == -1){
+
+			dbExecuteResult = false;
+
+		} else {
+
+			dbExecuteResult = true;
+
+		}
+
+		return dbExecuteResult;
+
+	}
+
 
 	/**
 	 * テーブルから全データを取得するクラス
@@ -70,22 +96,23 @@ public class GoalDAO {
 		List<dataMokuhyoJohoBean> tableDataList = new ArrayList<dataMokuhyoJohoBean>();
 
 		Cursor cursor = db.query(
-				"goalInfoTable", new String[] {"goalId", "goalgenre", "goal", "goalnumber", "goaldue", "memo"},
-				null, null, null, null, "goalId DESC");
+				"goalInfoTable", new String[] {"GOAL_ID", "M_GENRE", "GOAL", "G_NUMBER", "G_DUE", "G_MEMO"},
+				null, null, null, null, "GOAL_ID DESC");
 
 		// 参照先を一番始めに(検索直後は0件目を指しているため)
 		boolean isEof = cursor.moveToFirst();
 
 		// データがなかった時のためにもこのループに入る条件文は必須
 		while(isEof) {
-			String goalGenre = cursor.getString(cursor.getColumnIndex("goalGenre"));
-			String goal = cursor.getString(cursor.getColumnIndex("goal"));
-			String goalNumber = cursor.getString(cursor.getColumnIndex("goalNumber"));
-			String goalDue = cursor.getString(cursor.getColumnIndex("goalDue"));
-			String memo = cursor.getString(cursor.getColumnIndex("memo"));
+			int goalId = cursor.getInt(cursor.getColumnIndex("GOAL_ID"));
+			String goalGenre = cursor.getString(cursor.getColumnIndex("M_GENRE"));
+			String goal = cursor.getString(cursor.getColumnIndex("GOAL"));
+			int goalNumber = cursor.getInt(cursor.getColumnIndex("G_NUMBER"));
+			String goalDue = cursor.getString(cursor.getColumnIndex("G_DUE"));
+			String memo = cursor.getString(cursor.getColumnIndex("G_MEMO"));
 
 			// 取得データオブジェクト生成
-			dataMokuhyoJohoBean bean = new dataMokuhyoJohoBean(goalGenre, goal, goalNumber, goalDue, memo);
+			dataMokuhyoJohoBean bean = new dataMokuhyoJohoBean(goalId, goalGenre, goal, goalNumber, goalDue, memo);
 			tableDataList.add(bean);
 
 			isEof = cursor.moveToNext();

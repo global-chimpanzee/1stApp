@@ -17,7 +17,7 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper{
 	private static final String DB_NAME = "sqlite_goalmanager.db";
 	private static final int DB_VERSION = 1;
 
-	private static final String CREATE_TABLE1 =  "create table GoalInfoTable ( " +
+	private static final String CREATE_TABLE1 =  "create table goalInfoTable ( " +
 										"GOAL_ID integer primary key autoincrement, " +
 										"M_GENRE text not null," +
 										"GOAL text not null," +

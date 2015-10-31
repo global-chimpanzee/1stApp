@@ -1,14 +1,18 @@
 package mokuhyouKanriApp.dialog.fragment;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +28,7 @@ import mokuhyouKanriApp.dao.MySQLiteOpenHelper;
  * @version 1.0
  * @since	2015
  */
-public class GoalEditDialog extends DialogFragment implements OnClickListener {
+public class GoalEditDialog extends DialogFragment {
 
 	OnUpdateMokuhyoJohoListener mListener;
 
@@ -40,8 +44,21 @@ public class GoalEditDialog extends DialogFragment implements OnClickListener {
 	/** SQLiteDatabase */
 	SQLiteDatabase mDb = null;
 
+	/** 目標ID */
+	int goalId = 0;
 
+	/** 目標数 */
+	int goalNumber = 0;
+
+	/** データ存在判定処理 */
 	boolean mHasDataNothingDB;
+
+	/** DB処理結果 */
+	boolean dbExecuteResult;
+
+
+	@SuppressLint("SimpleDateFormat")
+	static SimpleDateFormat sdf = new SimpleDateFormat("yyyymmddkkmm");
 
 	/**
 	 * ダイアログ生成時イベント
@@ -65,7 +82,7 @@ public class GoalEditDialog extends DialogFragment implements OnClickListener {
 		goalText = (TextView)dialog.findViewById(R.id.editgoal);
 		goalText.setText(goal);
 
-		String goalNumber = getArguments().getString("goalnumber");
+		goalNumber = getArguments().getInt("goalnumber");
 		goalNumberText = (TextView)dialog.findViewById(R.id.editgoalnumber);
 		goalNumberText.setText(goalNumber);
 
@@ -79,6 +96,8 @@ public class GoalEditDialog extends DialogFragment implements OnClickListener {
 		memoText.setText(memo);
 
 		mHasDataNothingDB = getArguments().getBoolean("NothingData");
+
+		goalId = getArguments().getInt("goalId");
 
 
 		//登録ボタンを取得
@@ -108,22 +127,79 @@ public class GoalEditDialog extends DialogFragment implements OnClickListener {
 				return;
 			}
 
+			/** DBオープン処理
+			 * データベースオブジェクトがない又はデータベースが開いていなければ
+			 * データベースを開く
+			 */
+			if(mDb == null || !mDb.isOpen()){
 
-			// DBオープン処理
-			mHelper = new MySQLiteOpenHelper(getActivity());
-			mDb = mHelper.getWritableDatabase();
+				mHelper = new MySQLiteOpenHelper(getActivity());
+				mDb = mHelper.getWritableDatabase();
+
+			}
 
 			// 編集後のデータをまとめる
-			final dataMokuhyoJohoBean bean = new dataMokuhyoJohoBean(goalGenreText.getText().toString(),
-					goalText.getText().toString(), goalNumberText.getText().toString(), goalDueText.getText().toString(),
+			final dataMokuhyoJohoBean bean = new dataMokuhyoJohoBean(goalId, goalGenreText.getText().toString(),
+					goalText.getText().toString(), goalNumber, goalDueText.getText().toString(),
 					memoText.getText().toString());
 
 			// データ挿入
-			String msg = GoalDAO.goalInsertUpdate(mDb, bean, mHasDataNothingDB);
-			Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+			//String msg = GoalDAO.goalInsertUpdate(mDb, bean, mHasDataNothingDB);
+			//Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+
+			//現在時刻を取得する
+			Date date = new Date();
+			String timeStamp = sdf.format(date);
+
+			// ContentValuesにデータを格納
+			ContentValues values = new ContentValues();
+			values.put("M_GENRE", bean.getGoalGenre());
+			values.put("GOAL", bean.getGoal());
+			values.put("G_NUMBER", bean.getGoalNumber());
+			values.put("G_DUE", bean.getGoalDue());
+			values.put("G_MEMO", bean.getMemo());
+			values.put("TIMESTAMP", timeStamp);
+
+			if(mHasDataNothingDB){
+
+				/** データが存在しない場合
+				データベースにアクセスしinsertする */
+				dbExecuteResult = GoalDAO.goalInsert(mDb, values);
+
+				if(dbExecuteResult){
+
+					//DB処理がうまくいった場合
+					Toast.makeText(getActivity(), "新規登録しました", Toast.LENGTH_SHORT).show();
+
+				} else {
+
+					//DB処理がうまくいかなかった場合
+					Toast.makeText(getActivity(), "目標の登録に失敗しました", Toast.LENGTH_SHORT).show();
+
+				}
+
+			} else {
+
+				/** データが存在する場合
+				    データベースにアクセスしupdateする */
+				dbExecuteResult = GoalDAO.goalUpdate(mDb, values, bean.getGoalId());
+
+				if(dbExecuteResult){
+
+					//DB処理がうまくいった場合
+					Toast.makeText(getActivity(), "目標を更新しました", Toast.LENGTH_SHORT).show();
+
+				} else {
+
+					//DB処理がうまくいかなかった場合
+					Toast.makeText(getActivity(), "目標の更新に失敗しました", Toast.LENGTH_SHORT).show();
+
+				}
+
+			}
 
 			// アクティビティへイベントを飛ばす
-			mListener.onUpdateEditData();
+			//mListener.onUpdateEditData();
 		}
 
 		// ダイアログを閉じる
@@ -166,17 +242,19 @@ public class GoalEditDialog extends DialogFragment implements OnClickListener {
 
 		final GoalEditDialog goalEditDialog = new GoalEditDialog();
 
+		int goalId = bean.getGoalId();
 		String goalGenre = bean.getGoalGenre();
 		String goal = bean.getGoal();
-		String goalNumber = bean.getGoalNumber();
+		int goalNumber = bean.getGoalNumber();
 		String goalDue = bean.getGoalDue();
 		String memo = bean.getMemo();
 
 		// 値をBundleに渡してsetArgumentsしてやる
 		Bundle args = new Bundle();
+		args.putInt("goalId", goalId);
 		args.putString("goalGenre", goalGenre);
 		args.putString("goal", goal);
-		args.putString("goalNumber", goalNumber);
+		args.putInt("goalNumber", goalNumber);
 		args.putString("goalDue", goalDue);
 		args.putString("memo", memo);
 		args.putBoolean("NothingData", hasDataNothingDB);

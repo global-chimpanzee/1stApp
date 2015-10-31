@@ -10,9 +10,9 @@ package mokuhyouKanriApp.bean;
  */
 final public class dataMokuhyoJohoBean {
 
-	private String goalId;
+	private  int goalId;
 	private  String goalGenre;
-	private  String goalNumber;
+	private  int goalNumber;
 	private  String goal;
 	private  String goalDue;
 	private  String memo;
@@ -21,10 +21,10 @@ final public class dataMokuhyoJohoBean {
     /**
 	 * コンストラクタクラス
 	 */
-	public dataMokuhyoJohoBean(String goalGenre, String goal, String goalNumber,
+	public dataMokuhyoJohoBean(int goalId, String goalGenre, String goal, int goalNumber,
 			String goalDue, String memo){
 
-//		this.goalId = goalId;
+		this.goalId = goalId;
 		this.goalGenre = goalGenre;
 		this.goal = goal;
 		this.goalNumber = goalNumber;
@@ -34,11 +34,11 @@ final public class dataMokuhyoJohoBean {
 
 	}
 
-	public String getGoalId() {
+	public int getGoalId() {
 		return goalId;
 	}
 
-	public void setGoalId(String goalId) {
+	public void setGoalId(int goalId) {
 		this.goalId = goalId;
 	}
 
@@ -59,11 +59,11 @@ final public class dataMokuhyoJohoBean {
 		this.goal = goal;
 	}
 
-	public String getGoalNumber() {
+	public int getGoalNumber() {
 		return goalNumber;
 	}
 
-	public void setGoalNumber(String goalNumber) {
+	public void setGoalNumber(int goalNumber) {
 		this.goalNumber = goalNumber;
 	}
 

@@ -1,11 +1,8 @@
 package mokuhyouKanriApp.dao;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,58 +17,72 @@ import mokuhyouKanriApp.bean.dataAchieveJohoBean;
  */
 public class AchieveDAO {
 
-
-	@SuppressLint("SimpleDateFormat")
-	static SimpleDateFormat sdf = new SimpleDateFormat("yyyymmddkkmm");
-
 	// インスタンス化不可
 	private AchieveDAO() {}
 
 	/**
-	 * テーブルに編集データを追加
+	 * テーブルに編集データを新規に追加する
 	 * @param SQLiteDatabase db
 	 * @param dataAchieveJohoBean bean
 	 * @param boolean hasDataNothingDB
 	 */
-	public static String achieveInsertUpdate(SQLiteDatabase db, dataAchieveJohoBean bean, boolean hasDataNothingDB) {
+	public static boolean achieveInsert(SQLiteDatabase db, ContentValues values) {
 
-		//現在時刻を取得する
-		Date date = new Date();
-		String timeStamp = sdf.format(date);
+		/** DBアクセス実行結果 */
+		boolean dbExecuteResult = false;
 
-		//選択日付をまとめる
-		String achieveDate = bean.getSelectYear()+bean.getSelectMonth()+bean.getSelectDate();
+		long result;
 
-		// ContentValuesにデータを格納
-		ContentValues values = new ContentValues();
-		values.put("A_NUMBER", bean.getAchieveNumber());
-		values.put("A_COMMENT", bean.getComment());
-		values.put("A_DATE", achieveDate);
-		values.put("GOAL_ID", bean.getGoalId());
-		values.put("TIMESTAMP", timeStamp);
+		// データの挿入
+		result = db.insert("AchieveInfoTable", null, values);
 
-		// 新規の場合テーブルにデータ追加
-		if(hasDataNothingDB) {
+		/** 結果判定処理 */
+		if(result == 1){
 
-			// データの挿入
-			db.insert("AchieveInfoTable", null, values);
-			return "新規登録しました";
+			dbExecuteResult = true;
+
+		} else {
+
+			dbExecuteResult = false;
+
 		}
-		// 既にデータがある場合は更新
-		else {
 
-			// データの更新
-			final String UPSATE_QUERY = "update AchieveInfoTable " +
-										"set GOAL_ID = '" + bean.getGoalId() +
-										"', A_NUMBER = '" + bean.getAchieveNumber() +
-										"', A_COMMENT = '" + bean.getComment() +
-										"', A_DATE = '" + achieveDate +
-										"', TIMESTAMP = '" + sdf +
-										"' where A_DATE = " + achieveDate;
-			db.execSQL(UPSATE_QUERY);
-			return "データを更新しました";
-		}
+		return dbExecuteResult;
 	}
+
+	/**
+	 * テーブルに編集データを更新する
+	 * @param SQLiteDatabase db
+	 * @param dataAchieveJohoBean bean
+	 * @param boolean hasDataNothingDB
+	 */
+	public static boolean achieveUpdate(SQLiteDatabase db, ContentValues values, String AchieveDate) {
+
+		/** DBアクセス実行結果 */
+		boolean dbExecuteResult = false;
+
+		int result;
+
+		String whereClause = "A_DATE = ?";
+        String whereArgs[] = new String[1];
+        whereArgs[0] = AchieveDate;
+		result = db.update("achieveInfoTable", values, whereClause, whereArgs);
+
+		/** 結果判定処理 */
+		if(result == -1){
+
+			dbExecuteResult = false;
+
+		} else {
+
+			dbExecuteResult = true;
+
+		}
+
+		return dbExecuteResult;
+
+	}
+
 
 	/**
 	 * テーブルから全データを取得するクラス
@@ -91,14 +102,14 @@ public class AchieveDAO {
 
 		// データがなかった時のためにもこのループに入る条件文は必須
 		while(isEof) {
-			String goalId = cursor.getString(cursor.getColumnIndex("goalId"));
-			String achieveNumber = cursor.getString(cursor.getColumnIndex("achieveNumber"));
-			String comment = cursor.getString(cursor.getColumnIndex("comment"));
-			String achieveDue = cursor.getString(cursor.getColumnIndex("achieveDue"));
-			String timeStamp = cursor.getString(cursor.getColumnIndex("timeStamp"));
+			int goalId = cursor.getInt(cursor.getColumnIndex("GOAL_ID"));
+			int achieveNumber = cursor.getInt(cursor.getColumnIndex("A_NUMBER"));
+			String comment = cursor.getString(cursor.getColumnIndex("A_COMMENT"));
+			String achieveDue = cursor.getString(cursor.getColumnIndex("A_DATE"));
+			//String timeStamp = cursor.getString(cursor.getColumnIndex("TIMESTAMP"));
 
 			// 取得データオブジェクト生成
-			dataAchieveJohoBean bean = new dataAchieveJohoBean(goalId, achieveNumber, comment, achieveDue, timeStamp);
+			dataAchieveJohoBean bean = new dataAchieveJohoBean(goalId, achieveNumber, comment, achieveDue);
 			tableDataList.add(bean);
 
 			isEof = cursor.moveToNext();
@@ -114,20 +125,27 @@ public class AchieveDAO {
 	 * @param dataAchieveJohoBean bean
 	 * @param boolean hasDataNothingDB
 	 */
-	public static void achieveDelete(SQLiteDatabase db, dataAchieveJohoBean bean, boolean hasDataNothingDB) {
+	public static boolean achieveDelete(SQLiteDatabase db, String achieveDate) {
 
-		//選択日付を設定する
-		String achieveDate = bean.getSelectYear()+bean.getSelectMonth()+bean.getSelectDate();
+		/** DBアクセス実行結果 */
+		boolean dbExecuteResult;
 
-		//データが存在する場合、データを削除する
-		if(hasDataNothingDB){
+		//選択した日次実績を削除する
+		int result;
+		result = db.delete("achieveInfoTable", achieveDate, null);
 
-			//選択した日次実績を削除する
-			db.delete("achieveInfoTable", achieveDate, null);
+		/** 結果判定処理 */
+		if(result == -1){
+
+			dbExecuteResult = false;
+
+		} else {
+
+			dbExecuteResult = true;
 
 		}
 
-
+		return dbExecuteResult;
 	}
 
 }

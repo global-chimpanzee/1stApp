@@ -1,15 +1,18 @@
 package mokuhyouKanriApp.dialog.fragment;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import mokuhyouKanriApp.activity.R;
@@ -24,7 +27,7 @@ import mokuhyouKanriApp.dao.MySQLiteOpenHelper;
  * @version 1.0
  * @since	2015
  */
-public class AchieveEditDialog extends DialogFragment implements OnClickListener {
+public class AchieveEditDialog extends DialogFragment {
 
 	OnUpdateAchieveEditListener mListener;
 
@@ -40,8 +43,23 @@ public class AchieveEditDialog extends DialogFragment implements OnClickListener
 	/** SQLiteDatabase */
 	SQLiteDatabase mDb = null;
 
+	/** 目標id */
+	int goalId = 0;
 
+	/** 達成数 */
+	int achieveNumber = 0;
+
+	/** 選択年月日 */
+	String selectDate = "";
+
+	/** データ存在判定 */
 	boolean mHasDataNothingDB;
+
+	/** DB処理結果 */
+	boolean dbExecuteResult;
+
+	@SuppressLint("SimpleDateFormat")
+	static SimpleDateFormat sdf = new SimpleDateFormat("yyyymmddkkmm");
 
 	/**
 	 * ダイアログ生成時イベントクラス
@@ -57,7 +75,7 @@ public class AchieveEditDialog extends DialogFragment implements OnClickListener
 		dialog.setContentView(R.layout.dialog_goal_edit);
 
 		// 各項目にBundleデータを取得・設定
-		String achieveNumber = getArguments().getString("achieveNumber");
+		achieveNumber = getArguments().getInt("achieveNumber");
 		achieveNumberText = (TextView)dialog.findViewById(R.id.editachievenumber);
 		achieveNumberText.setText(achieveNumber);
 
@@ -74,19 +92,11 @@ public class AchieveEditDialog extends DialogFragment implements OnClickListener
         TextView selectDayText = (TextView) dialog.findViewById(R.id.selectday_text);
         selectDayText.setText("水");
 
+        goalId = getArguments().getInt("goalId");
+
+        selectDate = getArguments().getString("selectDate");
+
 		mHasDataNothingDB = getArguments().getBoolean("NothingData");
-
-
-		//登録ボタンを取得
-        Button registerAchieveButton = (Button) dialog.findViewById(R.id.registerachievebutton);
-
-		//登録ボタンを取得
-        Button deleteAchieveButton = (Button) dialog.findViewById(R.id.deleteachievebutton);
-
-        // 自インスタンスをリスナーとしてセット
-        registerAchieveButton.setOnClickListener(this);
-
-        deleteAchieveButton.setOnClickListener(this);
 
         //ダイアログを返却
 		return dialog;
@@ -97,6 +107,30 @@ public class AchieveEditDialog extends DialogFragment implements OnClickListener
 	 * @param View v
 	 */
 	public void onClick(View v) {
+
+		//現在時刻を取得する
+		Date date = new Date();
+		String timeStamp = sdf.format(date);
+
+		// ContentValuesにデータを格納
+		ContentValues values = new ContentValues();
+		values.put("A_NUMBER", achieveNumber);
+		values.put("A_COMMENT", commentText.getText().toString());
+		values.put("A_DATE", selectDate);
+		values.put("GOAL_ID", goalId);
+		values.put("TIMESTAMP", timeStamp);
+
+		/** DBオープン処理
+		 * データベースオブジェクトがない又はデータベースが開いていなければ
+		 * データベースを開く
+		 */
+		if(mDb == null || !mDb.isOpen()){
+
+			mHelper = new MySQLiteOpenHelper(getActivity());
+			mDb = mHelper.getWritableDatabase();
+
+		}
+
 
 		//各ボタンが押された場合で処理を分ける
 		switch(v.getId()){
@@ -113,24 +147,49 @@ public class AchieveEditDialog extends DialogFragment implements OnClickListener
 				return;
 			}
 
-			// DBオープン処理
-			mHelper = new MySQLiteOpenHelper(getActivity());
-			mDb = mHelper.getWritableDatabase();
-
-			// 編集後のデータをまとめる
-			final dataAchieveJohoBean bean = new dataAchieveJohoBean(achieveNumberText.getText().toString(),
-					commentText.getText().toString(), selectMonthText.getText().toString(),
-					selectDayText.getText().toString(), selectDateText.getText().toString());
-
 			// データ挿入
-			String msg = AchieveDAO.achieveInsertUpdate(mDb, bean, mHasDataNothingDB);
-			Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+			if(mHasDataNothingDB){
+
+				dbExecuteResult = AchieveDAO.achieveInsert(mDb, values);
+
+				if(dbExecuteResult){
+
+					//DB処理がうまくいった場合
+					Toast.makeText(getActivity(), "新規登録しました", Toast.LENGTH_SHORT).show();
+
+				} else {
+
+					//DB処理がうまくいかなかった場合
+					Toast.makeText(getActivity(), "実績の登録に失敗しました", Toast.LENGTH_SHORT).show();
+
+				}
+
+			} else {
+
+				dbExecuteResult = AchieveDAO.achieveUpdate(mDb, values, selectDate);
+
+				if(dbExecuteResult){
+
+					//DB処理がうまくいった場合
+					Toast.makeText(getActivity(), "実績を更新しました", Toast.LENGTH_SHORT).show();
+
+				} else {
+
+					//DB処理がうまくいかなかった場合
+					Toast.makeText(getActivity(), "実績の更新に失敗しました", Toast.LENGTH_SHORT).show();
+
+				}
+
+			}
 
 			// アクティビティへイベントを飛ばす
-			mListener.onUpdateEditData();
+			//mListener.onUpdateEditData();
 
 			// ダイアログを閉じる
 			dismiss();
+
+			//お祝い画面表示判定処理
+
 
 			break;
 
@@ -140,20 +199,23 @@ public class AchieveEditDialog extends DialogFragment implements OnClickListener
 			// DBにデータが存在する場合は削除ボタンを押下すると削除しにいく
 			if (mHasDataNothingDB) {
 
-				// DBオープン処理
-				mHelper = new MySQLiteOpenHelper(getActivity());
-				mDb = mHelper.getWritableDatabase();
-
-				// 編集後のデータをまとめる
-				final dataAchieveJohoBean delbean = new dataAchieveJohoBean(achieveNumberText.getText().toString(),
-						commentText.getText().toString(), selectMonthText.getText().toString(),
-						selectDayText.getText().toString(), selectDateText.getText().toString());
-
 				// データ挿入
-				AchieveDAO.achieveDelete(mDb, delbean, mHasDataNothingDB);
+				dbExecuteResult = AchieveDAO.achieveDelete(mDb, selectDate);
+
+				if(dbExecuteResult){
+
+					//DB処理がうまくいった場合
+					Toast.makeText(getActivity(), "実績を削除しました", Toast.LENGTH_SHORT).show();
+
+				} else {
+
+					//DB処理がうまくいかなかった場合
+					Toast.makeText(getActivity(), "実績の削除に失敗しました", Toast.LENGTH_SHORT).show();
+
+				}
 
 				// アクティビティへイベントを飛ばす
-				mListener.onUpdateEditData();
+				//mListener.onUpdateEditData();
 
 			}
 
@@ -205,19 +267,17 @@ public class AchieveEditDialog extends DialogFragment implements OnClickListener
 
 		final AchieveEditDialog achieveEditDialog = new AchieveEditDialog();
 
-		String achieveNumber = bean.getAchieveNumber();
+		int achieveNumber = bean.getAchieveNumber();
+		int goalId = bean.getGoalId();
 		String comment = bean.getComment();
-		String selectMonth = bean.getSelectMonth();
 		String selectDate = bean.getSelectDate();
-		String selectDay = bean.getSelectDay();
 
 		// 値をBundleに渡してsetArgumentsしてやる
 		Bundle args = new Bundle();
-		args.putString("achieveNumber", achieveNumber);
+		args.putInt("goalId", goalId);
+		args.putInt("achieveNumber", achieveNumber);
 		args.putString("comment", comment);
-		args.putString("selectMonth", selectMonth);
 		args.putString("selectDate", selectDate);
-		args.putString("selectDay", selectDay);
 		args.putBoolean("NothingData", hasDataNothingDB);
 
 		achieveEditDialog.setArguments(args);

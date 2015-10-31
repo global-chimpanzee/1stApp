@@ -10,44 +10,38 @@ package mokuhyouKanriApp.bean;
  */
 public class dataAchieveJohoBean {
 
-	private String goalId;
-	private String achieveNumber;
+	private int goalId;
+	private int achieveNumber;
 	private String comment;
-	private String selectYear;
-	private String selectMonth;
 	private String selectDate;
-	private String selectDay;
 	private String timeStamp;
 
 	/**
 	 * コンストラクタクラス
 	 */
-	public dataAchieveJohoBean(String achieveNumber, String comment,
-			String selectMonth, String selectDate, String selectDay){
+	public dataAchieveJohoBean(int goalId, int achieveNumber, String comment, String selectDate){
 
-//		this.goalId = goalId;
+		this.goalId = goalId;
 		this.achieveNumber = achieveNumber;
 		this.comment = comment;
-		this.selectMonth = selectMonth;
 		this.selectDate = selectDate;
-		this.selectDay = selectDay;
 //		this.timeStamp = timeStamp;
 
 	}
 
-	public String getGoalId() {
+	public int getGoalId() {
 		return goalId;
 	}
 
-	public void setGoalId(String goalId) {
+	public void setGoalId(int goalId) {
 		this.goalId = goalId;
 	}
 
-	public String getAchieveNumber() {
+	public int getAchieveNumber() {
 		return achieveNumber;
 	}
 
-	public void setAchieveNumber(String achieveNumber) {
+	public void setAchieveNumber(int achieveNumber) {
 		this.achieveNumber = achieveNumber;
 	}
 
@@ -59,36 +53,12 @@ public class dataAchieveJohoBean {
 		this.comment = comment;
 	}
 
-	public String getSelectYear() {
-		return selectYear;
-	}
-
-	public void setSelectYear(String selectYear) {
-		this.selectYear = selectYear;
-	}
-
-	public String getSelectMonth() {
-		return selectMonth;
-	}
-
-	public void setSelectMonth(String selectMonth) {
-		this.selectMonth = selectMonth;
-	}
-
 	public String getSelectDate() {
 		return selectDate;
 	}
 
 	public void setSelectDate(String selectDate) {
 		this.selectDate = selectDate;
-	}
-
-	public String getSelectDay() {
-		return selectDay;
-	}
-
-	public void setSelectDay(String selectDay) {
-		this.selectDay = selectDay;
 	}
 
 	public String getTimeStamp() {
