@@ -24,7 +24,7 @@ public class CalendarInfo {
 	private int lastDate;
 
 	/** カレンダー情報配列 */
-	public int[][] calendarMatrix = new int[5][7];
+	public int[][] calendarMatrix = new int[6][7];
 
 	/**
 	 * コンストラクタ
@@ -71,8 +71,8 @@ public class CalendarInfo {
 		// 日にちカウント終了フラグを初期化
 		boolean isEnd = false;
 
-		// 5×7のループでカレンダー配列作成
-		for (int i = 0; i < 5; i++) {
+		// 6×7のループでカレンダー配列作成
+		for (int i = 0; i < 6; i++) {
 			for (int k = 0; k < 7; k++) {
 
 				// 初期値セット

@@ -177,6 +177,22 @@ public class CalendarTab extends Fragment {
 		info = new DayTextViewInfo(R.id.five_sa_text);
 		this.dayTextList.add(info);
 
+		// カレンダー第6週目
+		info = new DayTextViewInfo(R.id.six_su_text);
+		this.dayTextList.add(info);
+		info = new DayTextViewInfo(R.id.six_mo_text);
+		this.dayTextList.add(info);
+		info = new DayTextViewInfo(R.id.six_tu_text);
+		this.dayTextList.add(info);
+		info = new DayTextViewInfo(R.id.six_we_text);
+		this.dayTextList.add(info);
+		info = new DayTextViewInfo(R.id.six_th_text);
+		this.dayTextList.add(info);
+		info = new DayTextViewInfo(R.id.six_fr_text);
+		this.dayTextList.add(info);
+		info = new DayTextViewInfo(R.id.six_sa_text);
+		this.dayTextList.add(info);
+
 		// Calendarインスタンスの取得
 		Calendar cal = Calendar.getInstance();
 
@@ -194,8 +210,8 @@ public class CalendarTab extends Fragment {
 		// カウンターを初期化
 		int counter = 0;
 
-		// 5×7のループ
-		for (int i = 0; i < 5; i++) {
+		// 6×7のループ
+		for (int i = 0; i < 6; i++) {
 
 			for (int k = 0; k < 7; k++) {
 
@@ -302,7 +318,7 @@ public class CalendarTab extends Fragment {
 		// 列カウンターを初期化
 		int col = 0;
 
-		// 5×7でループ
+		// 6×7でループ
 		for(int i = 0 ; i < this.dayTextList.size(); i++) {
 
 			DayTextViewInfo dtvi = this.dayTextList.get(i);

@@ -599,4 +599,105 @@
 
 	</LinearLayout>
 
+    <!-- 第6週目 -->
+    <LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="3"
+        android:orientation="horizontal"
+        android:baselineAligned="false" >
+
+	    <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@drawable/text_day_line" >
+            <TextView
+				android:id="@+id/six_su_text"
+				android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="end" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@drawable/text_day_line" >
+            <TextView
+				android:id="@+id/six_mo_text"
+				android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="end" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@drawable/text_day_line" >
+            <TextView
+				android:id="@+id/six_tu_text"
+				android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="end" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@drawable/text_day_line" >
+            <TextView
+				android:id="@+id/six_we_text"
+				android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="end" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@drawable/text_day_line" >
+            <TextView
+				android:id="@+id/six_th_text"
+				android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="end" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@drawable/text_day_line" >
+            <TextView
+				android:id="@+id/six_fr_text"
+				android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="end" />
+        </LinearLayout>
+
+        <LinearLayout
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@drawable/text_day_line" >
+            <TextView
+				android:id="@+id/six_sa_text"
+				android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+				android:gravity="end" />
+        </LinearLayout>
+
+	</LinearLayout>
+
 </LinearLayout>
