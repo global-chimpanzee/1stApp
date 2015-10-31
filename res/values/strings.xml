@@ -22,6 +22,16 @@
     <string name="memo">memo</string>
     <string name="register">編集</string>
     <string name="record_tab_title">達成度</string>
+    <string name ="editbutton">編集</string>
+    <string name ="registergoalbutton">登録</string>
+    <string name ="yourgoal">あなたの目標</string>
+    <string name ="goalgenre">目標ジャンル</string>
+    <string name ="goalnumber">目標数</string>
+    <string name ="goaldue">期限</string>
+    <string name ="achieveregisterlabel">実績登録画面</string>
+    <string name ="achievenumber">達成数</string>
+    <string name ="commentlabel">コメント</string>
+    <string name ="deleteachievebutton">削除</string>
 
 
 </resources>
