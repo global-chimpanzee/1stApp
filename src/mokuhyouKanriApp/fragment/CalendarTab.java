@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -98,99 +99,99 @@ public class CalendarTab extends Fragment {
 		DayTextViewInfo info = null;
 
 		// カレンダー第1週目
-		info = new DayTextViewInfo(R.id.one_su_text);
+		info = new DayTextViewInfo(R.id.one_su_text, R.id.one_su_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.one_mo_text);
+		info = new DayTextViewInfo(R.id.one_mo_text, R.id.one_mo_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.one_tu_text);
+		info = new DayTextViewInfo(R.id.one_tu_text, R.id.one_tu_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.one_we_text);
+		info = new DayTextViewInfo(R.id.one_we_text, R.id.one_we_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.one_th_text);
+		info = new DayTextViewInfo(R.id.one_th_text, R.id.one_th_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.one_fr_text);
+		info = new DayTextViewInfo(R.id.one_fr_text, R.id.one_fr_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.one_sa_text);
+		info = new DayTextViewInfo(R.id.one_sa_text, R.id.one_sa_box);
 		this.dayTextList.add(info);
 
 		// カレンダー第2週目
-		info = new DayTextViewInfo(R.id.two_su_text);
+		info = new DayTextViewInfo(R.id.two_su_text, R.id.two_su_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.two_mo_text);
+		info = new DayTextViewInfo(R.id.two_mo_text, R.id.two_mo_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.two_tu_text);
+		info = new DayTextViewInfo(R.id.two_tu_text, R.id.two_tu_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.two_we_text);
+		info = new DayTextViewInfo(R.id.two_we_text, R.id.two_we_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.two_th_text);
+		info = new DayTextViewInfo(R.id.two_th_text, R.id.two_th_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.two_fr_text);
+		info = new DayTextViewInfo(R.id.two_fr_text, R.id.two_fr_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.two_sa_text);
+		info = new DayTextViewInfo(R.id.two_sa_text, R.id.two_sa_box);
 		this.dayTextList.add(info);
 
 		// カレンダー第3週目
-		info = new DayTextViewInfo(R.id.three_su_text);
+		info = new DayTextViewInfo(R.id.three_su_text, R.id.three_su_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.three_mo_text);
+		info = new DayTextViewInfo(R.id.three_mo_text, R.id.three_mo_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.three_tu_text);
+		info = new DayTextViewInfo(R.id.three_tu_text, R.id.three_tu_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.three_we_text);
+		info = new DayTextViewInfo(R.id.three_we_text, R.id.three_we_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.three_th_text);
+		info = new DayTextViewInfo(R.id.three_th_text, R.id.three_th_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.three_fr_text);
+		info = new DayTextViewInfo(R.id.three_fr_text, R.id.three_fr_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.three_sa_text);
+		info = new DayTextViewInfo(R.id.three_sa_text, R.id.three_sa_box);
 		this.dayTextList.add(info);
 
 		// カレンダー第4週目
-		info = new DayTextViewInfo(R.id.four_su_text);
+		info = new DayTextViewInfo(R.id.four_su_text, R.id.four_su_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.four_mo_text);
+		info = new DayTextViewInfo(R.id.four_mo_text, R.id.four_mo_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.four_tu_text);
+		info = new DayTextViewInfo(R.id.four_tu_text, R.id.four_tu_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.four_we_text);
+		info = new DayTextViewInfo(R.id.four_we_text, R.id.four_we_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.four_th_text);
+		info = new DayTextViewInfo(R.id.four_th_text, R.id.four_th_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.four_fr_text);
+		info = new DayTextViewInfo(R.id.four_fr_text, R.id.four_fr_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.four_sa_text);
+		info = new DayTextViewInfo(R.id.four_sa_text, R.id.four_sa_box);
 		this.dayTextList.add(info);
 
 		// カレンダー第5週目
-		info = new DayTextViewInfo(R.id.five_su_text);
+		info = new DayTextViewInfo(R.id.five_su_text, R.id.five_su_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.five_mo_text);
+		info = new DayTextViewInfo(R.id.five_mo_text, R.id.five_mo_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.five_tu_text);
+		info = new DayTextViewInfo(R.id.five_tu_text, R.id.five_tu_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.five_we_text);
+		info = new DayTextViewInfo(R.id.five_we_text, R.id.five_we_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.five_th_text);
+		info = new DayTextViewInfo(R.id.five_th_text, R.id.five_th_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.five_fr_text);
+		info = new DayTextViewInfo(R.id.five_fr_text, R.id.five_fr_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.five_sa_text);
+		info = new DayTextViewInfo(R.id.five_sa_text, R.id.five_sa_box);
 		this.dayTextList.add(info);
 
 		// カレンダー第6週目
-		info = new DayTextViewInfo(R.id.six_su_text);
+		info = new DayTextViewInfo(R.id.six_su_text, R.id.six_su_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.six_mo_text);
+		info = new DayTextViewInfo(R.id.six_mo_text, R.id.six_mo_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.six_tu_text);
+		info = new DayTextViewInfo(R.id.six_tu_text, R.id.six_tu_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.six_we_text);
+		info = new DayTextViewInfo(R.id.six_we_text, R.id.six_we_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.six_th_text);
+		info = new DayTextViewInfo(R.id.six_th_text, R.id.six_th_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.six_fr_text);
+		info = new DayTextViewInfo(R.id.six_fr_text, R.id.six_fr_box);
 		this.dayTextList.add(info);
-		info = new DayTextViewInfo(R.id.six_sa_text);
+		info = new DayTextViewInfo(R.id.six_sa_text, R.id.six_sa_box);
 		this.dayTextList.add(info);
 
 		// Calendarインスタンスの取得
@@ -219,9 +220,12 @@ public class CalendarTab extends Fragment {
 				TextView textView = (TextView) view.findViewById(this.dayTextList.get(counter)
 						.getTextViewId());
 
-				// リスナーをセットする
-//				EditAchieveAdapter eaa = new EditAchieveAdapter();
-//				textView.setOnClickListener(eaa);
+				// ビューコンポーネント（LinearLayout）を取得
+				View linearLayout = (View) view.findViewById(this.dayTextList.get(counter).getLinearLayoutId());
+
+				// LinearLayoutにリスナーをセットする
+				EditAchieveAdapter eaa = new EditAchieveAdapter();
+				linearLayout.setOnClickListener(eaa);
 
 				// 背景を設定
 				textView.setBackgroundResource(R.drawable.text_line);
@@ -374,6 +378,25 @@ public class CalendarTab extends Fragment {
 		// 年月表示
 		this.headerMonthText.setText(String.valueOf(this.displayedYear)
 				+ "年" + String.valueOf(this.displayedMonth) + "月" );
+
+	}
+
+	/**
+	 * 日マスを押したときのリスナー
+	 */
+	class EditAchieveAdapter implements OnClickListener{
+
+		/**
+		 * 日マスを押したときの処理
+		 */
+		@Override
+		public void onClick(View arg0) {
+
+
+
+
+
+		}
 
 	}
 

@@ -1,5 +1,6 @@
 package mokuhyouKanriApp.logic;
 
+import android.view.View;
 import android.widget.TextView;
 
 /**
@@ -11,11 +12,17 @@ import android.widget.TextView;
  */
 public class DayTextViewInfo {
 
-	/** TextViewID */
+	/** TextView ID */
 	private int textViewId = 0;
 
 	/** テキストオブジェクト */
 	private TextView textObject = null;
+
+	/** LinearLayout ID */
+	private int linearLayoutId = 0;
+
+	/** ビューオブジェクト */
+	private View viewObject = null;
 
 	/** 設定日付 */
 	private int dayNum = 0;
@@ -29,10 +36,12 @@ public class DayTextViewInfo {
 	/**
 	 * コンストラクタ
 	 *
-	 * @param controlId TextViewID
+	 * @param textViewId TextViewID
+	 * @param linearLayoutId LinearLayoutID
 	 */
-	public DayTextViewInfo(int controlId) {
-		this.setTextViewId(controlId);
+	public DayTextViewInfo(int textViewId, int linearLayoutId) {
+		this.setTextViewId(textViewId);
+		this.setLinearLayoutId(linearLayoutId);
 	}
 
 	/**
@@ -65,6 +74,38 @@ public class DayTextViewInfo {
 	 */
 	public void setTextObject(TextView textObject) {
 		this.textObject = textObject;
+	}
+
+	/**
+	 * @return linearLayoutId
+	 */
+	public int getLinearLayoutId() {
+		return linearLayoutId;
+	}
+
+	/**
+	 * @param linearLayoutId
+	 *            セットする linearLayoutId
+	 */
+	public void setLinearLayoutId(int linearLayoutId) {
+		this.linearLayoutId = linearLayoutId;
+	}
+
+	/**
+	 * viewObject 取得
+	 *
+	 * @return viewObject
+	 */
+	public View getViewObject() {
+		return viewObject;
+	}
+
+	/**
+	 * @param viewObject
+	 *            設定 viewObject
+	 */
+	public void setTextObject(View viewObject) {
+		this.viewObject = viewObject;
 	}
 
 	/**
