@@ -310,6 +310,8 @@ public class CalendarTab extends Fragment {
 			// 日付テキスト設定
 			if(ci.calendarMatrix[row][col] != 0) {
 
+				// <日付を設定する日マスの場合>
+
 				// 日付を設定
 				dtvi.setDayNum(ci.calendarMatrix[row][col]);
 
@@ -328,6 +330,19 @@ public class CalendarTab extends Fragment {
 					dtvi.getTextObject().setBackgroundResource(R.drawable.text_now_line);
 
 				}
+
+			} else {
+
+				// <日付を設定しない日マスの場合>
+
+				// テキストビューインスタンスの親要素（LinearLayout, 日マス）を取得
+				View view = (View) dtvi.getTextObject().getParent();
+
+				// 背景を色をグレーに変更
+				view.setBackgroundResource(R.drawable.date_gray_box);
+
+				// 背景色をグレーにした日マスのテキストビューを非表示にする
+				dtvi.getTextObject().setVisibility(View.INVISIBLE);
 
 			}
 
