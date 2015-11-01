@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import mokuhyouKanriApp.activity.R;
@@ -25,7 +24,7 @@ import mokuhyouKanriApp.dialog.fragment.GoalEditDialog;
  * @version 1.0
  * @since	2015
  */
-public class EditGoalTab extends Fragment  implements OnClickListener {
+public class EditGoalTab extends Fragment {
 
 
 	/** SQLiteOpenHelper */
@@ -40,15 +39,23 @@ public class EditGoalTab extends Fragment  implements OnClickListener {
 	/** 目標情報存在判定フラグ */
 	boolean mHasDataNothingDB = true;
 
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
 		// レイアウトファイル"fragment_goal_tab.xml"をセットしたViewコンポーネントを取得
 		View view = inflater.inflate(R.layout.fragment_goal_tab, container, false);
 
-		// DBオープン処理
-		mHelper = new MySQLiteOpenHelper(getActivity());
-		mDb = mHelper.getWritableDatabase();
+		/** DBオープン処理
+		 * データベースオブジェクトがない又はデータベースが開いていなければ
+		 * データベースを開く
+		 */
+		if(mDb == null || !mDb.isOpen()){
+
+			mHelper = new MySQLiteOpenHelper(getActivity());
+			mDb = mHelper.getWritableDatabase();
+
+		}
 
 		// テーブル内のデータを全て取得
 		final List<dataMokuhyoJohoBean> dataList = GoalDAO.goalSelect(mDb);
@@ -58,7 +65,9 @@ public class EditGoalTab extends Fragment  implements OnClickListener {
 		if(dataList.size() == 0) {
 
 			//目標が登録されていない場合、空白を格納する
-			mokuhyoJohoBean = new dataMokuhyoJohoBean("", "", "", "", "");
+			int notGoalId = 0;
+			int notGoalNumber = 0;
+			mokuhyoJohoBean = new dataMokuhyoJohoBean(notGoalId, "", "", notGoalNumber, "", "");
 		}
 		else {
 			// 最初のデータだけ取得する
@@ -103,6 +112,7 @@ public class EditGoalTab extends Fragment  implements OnClickListener {
 		// TODO 自動生成されたメソッド・スタブ
 
 		if(v.getId() == R.id.register_button){
+
 			GoalEditDialog goalEditDialog = GoalEditDialog.newInstance(mokuhyoJohoBean, mHasDataNothingDB);
 			goalEditDialog.show(getFragmentManager(), "goalEditDialog");
 		}

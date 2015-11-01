@@ -1,5 +1,9 @@
 package mokuhyouKanriApp.dialog.fragment;
 
+import mokuhyouKanriApp.activity.R;
+import mokuhyouKanriApp.bean.dataAchieveJohoBean;
+import mokuhyouKanriApp.dao.AchieveDAO;
+import mokuhyouKanriApp.dao.MySQLiteOpenHelper;
 import android.app.Activity;
 import android.app.Dialog;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,10 +16,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import mokuhyouKanriApp.activity.R;
-import mokuhyouKanriApp.bean.dataAchieveJohoBean;
-import mokuhyouKanriApp.dao.AchieveDAO;
-import mokuhyouKanriApp.dao.MySQLiteOpenHelper;
 
 /**
  * 日次実績編集ダイアログクラス
@@ -42,6 +42,54 @@ public class AchieveEditDialog extends DialogFragment implements OnClickListener
 
 
 	boolean mHasDataNothingDB;
+
+	/**
+	 * AchieveEditDialogインスタンス生成し、値をセットする
+	 * @param year 選択年
+	 * @param month 選択月
+	 * @param date 選択日
+	 * @return 日次実績編集画面ダイアログフラグメント
+	 */
+	public static AchieveEditDialog newInstance(String year, String month, String date) {
+
+		// AchieveEditDialogインスタンスの生成
+		AchieveEditDialog achieveEditDialog = new AchieveEditDialog();
+
+		// バンドルの生成
+		Bundle args = new Bundle();
+
+		// バンドルに値をセット
+		args.putString("year", year);
+		args.putString("month", month);
+		args.putString("date", date);
+
+		// バンドルをダイアログフラグメントにセット
+		achieveEditDialog.setArguments(args);
+
+		// ダイアログフラグメントを返却
+		return achieveEditDialog;
+
+	}
+
+	/**
+	 *
+	 */
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+
+		// バンドルから値を取得
+		String year = getArguments().getString("year");
+		String month = getArguments().getString("month");
+		String date = getArguments().getString("date");
+
+
+	}
+
+	@Override
+	public View onCreateView(){
+
+	}
 
 	/**
 	 * ダイアログ生成時イベントクラス
@@ -196,34 +244,6 @@ public class AchieveEditDialog extends DialogFragment implements OnClickListener
 		AchieveDialogWindow(dialog);
 	}
 
-	/**
-	 * AchieveEditDialogFragmentのインスタンス生成するクラス
-	 * @param dataAchieveJohoBean bean
-	 * @param boolean hasDataNothingDB
-	 */
-	public static AchieveEditDialog newInstance(dataAchieveJohoBean bean, boolean hasDataNothingDB) {
-
-		final AchieveEditDialog achieveEditDialog = new AchieveEditDialog();
-
-		String achieveNumber = bean.getAchieveNumber();
-		String comment = bean.getComment();
-		String selectMonth = bean.getSelectMonth();
-		String selectDate = bean.getSelectDate();
-		String selectDay = bean.getSelectDay();
-
-		// 値をBundleに渡してsetArgumentsしてやる
-		Bundle args = new Bundle();
-		args.putString("achieveNumber", achieveNumber);
-		args.putString("comment", comment);
-		args.putString("selectMonth", selectMonth);
-		args.putString("selectDate", selectDate);
-		args.putString("selectDay", selectDay);
-		args.putBoolean("NothingData", hasDataNothingDB);
-
-		achieveEditDialog.setArguments(args);
-
-		return achieveEditDialog;
-	}
 
 	/**
 	 * Dialogウィンドウカスタマイズクラス

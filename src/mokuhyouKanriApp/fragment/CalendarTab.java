@@ -411,17 +411,8 @@ public class CalendarTab extends Fragment {
 			// 日を取得
 			String date = textView.getText().toString();
 
-			// バンドルに値（年月日）をセット
-			Bundle bundle = new Bundle();
-			bundle.putString("year", year);
-			bundle.putString("month", month);
-			bundle.putString("date", date);
-
 			// AchieveEditDialogインスタンスを生成
-			AchieveEditDialog dialog = new AchieveEditDialog();
-
-			// バンドルをダイアログフラグメントにセット
-			dialog.setArguments(bundle);
+			AchieveEditDialog dialog = AchieveEditDialog.newInstance(year, month, date);
 
 			// ダイアログフラグメントを表示
 			dialog.show(getFragmentManager(), "AchieveEditDialog");
