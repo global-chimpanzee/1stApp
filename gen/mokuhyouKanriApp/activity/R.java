@@ -2713,18 +2713,20 @@ containing a value of this type.
         public static final int ic_launcher=0x7f020048;
         public static final int mokuhyou_active=0x7f020049;
         public static final int mokuhyou_non_active=0x7f02004a;
-        public static final int notification_template_icon_bg=0x7f020056;
+        public static final int notification_template_icon_bg=0x7f020058;
         public static final int seika_active=0x7f02004b;
         public static final int seika_non_active=0x7f02004c;
-        public static final int stroke_except_top=0x7f02004d;
-        public static final int stroke_for_top=0x7f02004e;
-        public static final int tasseido_active=0x7f02004f;
-        public static final int tasseido_non_active=0x7f020050;
-        public static final int text_day_line=0x7f020051;
-        public static final int text_line=0x7f020052;
-        public static final int text_month_line=0x7f020053;
-        public static final int text_now_line=0x7f020054;
-        public static final int text_week_line=0x7f020055;
+        public static final int selector_linear=0x7f02004d;
+        public static final int stroke_except_top=0x7f02004e;
+        public static final int stroke_for_top=0x7f02004f;
+        public static final int tasseido_active=0x7f020050;
+        public static final int tasseido_non_active=0x7f020051;
+        public static final int text_day_line=0x7f020052;
+        public static final int text_line=0x7f020053;
+        public static final int text_month_line=0x7f020054;
+        public static final int text_now_line=0x7f020055;
+        public static final int text_selected_line=0x7f020056;
+        public static final int text_week_line=0x7f020057;
     }
     public static final class id {
         public static final int action0=0x7f0900ec;

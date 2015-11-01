@@ -108,7 +108,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/one_su_text"
 				android:layout_width="match_parent"
@@ -122,7 +123,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/one_mo_text"
 				android:layout_width="match_parent"
@@ -136,7 +138,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/one_tu_text"
 				android:layout_width="match_parent"
@@ -150,7 +153,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/one_we_text"
 				android:layout_width="match_parent"
@@ -164,7 +168,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/one_th_text"
 				android:layout_width="match_parent"
@@ -178,7 +183,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/one_fr_text"
 				android:layout_width="match_parent"
@@ -192,7 +198,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/one_sa_text"
 				android:layout_width="match_parent"
@@ -216,7 +223,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/two_su_text"
 				android:layout_width="match_parent"
@@ -230,7 +238,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/two_mo_text"
 				android:layout_width="match_parent"
@@ -244,7 +253,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/two_tu_text"
 				android:layout_width="match_parent"
@@ -258,7 +268,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/two_we_text"
 				android:layout_width="match_parent"
@@ -272,7 +283,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/two_th_text"
 				android:layout_width="match_parent"
@@ -286,7 +298,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/two_fr_text"
 				android:layout_width="match_parent"
@@ -300,7 +313,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/two_sa_text"
 				android:layout_width="match_parent"
@@ -324,7 +338,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/three_su_text"
 				android:layout_width="match_parent"
@@ -338,7 +353,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/three_mo_text"
 				android:layout_width="match_parent"
@@ -352,7 +368,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/three_tu_text"
 				android:layout_width="match_parent"
@@ -366,7 +383,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/three_we_text"
 				android:layout_width="match_parent"
@@ -380,7 +398,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/three_th_text"
 				android:layout_width="match_parent"
@@ -394,7 +413,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/three_fr_text"
 				android:layout_width="match_parent"
@@ -408,7 +428,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/three_sa_text"
 				android:layout_width="match_parent"
@@ -432,7 +453,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/four_su_text"
 				android:layout_width="match_parent"
@@ -446,7 +468,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/four_mo_text"
 				android:layout_width="fill_parent"
@@ -460,7 +483,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/four_tu_text"
 				android:layout_width="match_parent"
@@ -474,7 +498,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/four_we_text"
 				android:layout_width="match_parent"
@@ -488,7 +513,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/four_th_text"
 				android:layout_width="match_parent"
@@ -502,7 +528,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/four_fr_text"
 				android:layout_width="match_parent"
@@ -516,7 +543,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/four_sa_text"
 				android:layout_width="match_parent"
@@ -540,7 +568,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/five_su_text"
 				android:layout_width="match_parent"
@@ -554,7 +583,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/five_mo_text"
 				android:layout_width="match_parent"
@@ -568,7 +598,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/five_tu_text"
 				android:layout_width="match_parent"
@@ -582,7 +613,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/five_we_text"
 				android:layout_width="match_parent"
@@ -596,7 +628,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/five_th_text"
 				android:layout_width="match_parent"
@@ -610,7 +643,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/five_fr_text"
 				android:layout_width="match_parent"
@@ -624,7 +658,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/five_sa_text"
 				android:layout_width="match_parent"
@@ -648,7 +683,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/six_su_text"
 				android:layout_width="match_parent"
@@ -662,7 +698,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/six_mo_text"
 				android:layout_width="match_parent"
@@ -676,7 +713,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/six_tu_text"
 				android:layout_width="match_parent"
@@ -690,7 +728,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/six_we_text"
 				android:layout_width="match_parent"
@@ -704,7 +743,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/six_th_text"
 				android:layout_width="match_parent"
@@ -718,7 +758,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/six_fr_text"
 				android:layout_width="match_parent"
@@ -732,7 +773,8 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/text_day_line" >
+            android:clickable="true"
+            android:background="@drawable/selector_linear" >
             <TextView
 				android:id="@+id/six_sa_text"
 				android:layout_width="match_parent"

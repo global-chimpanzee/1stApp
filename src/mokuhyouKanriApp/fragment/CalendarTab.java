@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import mokuhyouKanriApp.activity.R;
+import mokuhyouKanriApp.dialog.fragment.AchieveEditDialog;
 import mokuhyouKanriApp.logic.CalendarInfo;
 import mokuhyouKanriApp.logic.DayTextViewInfo;
 import android.graphics.Color;
@@ -220,15 +221,15 @@ public class CalendarTab extends Fragment {
 				TextView textView = (TextView) view.findViewById(this.dayTextList.get(counter)
 						.getTextViewId());
 
-				// ビューコンポーネント（LinearLayout）を取得
-				View linearLayout = (View) view.findViewById(this.dayTextList.get(counter).getLinearLayoutId());
-
-				// LinearLayoutにリスナーをセットする
-				EditAchieveAdapter eaa = new EditAchieveAdapter();
-				linearLayout.setOnClickListener(eaa);
-
 				// 背景を設定
 				textView.setBackgroundResource(R.drawable.text_line);
+
+				// ビューコンポーネント（LinearLayout）を取得
+				ViewGroup linearLayout = (ViewGroup) view.findViewById(this.dayTextList.get(counter).getLinearLayoutId());
+
+				// LinearLayoutにリスナーをセットする
+				EditAchieveAdapter eaa = new EditAchieveAdapter(textView);
+				linearLayout.setOnClickListener(eaa);
 
 				// 日曜日の場合、文字色を変更する
 				if (k == 0) {
@@ -361,9 +362,6 @@ public class CalendarTab extends Fragment {
 				// 背景を色をグレーに変更
 				view.setBackgroundResource(R.drawable.date_gray_box);
 
-				// 背景色をグレーにした日マスのテキストビューを非表示にする
-				dtvi.getTextObject().setVisibility(View.INVISIBLE);
-
 			}
 
 			// カウンターをインクリメント
@@ -386,15 +384,47 @@ public class CalendarTab extends Fragment {
 	 */
 	class EditAchieveAdapter implements OnClickListener{
 
+		// カレンダー日付テキストビュー
+		TextView textView = null;
+
 		/**
-		 * 日マスを押したときの処理
+		 * コンストラクタ
+		 */
+		EditAchieveAdapter(TextView textView){
+
+			this.textView = textView;
+
+		}
+
+		/**
+		 * 日マスを押したときの処理（目標編集ダイアログの表示）
 		 */
 		@Override
 		public void onClick(View arg0) {
 
+			// 年を取得
+			String year = String.valueOf(displayedYear);
 
+			// 月を取得
+			String month = String.valueOf(displayedYear);
 
+			// 日を取得
+			String date = textView.getText().toString();
 
+			// バンドルに値（年月日）をセット
+			Bundle bundle = new Bundle();
+			bundle.putString("year", year);
+			bundle.putString("month", month);
+			bundle.putString("date", date);
+
+			// AchieveEditDialogインスタンスを生成
+			AchieveEditDialog dialog = new AchieveEditDialog();
+
+			// バンドルをダイアログフラグメントにセット
+			dialog.setArguments(bundle);
+
+			// ダイアログフラグメントを表示
+			dialog.show(getFragmentManager(), "AchieveEditDialog");
 
 		}
 
