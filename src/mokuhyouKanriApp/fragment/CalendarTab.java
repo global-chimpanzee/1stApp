@@ -81,10 +81,75 @@ public class CalendarTab extends Fragment {
 		view = inflater.inflate(R.layout.fragment_calendar_tab, container,
 				false);
 
+		// 表示年月を計算し、フィールドにセット
+		calculateDisplayedMonth();
+
+		// 年月表示ヘッダーを取得
+		this.headerMonthText = (TextView) this.view.findViewById(R.id.header_month_text);
+
+		// 年月表示
+		this.headerMonthText.setText(String.valueOf(this.displayedYear)
+				+ "年" + String.valueOf(this.displayedMonth) + "月" );
+
 		// カレンダー画面の各コンポーネントを初期化
 		initializeControl();
 
+		// 日付テキストの設定
+		setCalendar();
+
 		return view;
+
+	}
+
+	/**
+	 * 表示月を計算し、フィールドにセットする
+	 */
+	private void calculateDisplayedMonth(){
+
+		// Calendarインスタンスの取得
+		Calendar cal = Calendar.getInstance();
+
+		// 現在の年を取得
+		this.displayedYear = cal.get(Calendar.YEAR);
+		this.currentYear = this.displayedYear;
+
+		// 現在の月を取得
+		this.displayedMonth = (cal.get(Calendar.MONTH) + 1);
+		this.currentMonth = this.displayedMonth;
+
+		// 現在の日を取得
+		this.currentDate = cal.get(Calendar.DATE);
+
+		int monthAdjust = 0;
+		int yearAdjust = 0;
+
+		// 取得ページの表示月を計算
+		this.displayedMonth += this.relativePageNum;
+
+		if(this.displayedMonth%12 != 0){
+
+			if(this.displayedMonth > 0){
+
+				monthAdjust = this.displayedMonth%12;
+				yearAdjust = (this.displayedMonth - monthAdjust)/12;
+
+			}else{
+
+				monthAdjust = (12 + this.displayedMonth%12);
+				yearAdjust = (this.displayedMonth + (12 - monthAdjust))/12 - 1;
+
+			}
+
+		}else{
+
+			monthAdjust = 12;
+			yearAdjust = this.displayedMonth/12 - 1;
+
+		}
+
+		// 表示月をフィールドにセット
+		this.displayedMonth = monthAdjust;
+		this.displayedYear += yearAdjust;
 
 	}
 
@@ -92,9 +157,6 @@ public class CalendarTab extends Fragment {
 	 * 各カレンダーコントロール初期化メソッド
 	 */
 	private void initializeControl() {
-
-		// 年月表示ヘッダーを取得
-		this.headerMonthText = (TextView) this.view.findViewById(R.id.header_month_text);
 
 		// 変数を初期化
 		DayTextViewInfo info = null;
@@ -195,24 +257,13 @@ public class CalendarTab extends Fragment {
 		info = new DayTextViewInfo(R.id.six_sa_text, R.id.six_sa_box);
 		this.dayTextList.add(info);
 
-		// Calendarインスタンスの取得
-		Calendar cal = Calendar.getInstance();
-
-		// 現在の年を取得
-		this.displayedYear = cal.get(Calendar.YEAR);
-		this.currentYear = this.displayedYear;
-
-		// 現在の月を取得
-		this.displayedMonth = (cal.get(Calendar.MONTH) + 1);
-		this.currentMonth = this.displayedMonth;
-
-		// 現在の日を取得
-		this.currentDate = cal.get(Calendar.DATE);
-
 		// カウンターを初期化
 		int counter = 0;
 
-		// 6×7のループ
+		/*
+		 * テキストビューコンポーネントの設定を行い、
+		 * DayTextViewInfoクラスに紐付ける
+		 */
 		for (int i = 0; i < 6; i++) {
 
 			for (int k = 0; k < 7; k++) {
@@ -224,13 +275,6 @@ public class CalendarTab extends Fragment {
 				// 背景を設定
 				textView.setBackgroundResource(R.drawable.text_line);
 
-				// ビューコンポーネント（LinearLayout）を取得
-				ViewGroup linearLayout = (ViewGroup) view.findViewById(this.dayTextList.get(counter).getLinearLayoutId());
-
-				// LinearLayoutにリスナーをセットする
-				EditAchieveAdapter eaa = new EditAchieveAdapter(textView);
-				linearLayout.setOnClickListener(eaa);
-
 				// 日曜日の場合、文字色を変更する
 				if (k == 0) {
 					textView.setTextColor(Color.RED);
@@ -241,7 +285,7 @@ public class CalendarTab extends Fragment {
 					textView.setTextColor(Color.BLUE);
 				}
 
-				// テキストビューインスタンスをDayTextViewInfoインスタンスにセット
+				// テキストビューコンポーネントをDayTextViewInfoインスタンスにセット
 				this.dayTextList.get(counter).setTextObject(textView);
 
 				// カウンターをインクリメント
@@ -251,47 +295,12 @@ public class CalendarTab extends Fragment {
 
 		}
 
-		setCalendar(relativePageNum);
-
 	}
 
 	/**
 	 * 日付テキスト設定メソッド
-	 *
-	 * @param offset 相対ページナンバー
 	 */
-	private void setCalendar(int offset) {
-
-		int monthAdjust = 0;
-		int yearAdjust = 0;
-
-		// 取得ページの表示月を計算
-		this.displayedMonth += offset;
-
-		if(this.displayedMonth%12 != 0){
-
-			if(this.displayedMonth > 0){
-
-				monthAdjust = this.displayedMonth%12;
-				yearAdjust = (this.displayedMonth - monthAdjust)/12;
-
-			}else{
-
-				monthAdjust = (12 + this.displayedMonth%12);
-				yearAdjust = (this.displayedMonth + (12 - monthAdjust))/12 - 1;
-
-			}
-
-		}else{
-
-			monthAdjust = 12;
-			yearAdjust = this.displayedMonth/12 - 1;
-
-		}
-
-		// 表示月をフィールドにセット
-		this.displayedMonth = monthAdjust;
-		this.displayedYear += yearAdjust;
+	private void setCalendar() {
 
 		// テキスト表示情報初期化
 		for(int i = 0 ; i < this.dayTextList.size(); i++) {
@@ -352,6 +361,13 @@ public class CalendarTab extends Fragment {
 
 				}
 
+				// ビューコンポーネント（LinearLayout）を取得
+				ViewGroup linearLayout = (ViewGroup) view.findViewById(this.dayTextList.get(i).getLinearLayoutId());
+
+				// LinearLayoutにリスナーをセットする
+				EditAchieveAdapter eaa = new EditAchieveAdapter(dtvi.getTextObject());
+				linearLayout.setOnClickListener(eaa);
+
 			} else {
 
 				// <日付を設定しない日マスの場合>
@@ -372,10 +388,6 @@ public class CalendarTab extends Fragment {
 			}
 
 		}
-
-		// 年月表示
-		this.headerMonthText.setText(String.valueOf(this.displayedYear)
-				+ "年" + String.valueOf(this.displayedMonth) + "月" );
 
 	}
 
@@ -402,20 +414,16 @@ public class CalendarTab extends Fragment {
 		@Override
 		public void onClick(View arg0) {
 
-			// 年を取得
+			// 年月日文字列を取得（例："20151101"）
 			String year = String.valueOf(displayedYear);
-
-			// 月を取得
-			String month = String.valueOf(displayedYear);
-
-			// 日を取得
+			String month = String.valueOf(displayedMonth);
 			String date = textView.getText().toString();
 
 			// AchieveEditDialogインスタンスを生成
 			AchieveEditDialog dialog = AchieveEditDialog.newInstance(year, month, date);
 
 			// ダイアログフラグメントを表示
-			dialog.show(getFragmentManager(), "AchieveEditDialog");
+			dialog.show(getChildFragmentManager().beginTransaction(), "AchieveEditDialog");
 
 		}
 

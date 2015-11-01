@@ -1,73 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-
+    <!-- タイトルrow -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/achieveregisterlabel"/>
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:text="@string/achieve_edit_title"
+        android:textSize="20sp" />
+
+    <!-- 日付row -->
 
     <TextView
-        android:id="@+id/selectmonth_text"
+        android:id="@+id/selected_date"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:gravity="fill"
+        android:textSize="15sp" />
 
+    <!-- 達成数row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:background="@drawable/stroke_for_top"
+        android:orientation="horizontal" >
+
+        <!-- 達成数ラベル -->        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="fill"
+            android:text="@string/achievenumber"
+            android:textSize="15sp" />
+
+        <!-- 達成数テキストボックス -->
+
+        <EditText
+            android:id="@+id/achieve_num_edittext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="fill"
+            android:inputType="text|number"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <!-- コメントrow -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:background="@drawable/stroke_except_top"
+        android:orientation="horizontal" >
+
+        <!-- コメントラベル -->        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="fill"
+            android:text="@string/commentlabel"
+            android:textSize="15sp" />
+
+        <!-- コメントテキストエリア -->
+        <EditText
+            android:id="@+id/comment_edittext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="fill"
+            android:inputType="textMultiLine"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <!-- エラーラベルrow -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/month"/>
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="未入力項目があります"
+        android:textSize="15sp"
+        android:textColor="#FF8080" />
 
-    <TextView
-        android:id="@+id/selectdate_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/day"/>
-
-    <TextView
-        android:id="@+id/selectday_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <TextView
+    <!-- ボタンrow -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/achievenumber"/>
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal" >
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/editachievenumber"
-        android:inputType="number"/>
+        <!-- ボタンrow -->
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/commentlabel"/>
+        <Button
+            android:id="@+id/deleteachievebutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:background="#FFD961"
+            android:text="@string/deleteachievebutton" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/editcomment"
-        android:inputType="text"/>
+        <!-- ボタンrow -->
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/deleteachievebutton"
-        android:text="@string/deleteachievebutton"/>
+        <Button
+            android:id="@+id/registerachievebutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:background="#FFD961"
+            android:text="@string/registergoalbutton" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/registerachievebutton"
-        android:text="@string/registergoalbutton"/>
-
+    </LinearLayout>
 
 </LinearLayout>

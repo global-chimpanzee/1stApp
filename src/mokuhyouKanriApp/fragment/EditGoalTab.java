@@ -80,11 +80,11 @@ public class EditGoalTab extends Fragment {
         //((Button)editButton).setOnClickListener(new GoalEditDialog());
 
         //目標ジャンル(登録情報)を呼び出す
-        TextView editGoalGenreText = (TextView) view.findViewById(id.goal_genre_text);
+        TextView editGoalGenreText = (TextView) view.findViewById(id.achieve_num_edittext);
         editGoalGenreText.setText(mokuhyoJohoBean.getGoalGenre());
 
         //目標(登録情報)を呼び出す
-        TextView editGoalText = (TextView) view.findViewById(id.goal_text);
+        TextView editGoalText = (TextView) view.findViewById(id.comment_edittext);
         editGoalText.setText(mokuhyoJohoBean.getGoal());
 
         //目標数(登録情報)を呼び出す

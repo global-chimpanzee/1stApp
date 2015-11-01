@@ -55,7 +55,7 @@
 
             <!-- 目標ジャンルテキスト -->
             <TextView
-                android:id="@+id/goal_genre_text"
+                android:id="@+id/achieve_num_edittext"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -89,7 +89,7 @@
 
             <!-- 目標テキスト -->
             <TextView
-                android:id="@+id/goal_text"
+                android:id="@+id/comment_edittext"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

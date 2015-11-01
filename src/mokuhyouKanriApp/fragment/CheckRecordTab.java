@@ -30,11 +30,11 @@ public class CheckRecordTab extends Fragment {
 		//////////////////////////////////
 
 		// 目標ジャンルをセット
-		TextView goalGenre = (TextView) view.findViewById(R.id.goal_genre_text);
+		TextView goalGenre = (TextView) view.findViewById(R.id.achieve_num_edittext);
 		goalGenre.setText("英単語学習");
 
 		// 目標をセット
-		TextView goal = (TextView) view.findViewById(R.id.goal_text);
+		TextView goal = (TextView) view.findViewById(R.id.comment_edittext);
 		goal.setText("速読英単語の単語2000語を制覇する");
 
 		// 目標進捗率をセット
