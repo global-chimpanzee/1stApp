@@ -1,5 +1,9 @@
 package mokuhyouKanriApp.activity;
 
+import java.util.List;
+
+import mokuhyouKanriApp.bean.dataMokuhyoJohoBean;
+import mokuhyouKanriApp.dao.GoalDAO;
 import mokuhyouKanriApp.dialog.fragment.ResetDialog;
 import mokuhyouKanriApp.fragment.CheckRecordTab;
 import mokuhyouKanriApp.fragment.EditGoalTab;
@@ -26,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
 	/** TabLayoutコンポーネント */
 	private TabLayout tabLayout;
 
+	/** 目標情報テーブルの取得値 */
+	private dataMokuhyoJohoBean goalInfo = null;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -37,7 +44,11 @@ public class MainActivity extends AppCompatActivity {
 		// レイアウトファイル"activity_main.xml"を紐付ける
 		setContentView(R.layout.activity_main);
 
-		//getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar);
+		// 目標情報をDB検索し、取得値をフィールドにセット
+		List<dataMokuhyoJohoBean> goalInfoList = GoalDAO.selectAllDatas(this);
+		if(goalInfoList.size() != 0){
+			this.goalInfo = goalInfoList.get(0);
+		}
 
 		// TabLayoutコンポーネントを取得
 		tabLayout = (TabLayout) findViewById(R.id.tabLayout);
@@ -105,8 +116,30 @@ public class MainActivity extends AppCompatActivity {
 				icon = (ImageView) findViewById(R.id.leftIcon);
 				icon.setImageResource(R.drawable.mokuhyou_active);
 
-				// 目標設定画面を表示
+				//  EditGoalTabインスタンスを生成
 				EditGoalTab editGoalTab = new EditGoalTab();
+
+				// DBデータ存在チェック
+				if(goalInfo != null){
+
+					// <DB登録データが存在する場合>
+
+					// フラグメントに渡す引数を設定
+					// （目標ID、目標ジャンル、目標、目標数、達成期限、メモ）
+					Bundle args0 = new Bundle();
+					args0.putInt("goalId", goalInfo.getGoalId());
+					args0.putString("mGenre", goalInfo.getmGenre());
+					args0.putString("goal", goalInfo.getGoal());
+					args0.putInt("gNumber", goalInfo.getgNumber());
+					args0.putString("gDue", goalInfo.getgDue());
+					args0.putString("gMemo", goalInfo.getgMemo());
+
+					// フラグメントに引数をセット
+					editGoalTab.setArguments(args0);
+
+				}
+
+				// 目標設定画面を表示
 				ft.replace(R.id.main_container, editGoalTab, "rightTab");
 
 				// コミット
@@ -121,8 +154,26 @@ public class MainActivity extends AppCompatActivity {
 				icon  = (ImageView) findViewById(R.id.centerIcon);
 				icon.setImageResource(R.drawable.seika_active);
 
-				// SwipeTabフラグメントを表示
+				// SwipeTabインスタンスを生成
 				SwipeTab swipeTab = new SwipeTab();
+
+				// DBデータ存在チェック
+				if(goalInfo != null){
+
+					// <DB登録データが存在する場合>
+
+					// フラグメントに渡す引数を設定
+					// （目標ID、目標ジャンル）
+					Bundle args1 = new Bundle();
+					args1.putInt("goalId", goalInfo.getGoalId());
+					args1.putString("mGenre", goalInfo.getmGenre());
+
+					// フラグメントに引数をセット
+					swipeTab.setArguments(args1);
+
+				}
+
+				// SwipeTabフラグメントを表示
 				ft.replace(R.id.main_container, swipeTab, "centerTab");
 
 				// コミット

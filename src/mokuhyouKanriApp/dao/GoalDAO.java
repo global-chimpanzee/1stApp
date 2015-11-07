@@ -1,15 +1,19 @@
 package mokuhyouKanriApp.dao;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
+import mokuhyouKanriApp.bean.dataMokuhyoJohoBean;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import mokuhyouKanriApp.bean.dataMokuhyoJohoBean;
 
 /**
- * 目標登録情報を検索・登録・削除する処理実行クラス
+ * 目標情報テーブルを操作するDAOクラス
  *
  * @author global.chimpanzee
  * @version 1.0
@@ -17,109 +21,192 @@ import mokuhyouKanriApp.bean.dataMokuhyoJohoBean;
  */
 public class GoalDAO {
 
-	/** インスタンス化不可 */
-	private GoalDAO() {}
+	/**
+	 * データの追加（INSERT）
+	 *
+	 * @param c コンテキスト
+	 * @param values 登録値
+	 * @return DB処理結果
+	 */
+	public static boolean insert(Context c, ContentValues values) {
+
+		// MySQLiteOpenHelperインスタンスを取得
+		MySQLiteOpenHelper mHelper = new MySQLiteOpenHelper(c);
+
+		// SQLiteDatabaseインスタンスを取得
+		SQLiteDatabase db = mHelper.getWritableDatabase();
+
+		// タイムスタンプの値を設定
+		setTimeStamp(values);
+
+		// INSERTを実行
+		long result = db.insert(MySQLiteOpenHelper.GOAL_INFO_TABLE, "", values);
+
+		// DBクローズ処理
+		db.close();
+
+		// 処理結果返却
+		if(result != -1){
+
+			return true;
+
+		} else {
+
+			return false;
+
+		}
+
+	}
 
 	/**
-	 * テーブルに編集データを新規追加する
-	 * @param SQLiteDatabase db
-	 * @param dataMokuhyoJohoBean bean
-	 * @param boolean hasDataNothingDB
+	 * データの更新（UPDATE）
+	 *
+	 * @param c コンテキスト
+	 * @param values 更新値
+	 * @param goalId 目標ID（検索条件）
+	 * @return DB処理結果
 	 */
-	public static boolean goalInsert(SQLiteDatabase db, ContentValues values) {
+	public static boolean update(Context c, ContentValues values, int goalId) {
 
-		/** DBアクセス実行結果 */
-		boolean dbExecuteResult = false;
+		// MySQLiteOpenHelperインスタンスを取得
+		MySQLiteOpenHelper mHelper = new MySQLiteOpenHelper(c);
 
-		/** データの挿入 */
-		long result;
+		// SQLiteDatabaseインスタンスを取得
+		SQLiteDatabase db = mHelper.getWritableDatabase();
 
-		result = db.insert("goalInfoTable", null, values);
+		// タイムスタンプの値を設定
+		setTimeStamp(values);
 
-		/** 結果判定処理 */
+		// where句の作成
+		String whereClause = MySQLiteOpenHelper.GOAL_ID + " = " + goalId;
+
+		// UPDATEを実行
+		int result = db.update("goalInfoTable", values, whereClause, null);
+
+		// DBクローズ処理
+		db.close();
+
+		// 処理結果返却
 		if(result == 1){
 
-			dbExecuteResult = true;
+			return true;
 
 		} else {
 
-			dbExecuteResult = false;
+			return false;
 
 		}
-
-		return dbExecuteResult;
 
 	}
 
 	/**
-	 * テーブルに編集データを更新する
-	 * @param SQLiteDatabase db
-	 * @param dataMokuhyoJohoBean bean
-	 * @param boolean hasDataNothingDB
+	 * データの全件検索（SELECT）
+	 *
+	 * @param c コンテキスト
 	 */
-	public static boolean goalUpdate(SQLiteDatabase db, ContentValues values, int goalId) {
+	public static List<dataMokuhyoJohoBean> selectAllDatas(Context c) {
 
-		/** DBアクセス実行結果 */
-		boolean dbExecuteResult = false;
+		// MySQLiteOpenHelperインスタンスを取得
+		MySQLiteOpenHelper mHelper = new MySQLiteOpenHelper(c);
 
-		/** データの更新 */
-		int result;
+		// SQLiteDatabaseインスタンスを取得
+		SQLiteDatabase db = mHelper.getWritableDatabase();
 
-		String whereClause = "GOAL_ID = ?";
-        String whereArgs[] = new String[1];
-        whereArgs[0] = String.valueOf(goalId);
-		result = db.update("goalInfoTable", values, whereClause, whereArgs);
-
-		/** 結果判定処理 */
-		if(result == -1){
-
-			dbExecuteResult = false;
-
-		} else {
-
-			dbExecuteResult = true;
-
-		}
-
-		return dbExecuteResult;
-
-	}
-
-
-	/**
-	 * テーブルから全データを取得するクラス
-	 * @param SQLiteDatabase db
-	 */
-	public static List<dataMokuhyoJohoBean> goalSelect(SQLiteDatabase db) {
-
-		//検索結果を格納するList<Bean>を生成する
+		//検索結果を格納するリストを生成
 		List<dataMokuhyoJohoBean> tableDataList = new ArrayList<dataMokuhyoJohoBean>();
 
-		Cursor cursor = db.query(
-				"goalInfoTable", new String[] {"GOAL_ID", "M_GENRE", "GOAL", "G_NUMBER", "G_DUE", "G_MEMO"},
-				null, null, null, null, "GOAL_ID DESC");
+		// 取得するカラム名の配列を生成
+		String[] columns = new String[]{MySQLiteOpenHelper.GOAL_ID, MySQLiteOpenHelper.M_GENRE, MySQLiteOpenHelper.GOAL, MySQLiteOpenHelper.G_NUMBER, MySQLiteOpenHelper.G_DUE, MySQLiteOpenHelper.G_MEMO};
 
-		// 参照先を一番始めに(検索直後は0件目を指しているため)
+		// SELECTの実行
+		Cursor cursor = db.query(MySQLiteOpenHelper.GOAL_INFO_TABLE, columns, null, null, null, null, MySQLiteOpenHelper.GOAL_ID + " desc", null);
+
+		// 1番目のデータを参照
 		boolean isEof = cursor.moveToFirst();
 
-		// データがなかった時のためにもこのループに入る条件文は必須
+		// 検索結果をリストに格納
 		while(isEof) {
-			int goalId = cursor.getInt(cursor.getColumnIndex("GOAL_ID"));
-			String goalGenre = cursor.getString(cursor.getColumnIndex("M_GENRE"));
-			String goal = cursor.getString(cursor.getColumnIndex("GOAL"));
-			int goalNumber = cursor.getInt(cursor.getColumnIndex("G_NUMBER"));
-			String goalDue = cursor.getString(cursor.getColumnIndex("G_DUE"));
-			String memo = cursor.getString(cursor.getColumnIndex("G_MEMO"));
 
-			// 取得データオブジェクト生成
-			dataMokuhyoJohoBean bean = new dataMokuhyoJohoBean(goalId, goalGenre, goal, goalNumber, goalDue, memo);
+			// 各カラムの値を取得
+			int goalId = cursor.getInt(cursor.getColumnIndex(MySQLiteOpenHelper.GOAL_ID));
+			String mGenre = cursor.getString(cursor.getColumnIndex(MySQLiteOpenHelper.M_GENRE));
+			String goal = cursor.getString(cursor.getColumnIndex(MySQLiteOpenHelper.GOAL));
+			int gNumber = cursor.getInt(cursor.getColumnIndex(MySQLiteOpenHelper.G_NUMBER));
+			String gDue = cursor.getString(cursor.getColumnIndex(MySQLiteOpenHelper.G_DUE));
+			String gMemo = cursor.getString(cursor.getColumnIndex(MySQLiteOpenHelper.G_MEMO));
+
+			// ビーンに値をセット
+			dataMokuhyoJohoBean bean = new dataMokuhyoJohoBean();
+			bean.setGoalId(goalId);
+			bean.setmGenre(mGenre);
+			bean.setGoal(goal);
+			bean.setgNumber(gNumber);
+			bean.setgDue(gDue);
+			bean.setgMemo(gMemo);
+
+			// リストに追加
 			tableDataList.add(bean);
 
+			// 次のデータ参照へ遷移
 			isEof = cursor.moveToNext();
+
 		}
+
+		// Cursorクローズ処理
 		cursor.close();
 
+		// DBクローズ処理
+		db.close();
+
+		// リストを返却
 		return tableDataList;
+
+	}
+
+	/**
+	 * 全データの削除（DELETE）
+	 *
+	 * @param c コンテキスト
+	 * @return DB処理結果
+	 */
+	public static boolean deleteAllDatas(Context c){
+
+		// MySQLiteOpenHelperインスタンスを取得
+		MySQLiteOpenHelper mHelper = new MySQLiteOpenHelper(c);
+
+		// SQLiteDatabaseインスタンスを取得
+		SQLiteDatabase db = mHelper.getWritableDatabase();
+
+		// DELETEを実行
+		int result = db.delete(MySQLiteOpenHelper.GOAL_INFO_TABLE, null, null);
+
+		// DBクローズ処理
+		db.close();
+
+		// 処理結果返却
+		if(result > 0){
+
+			return true;
+
+		}else{
+
+			return false;
+
+		}
+
+	}
+
+	/**
+	 * タイムスタンプの作成
+	 *
+	 * @param values ContentValuesインスタンス
+	 */
+	private static void setTimeStamp(ContentValues values){
+
+		Date now = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm", Locale.getDefault());
+		values.put(MySQLiteOpenHelper.G_TIMESTAMP, sdf.format(now));
+
 	}
 
 }

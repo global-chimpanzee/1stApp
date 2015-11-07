@@ -1,15 +1,21 @@
 package mokuhyouKanriApp.dao;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
+import mokuhyouKanriApp.bean.DateDisplayObject;
+import mokuhyouKanriApp.bean.EditAchieveBean;
+import mokuhyouKanriApp.bean.dataAchieveJohoBean;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import mokuhyouKanriApp.bean.dataAchieveJohoBean;
 
 /**
- * 日次実績情報を検索・登録・削除する実行処理クラス
+ * 日次実績テーブルを操作するDAOクラス
  *
  * @author global.chimpanzee
  * @version 1.0
@@ -17,135 +23,339 @@ import mokuhyouKanriApp.bean.dataAchieveJohoBean;
  */
 public class AchieveDAO {
 
-	// インスタンス化不可
-	private AchieveDAO() {}
+	/**
+	 * データの追加（INSERT）
+	 * @param c コンテキスト
+	 * @param values 登録値
+	 * @return DB処理結果
+	 */
+	public static boolean insert(Context c, ContentValues values) {
+
+		// MySQLiteOpenHelperインスタンスを取得
+		MySQLiteOpenHelper mHelper = new MySQLiteOpenHelper(c);
+
+		// SQLiteDatabaseインスタンスを取得
+		SQLiteDatabase db = mHelper.getWritableDatabase();
+
+		// タイムスタンプの値を設定
+		setTimeStamp(values);
+
+		// INSERTを実行
+		long result = db.insert(MySQLiteOpenHelper.DAY_ACHIEVE_TABLE, "", values);
+
+		// DBクローズ処理
+		db.close();
+
+		// 処理結果返却
+		if(result != -1){
+
+			return true;
+
+		} else {
+
+			return false;
+
+		}
+
+	}
 
 	/**
-	 * テーブルに編集データを新規に追加する
-	 * @param SQLiteDatabase db
-	 * @param dataAchieveJohoBean bean
-	 * @param boolean hasDataNothingDB
+	 * データの更新（UPDATE）
+	 *
+	 * @param c コンテキスト
+	 * @param values 更新値
+	 * @param achieveDate 実績年月日（検索条件）
+	 * @return DB処理結果
 	 */
-	public static boolean achieveInsert(SQLiteDatabase db, ContentValues values) {
+	public static boolean update(Context c, ContentValues values, String achieveDate) {
 
-		/** DBアクセス実行結果 */
-		boolean dbExecuteResult = false;
+		// MySQLiteOpenHelperインスタンスを取得
+		MySQLiteOpenHelper mHelper = new MySQLiteOpenHelper(c);
 
-		long result;
+		// SQLiteDatabaseインスタンスを取得
+		SQLiteDatabase db = mHelper.getWritableDatabase();
 
-		// データの挿入
-		result = db.insert("AchieveInfoTable", null, values);
+		// タイムスタンプの値を設定
+		setTimeStamp(values);
 
-		/** 結果判定処理 */
+		// where句の作成
+		String whereClause = MySQLiteOpenHelper.A_DATE + " = '" + achieveDate + "'";
+
+		// UPDATEを実行
+		int result = db.update(MySQLiteOpenHelper.DAY_ACHIEVE_TABLE, values, whereClause, null);
+
+		// DBクローズ処理
+		db.close();
+
+		// 処理結果返却
 		if(result == 1){
 
-			dbExecuteResult = true;
+			return true;
 
 		} else {
 
-			dbExecuteResult = false;
+			return false;
 
 		}
-
-		return dbExecuteResult;
-	}
-
-	/**
-	 * テーブルに編集データを更新する
-	 * @param SQLiteDatabase db
-	 * @param dataAchieveJohoBean bean
-	 * @param boolean hasDataNothingDB
-	 */
-	public static boolean achieveUpdate(SQLiteDatabase db, ContentValues values, String AchieveDate) {
-
-		/** DBアクセス実行結果 */
-		boolean dbExecuteResult = false;
-
-		int result;
-
-		String whereClause = "A_DATE = ?";
-        String whereArgs[] = new String[1];
-        whereArgs[0] = AchieveDate;
-		result = db.update("achieveInfoTable", values, whereClause, whereArgs);
-
-		/** 結果判定処理 */
-		if(result == -1){
-
-			dbExecuteResult = false;
-
-		} else {
-
-			dbExecuteResult = true;
-
-		}
-
-		return dbExecuteResult;
 
 	}
 
 
 	/**
-	 * テーブルから全データを取得するクラス
-	 * @param SQLiteDatabase db
+	 * データの全件検索（SELECT）
+	 *
+	 * @param c コンテキスト
 	 */
-	public static List<dataAchieveJohoBean> achieveSelect(SQLiteDatabase db) {
+	public static List<dataAchieveJohoBean> selectAllDatas(Context c) {
 
-		//検索結果を格納するList<Bean>を生成する
+		// MySQLiteOpenHelperインスタンスを取得
+		MySQLiteOpenHelper mHelper = new MySQLiteOpenHelper(c);
+
+		// SQLiteDatabaseインスタンスを取得
+		SQLiteDatabase db = mHelper.getWritableDatabase();
+
+		//検索結果を格納するリストを生成
 		List<dataAchieveJohoBean> tableDataList = new ArrayList<dataAchieveJohoBean>();
 
-		Cursor cursor = db.query(
-				"AchieveInfoTable", new String[] {"GOAL_ID", "A_NUMBER", "A_COMMENT", "A_DATE", "TIMESTAMP"},
-				null, null, null, null, "A_DATE DESC");
+		// 取得するカラム名の配列を生成
+		String[] columns = new String[]{MySQLiteOpenHelper.A_DATE, MySQLiteOpenHelper.A_GOAL_ID, MySQLiteOpenHelper.A_NUMBER, MySQLiteOpenHelper.A_COMMENT};
 
-		// 参照先を一番始めに(検索直後は0件目を指しているため)
+		// SELECTの実行
+		Cursor cursor = db.query(MySQLiteOpenHelper.DAY_ACHIEVE_TABLE, columns, null, null, null, null, MySQLiteOpenHelper.A_DATE + " desc", null);
+
+		// 1番目のデータを参照
 		boolean isEof = cursor.moveToFirst();
 
-		// データがなかった時のためにもこのループに入る条件文は必須
+		// 検索結果をリストに格納
 		while(isEof) {
-			int goalId = cursor.getInt(cursor.getColumnIndex("GOAL_ID"));
-			int achieveNumber = cursor.getInt(cursor.getColumnIndex("A_NUMBER"));
-			String comment = cursor.getString(cursor.getColumnIndex("A_COMMENT"));
-			String achieveDue = cursor.getString(cursor.getColumnIndex("A_DATE"));
-			//String timeStamp = cursor.getString(cursor.getColumnIndex("TIMESTAMP"));
 
-			// 取得データオブジェクト生成
-			dataAchieveJohoBean bean = new dataAchieveJohoBean(goalId, achieveNumber, comment, achieveDue);
+			// 各カラムの値を取得
+			String aDate = cursor.getString(cursor.getColumnIndex(MySQLiteOpenHelper.A_DATE));
+			int aGoalId  = cursor.getInt(cursor.getColumnIndex(MySQLiteOpenHelper.A_GOAL_ID));
+			int aNumber = cursor.getInt(cursor.getColumnIndex(MySQLiteOpenHelper.A_NUMBER));
+			String aComment = cursor.getString(cursor.getColumnIndex(MySQLiteOpenHelper.A_COMMENT));
+
+			// ビーンに値をセット
+			dataAchieveJohoBean bean = new dataAchieveJohoBean();
+			bean.setaDate(aDate);
+			bean.setaGoalId(aGoalId);
+			bean.setaNumber(aNumber);
+			bean.setaComment(aComment);
+
+			// リストに追加
 			tableDataList.add(bean);
 
+			// 次のデータ参照へ遷移
 			isEof = cursor.moveToNext();
+
 		}
+
+		// Cursorクローズ処理
 		cursor.close();
 
+		// DBクローズ処理
+		db.close();
+
+		// リストを返却
 		return tableDataList;
+
 	}
 
 	/**
-	 * テーブルから選択した日付データを削除するクラス
-	 * @param SQLiteDatabase db
-	 * @param dataAchieveJohoBean bean
-	 * @param boolean hasDataNothingDB
+	 * ひと月分の実績年月日と達成数を取得（SELECT）
+	 *
+	 * @param c コンテキスト
+	 * @param targetMonth 検索対象月
+	 * @return 検索結果
 	 */
-	public static boolean achieveDelete(SQLiteDatabase db, String achieveDate) {
+	public static List<DateDisplayObject> selectMonthDatas(Context c, String targetMonth){
 
-		/** DBアクセス実行結果 */
-		boolean dbExecuteResult;
+		// MySQLiteOpenHelperインスタンスを取得
+		MySQLiteOpenHelper mHelper = new MySQLiteOpenHelper(c);
 
-		//選択した日次実績を削除する
-		int result;
-		result = db.delete("achieveInfoTable", achieveDate, null);
+		// SQLiteDatabaseインスタンスを取得
+		SQLiteDatabase db = mHelper.getWritableDatabase();
 
-		/** 結果判定処理 */
-		if(result == -1){
+		//検索結果を格納するリストを生成
+		List<DateDisplayObject> tableDataList = new ArrayList<DateDisplayObject>();
 
-			dbExecuteResult = false;
+		// 取得するカラム名の配列を生成
+		String[] columns = new String[]{MySQLiteOpenHelper.A_DATE, MySQLiteOpenHelper.A_NUMBER};
 
-		} else {
+		// where句の作成
+		String whereClause = MySQLiteOpenHelper.A_DATE + " like '" + targetMonth + "%'";
 
-			dbExecuteResult = true;
+		// SELECTの実行
+		Cursor cursor = db.query(MySQLiteOpenHelper.DAY_ACHIEVE_TABLE, columns, whereClause, null, null, null, null, null);
+
+		// 1番目のデータを参照
+		boolean isEof = cursor.moveToFirst();
+
+		// 検索結果をリストに格納
+		while(isEof) {
+
+			// 各カラムの値を取得
+			String aDate = cursor.getString(cursor.getColumnIndex(MySQLiteOpenHelper.A_DATE));
+			int aNumber  = cursor.getInt(cursor.getColumnIndex(MySQLiteOpenHelper.A_NUMBER));
+
+			// ビーンに値をセット
+			DateDisplayObject bean = new DateDisplayObject();
+			bean.setaDate(aDate);
+			bean.setaNumber(aNumber);
+
+			// リストに追加
+			tableDataList.add(bean);
+
+			// 次のデータ参照へ遷移
+			isEof = cursor.moveToNext();
 
 		}
 
-		return dbExecuteResult;
+		// Cursorクローズ処理
+		cursor.close();
+
+		// DBクローズ処理
+		db.close();
+
+		// リストを返却
+		return tableDataList;
+
+	}
+
+	/**
+	 * 実績編集画面で利用する達成数とコメントを検索（SELECT）
+	 *
+	 * @param c コンテキスト
+	 * @param targetDate 検索対象日
+	 * @return 検索結果
+	 */
+	public static EditAchieveBean selectForEditAchieve(Context c, String targetDate){
+
+		// MySQLiteOpenHelperインスタンスを取得
+		MySQLiteOpenHelper mHelper = new MySQLiteOpenHelper(c);
+
+		// SQLiteDatabaseインスタンスを取得
+		SQLiteDatabase db = mHelper.getWritableDatabase();
+
+		// 取得するカラム名の配列を生成
+		String[] columns = new String[]{MySQLiteOpenHelper.A_NUMBER, MySQLiteOpenHelper.A_COMMENT};
+
+		// where句の作成
+		String whereClause = MySQLiteOpenHelper.A_DATE + " = '" + targetDate + "'";
+
+		// SELECTの実行
+		Cursor cursor = db.query(MySQLiteOpenHelper.DAY_ACHIEVE_TABLE, columns, whereClause, null, null, null, null, null);
+
+		// 1番目のデータを参照
+		boolean isEof = cursor.moveToFirst();
+
+		// 検索結果をリストに格納
+		EditAchieveBean bean = null;
+		if(isEof) {
+
+			// 各カラムの値を取得
+			int aNumber = cursor.getInt(cursor.getColumnIndex(MySQLiteOpenHelper.A_NUMBER));
+			String aComment  = cursor.getString(cursor.getColumnIndex(MySQLiteOpenHelper.A_COMMENT));
+
+			// ビーンに値をセット
+			bean = new EditAchieveBean();
+			bean.setaNumber(aNumber);
+			bean.setaComment(aComment);
+
+		}
+
+		// Cursorクローズ処理
+		cursor.close();
+
+		// DBクローズ処理
+		db.close();
+
+		// リストを返却
+		return bean;
+
+	}
+
+	/**
+	 * 指定日付のデータ削除（DELETE）
+	 *
+	 * @param c コンテキスト
+	 * @param 削除する指定日付（検索条件）
+	 * @return DB処理結果
+	 */
+	public static boolean deleteOneData(Context c, String achieveDate) {
+
+		// MySQLiteOpenHelperインスタンスを取得
+		MySQLiteOpenHelper mHelper = new MySQLiteOpenHelper(c);
+
+		// SQLiteDatabaseインスタンスを取得
+		SQLiteDatabase db = mHelper.getWritableDatabase();
+
+		// where句の作成
+		String whereClause = MySQLiteOpenHelper.A_DATE + " = '" + achieveDate + "'";
+
+		// DELETEを実行
+		int result = db.delete(MySQLiteOpenHelper.DAY_ACHIEVE_TABLE, whereClause, null);
+
+		// DBクローズ処理
+		db.close();
+
+		// 処理結果返却
+		if(result == 1){
+
+			return true;
+
+		}else{
+
+			return false;
+
+		}
+
+	}
+
+	/**
+	 * 全データの削除（DELETE）
+	 *
+	 * @param c コンテキスト
+	 * @return DB処理結果
+	 */
+	public static boolean deleteAllDatas(Context c){
+
+		// MySQLiteOpenHelperインスタンスを取得
+		MySQLiteOpenHelper mHelper = new MySQLiteOpenHelper(c);
+
+		// SQLiteDatabaseインスタンスを取得
+		SQLiteDatabase db = mHelper.getWritableDatabase();
+
+		// DELETEを実行
+		int result = db.delete(MySQLiteOpenHelper.GOAL_INFO_TABLE, null, null);
+
+		// DBクローズ処理
+		db.close();
+
+		// 処理結果返却
+		if(result > 0){
+
+			return true;
+
+		}else{
+
+			return false;
+
+		}
+
+	}
+
+	/**
+	 * タイムスタンプの作成
+	 *
+	 * @param values ContentValuesインスタンス
+	 */
+	private static void setTimeStamp(ContentValues values){
+
+		Date now = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm", Locale.getDefault());
+		values.put(MySQLiteOpenHelper.A_TIMESTAMP, sdf.format(now));
+
 	}
 
 }

@@ -78,9 +78,20 @@ public class SwipeTab extends Fragment {
 		@Override
 		public Fragment getItem(int position){
 
-			Fragment fragment = new CalendarTab(position);
+			// CalendarTabインスタンスを生成
+			Fragment calendarTab = new CalendarTab(position);
 
-			return fragment;
+			// Bundle引数存在チェック
+			if(getArguments() != null){
+
+				// <引数が渡されてきた場合>
+
+				// 引数をcalendarTabにセット
+				calendarTab.setArguments(getArguments());
+
+			}
+
+			return calendarTab;
 
 		}
 

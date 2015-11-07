@@ -2,9 +2,14 @@ package mokuhyouKanriApp.fragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import mokuhyouKanriApp.activity.R;
+import mokuhyouKanriApp.bean.DateDisplayObject;
+import mokuhyouKanriApp.dao.AchieveDAO;
 import mokuhyouKanriApp.dialog.fragment.AchieveEditDialog;
 import mokuhyouKanriApp.logic.CalendarInfo;
 import mokuhyouKanriApp.logic.DayTextViewInfo;
@@ -15,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -56,6 +62,9 @@ public class CalendarTab extends Fragment {
 	/** 日表示テキスト情報リスト */
 	private List<DayTextViewInfo> dayTextList = new ArrayList<DayTextViewInfo>();
 
+	/** 当月分登録済み実績マップ */
+	private Map<String, String> map;
+
 	/**
 	 * コンストラクタ
 	 */
@@ -90,6 +99,29 @@ public class CalendarTab extends Fragment {
 		// 年月表示
 		this.headerMonthText.setText(String.valueOf(this.displayedYear)
 				+ "年" + String.valueOf(this.displayedMonth) + "月" );
+
+		// DB検索
+		String targetMonth = String.valueOf(displayedYear) + String.valueOf(displayedMonth);
+		List<DateDisplayObject> displayObjectList = AchieveDAO.selectMonthDatas(getActivity(), targetMonth);
+
+		// 検索結果取得値をマップにセット
+		if(displayObjectList.size() != 0){
+
+			// マップを生成
+			this.map = new HashMap<String, String>();
+
+			for(DateDisplayObject displayObject : displayObjectList){
+
+				// 検索結果より実績年月日を取得し、日付を切り取る
+				String fullDate = displayObject.getaDate();
+				String date = fullDate.substring(fullDate.length() - 2);
+
+				// マップに値をセット（例："07：46"（"日付：達成数"））
+				this.map.put(date, String.valueOf(displayObject.getaNumber()));
+
+			}
+
+		}
 
 		// カレンダー画面の各コンポーネントを初期化
 		initializeControl();
@@ -277,12 +309,12 @@ public class CalendarTab extends Fragment {
 
 				// 日曜日の場合、文字色を変更する
 				if (k == 0) {
-					textView.setTextColor(Color.RED);
+					textView.setTextColor(Color.parseColor("#FF6060"));
 				}
 
 				// 土曜日の場合、文字色を変更する
 				if (k == 6) {
-					textView.setTextColor(Color.BLUE);
+					textView.setTextColor(Color.parseColor("#3CDCB6"));
 				}
 
 				// テキストビューコンポーネントをDayTextViewInfoインスタンスにセット
@@ -348,6 +380,39 @@ public class CalendarTab extends Fragment {
 				// 日付テキストをテキストビューコンポーネントにセット
 				dtvi.getTextObject().setText(dtvi.getDispString());
 
+				// ビューコンポーネント（LinearLayout）を取得
+				LinearLayout linearLayout = (LinearLayout) view.findViewById(dtvi.getLinearLayoutId());
+
+				// LinearLayoutにリスナーをセットする
+				EditAchieveAdapter eaa = new EditAchieveAdapter(dtvi.getTextObject());
+				linearLayout.setOnClickListener(eaa);
+
+				// 当月分の登録済み実績をセット
+				if(this.map != null){
+
+					String dateString = String.format(Locale.JAPANESE, "%02d", ci.calendarMatrix[row][col]);
+					if(this.map.containsKey(dateString)){
+
+						// <マップに当該日のデータが存在する場合>
+
+						// TextViewコンポーネントを生成
+						TextView achieveLabel = new TextView(getContext());
+
+						// 背景を設定
+						achieveLabel.setBackgroundResource(R.drawable.registered_achievement);
+
+						// 表示するラベルを設定（例：英単語：46）
+						//achieveLabel.setText(getArguments().getString("mGenre") + "：" + this.map.get(dateString));
+						achieveLabel.setText("英単語" + ":" + this.map.get(dateString));
+						achieveLabel.setTextSize(8);
+
+						// レイアウトにTextViewコンポーネントをセット
+						linearLayout.addView(achieveLabel, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+
+					}
+
+				}
+
 				// 当日判定
 				if(this.currentYear == this.displayedYear
 					&& this.currentMonth == this.displayedMonth
@@ -360,13 +425,6 @@ public class CalendarTab extends Fragment {
 					dtvi.getTextObject().setBackgroundResource(R.drawable.text_now_line);
 
 				}
-
-				// ビューコンポーネント（LinearLayout）を取得
-				ViewGroup linearLayout = (ViewGroup) view.findViewById(this.dayTextList.get(i).getLinearLayoutId());
-
-				// LinearLayoutにリスナーをセットする
-				EditAchieveAdapter eaa = new EditAchieveAdapter(dtvi.getTextObject());
-				linearLayout.setOnClickListener(eaa);
 
 			} else {
 
@@ -392,7 +450,7 @@ public class CalendarTab extends Fragment {
 	}
 
 	/**
-	 * 日マスを押したときのリスナー
+	 * 日マスを押したときのリスナークラス
 	 */
 	class EditAchieveAdapter implements OnClickListener{
 
@@ -421,6 +479,16 @@ public class CalendarTab extends Fragment {
 
 			// AchieveEditDialogインスタンスを生成
 			AchieveEditDialog dialog = AchieveEditDialog.newInstance(year, month, date);
+
+			// Bundle引数存在チェック
+			if(getArguments() != null){
+
+				// <引数が渡されてきた場合>
+
+				// 引数をcalendarTabにセット
+				dialog.setArguments(getArguments());
+
+			}
 
 			// ダイアログフラグメントを表示
 			dialog.show(getChildFragmentManager().beginTransaction(), "AchieveEditDialog");

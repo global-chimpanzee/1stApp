@@ -1,58 +1,19 @@
 package mokuhyouKanriApp.bean;
 
-
 /**
- * 日次実績情報格納クラス
+ * 達成数とコメントを格納するBean（実績編集画面表示時に利用）
  *
  * @author global.chimpanzee
  * @version 1.0
  * @since	2015
  */
-public class dataAchieveJohoBean {
-
-	/** 実績年月日 */
-	private String aDate;
-
-	/** 目標ID */
-	private int aGoalId;
+public class EditAchieveBean {
 
 	/** 達成数 */
 	private int aNumber;
 
 	/** コメント */
 	private String aComment;
-
-	/**
-	 * 実績年月日を取得します。
-	 * @return 実績年月日
-	 */
-	public String getaDate() {
-	    return aDate;
-	}
-
-	/**
-	 * 実績年月日を設定します。
-	 * @param aDate 実績年月日
-	 */
-	public void setaDate(String aDate) {
-	    this.aDate = aDate;
-	}
-
-	/**
-	 * 目標IDを取得します。
-	 * @return 目標ID
-	 */
-	public int getaGoalId() {
-	    return aGoalId;
-	}
-
-	/**
-	 * 目標IDを設定します。
-	 * @param aGoalId 目標ID
-	 */
-	public void setaGoalId(int aGoalId) {
-	    this.aGoalId = aGoalId;
-	}
 
 	/**
 	 * 達成数を取得します。

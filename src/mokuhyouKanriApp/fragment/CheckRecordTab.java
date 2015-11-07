@@ -39,7 +39,7 @@ public class CheckRecordTab extends Fragment {
 
 		// 目標進捗率をセット
 		TextView percentage = (TextView) view.findViewById(R.id.percentage);
-		percentage.setText("70%");
+		percentage.setText("達成度 70％");
 
 		// 目標進捗率プログレスバーを設定
 		ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressbar);

@@ -4,10 +4,12 @@ package mokuhyouKanriApp.dialog.fragment;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import mokuhyouKanriApp.activity.R;
+import mokuhyouKanriApp.bean.dataMokuhyoJohoBean;
+import mokuhyouKanriApp.dao.MySQLiteOpenHelper;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -16,10 +18,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
-import mokuhyouKanriApp.activity.R;
-import mokuhyouKanriApp.bean.dataMokuhyoJohoBean;
-import mokuhyouKanriApp.dao.GoalDAO;
-import mokuhyouKanriApp.dao.MySQLiteOpenHelper;
 
 /**
  * 登録編集ダイアログクラス
@@ -139,9 +137,9 @@ public class GoalEditDialog extends DialogFragment {
 			}
 
 			// 編集後のデータをまとめる
-			final dataMokuhyoJohoBean bean = new dataMokuhyoJohoBean(goalId, goalGenreText.getText().toString(),
-					goalText.getText().toString(), goalNumber, goalDueText.getText().toString(),
-					memoText.getText().toString());
+			//final dataMokuhyoJohoBean bean = new dataMokuhyoJohoBean(goalId, goalGenreText.getText().toString(),
+					//goalText.getText().toString(), goalNumber, goalDueText.getText().toString(),
+					//memoText.getText().toString());
 
 			// データ挿入
 			//String msg = GoalDAO.goalInsertUpdate(mDb, bean, mHasDataNothingDB);
@@ -152,19 +150,19 @@ public class GoalEditDialog extends DialogFragment {
 			String timeStamp = sdf.format(date);
 
 			// ContentValuesにデータを格納
-			ContentValues values = new ContentValues();
+			/*ContentValues values = new ContentValues();
 			values.put("M_GENRE", bean.getGoalGenre());
 			values.put("GOAL", bean.getGoal());
 			values.put("G_NUMBER", bean.getGoalNumber());
 			values.put("G_DUE", bean.getGoalDue());
 			values.put("G_MEMO", bean.getMemo());
-			values.put("TIMESTAMP", timeStamp);
+			values.put("TIMESTAMP", timeStamp);*/
 
 			if(mHasDataNothingDB){
 
 				/** データが存在しない場合
 				データベースにアクセスしinsertする */
-				dbExecuteResult = GoalDAO.goalInsert(mDb, values);
+				//dbExecuteResult = GoalDAO.goalInsert(mDb, values);
 
 				if(dbExecuteResult){
 
@@ -182,7 +180,7 @@ public class GoalEditDialog extends DialogFragment {
 
 				/** データが存在する場合
 				    データベースにアクセスしupdateする */
-				dbExecuteResult = GoalDAO.goalUpdate(mDb, values, bean.getGoalId());
+				//dbExecuteResult = GoalDAO.goalUpdate(mDb, values, bean.getGoalId());
 
 				if(dbExecuteResult){
 
@@ -242,7 +240,7 @@ public class GoalEditDialog extends DialogFragment {
 
 		final GoalEditDialog goalEditDialog = new GoalEditDialog();
 
-		int goalId = bean.getGoalId();
+		/*int goalId = bean.getGoalId();
 		String goalGenre = bean.getGoalGenre();
 		String goal = bean.getGoal();
 		int goalNumber = bean.getGoalNumber();
@@ -259,7 +257,7 @@ public class GoalEditDialog extends DialogFragment {
 		args.putString("memo", memo);
 		args.putBoolean("NothingData", hasDataNothingDB);
 
-		goalEditDialog.setArguments(args);
+		goalEditDialog.setArguments(args);*/
 
 		return goalEditDialog;
 	}

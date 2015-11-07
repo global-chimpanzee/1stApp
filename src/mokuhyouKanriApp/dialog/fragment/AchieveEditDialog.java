@@ -1,17 +1,23 @@
 package mokuhyouKanriApp.dialog.fragment;
 
+import java.util.Locale;
+
 import mokuhyouKanriApp.activity.R;
+import mokuhyouKanriApp.bean.EditAchieveBean;
+import mokuhyouKanriApp.dao.AchieveDAO;
 import mokuhyouKanriApp.dao.MySQLiteOpenHelper;
 import android.app.Dialog;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -24,17 +30,8 @@ import android.widget.TextView;
  */
 public class AchieveEditDialog extends DialogFragment {
 
-	TextView achieveNumberText = null;
-	TextView commentText = null;
-	TextView selectDateText = null;
-	TextView selectDayText = null;
-	TextView selectMonthText = null;
-
-	/** SQLiteOpenHelper */
-	MySQLiteOpenHelper mHelper = null;
-
-	/** SQLiteDatabase */
-	SQLiteDatabase mDb = null;
+	/** ビューコンポーネント */
+	View view = null;
 
 	/** 選択年 */
 	private String year = null;
@@ -45,11 +42,15 @@ public class AchieveEditDialog extends DialogFragment {
 	/** 選択日 */
 	private String date = null;
 
+	/** 選択日の完全表示（例："20151108"） */
+	private String fullDate = null;
 
-	boolean mHasDataNothingDB;
+	/** EditAchieveBeanインスタンス */
+	private EditAchieveBean editAchieveBean = null;
 
 	/**
 	 * AchieveEditDialogインスタンス生成し、値をセットする
+	 *
 	 * @param year 選択年
 	 * @param month 選択月
 	 * @param date 選択日
@@ -88,13 +89,15 @@ public class AchieveEditDialog extends DialogFragment {
 		this.month = getArguments().getString("month");
 		this.date = getArguments().getString("date");
 
-		// DBオープン処理
-		//mHelper = new MySQLiteOpenHelper(getActivity());
-	    //mDb = mHelper.getWritableDatabase();
+		// 月と日が1文字だった場合先頭に0を付ける
+		String monthString = String.format(Locale.JAPANESE, "%2s", this.month).replace(" ", "0");
+		String dateString = String.format(Locale.JAPANESE, "%2s", this.date).replace(" ", "0");
 
-		// DB検索で達成数とコメントを取得
-		// TODO ここにDB処理を記述
+		// 文字列を連結して年月日を作成
+		this.fullDate = this.year + monthString + dateString;
 
+		// DB検索で、達成数とコメントを取得
+		this.editAchieveBean = AchieveDAO.selectForEditAchieve(getActivity(), this.fullDate);
 
 	}
 
@@ -109,179 +112,153 @@ public class AchieveEditDialog extends DialogFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
 		// dialog_goal_edit.xmlを紐付ける
-		View view = inflater.inflate(R.layout.dialog_achieve_edit, container, false);
+		this.view = inflater.inflate(R.layout.dialog_achieve_edit, container, false);
 
 		// タイトルを非表示にする
 		getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
 		// 選択日付表示テキストビューを取得し、選択日付をセット
-		TextView selectedDate = (TextView) view.findViewById(R.id.selected_date);
+		TextView selectedDate = (TextView) this.view.findViewById(R.id.selected_date);
 		selectedDate.setText(this.year + "年" + this.month + "月" + this.date + "日");
 
-		// 達成数EditTextコンポーネントを取得し、初期値をセット
-		EditText editGoalNum = (EditText) view.findViewById(R.id.achieve_num_edittext);
-		editGoalNum.setText("ここにDBから取得したものをいれる");
+		// DB検索結果nullチェック
+		if(this.editAchieveBean != null){
 
-		// コメントEditTextコンポーネントを取得し、初期値をセット
-		EditText editComment = (EditText) view.findViewById(R.id.comment_edittext);
-		editComment.setText("ここにDBから取得したものをいれる");
+			// <DB検索結果が存在する場合>
 
+			// 達成数EditTextコンポーネントを取得し、初期値をセット
+			EditText editGoalNum = (EditText) this.view.findViewById(R.id.achieve_num_edittext);
+			editGoalNum.setText(String.valueOf(this.editAchieveBean.getaNumber()));
+
+			// コメントEditTextコンポーネントを取得し、初期値をセット
+			EditText editComment = (EditText) this.view.findViewById(R.id.comment_edittext);
+			editComment.setText(this.editAchieveBean.getaComment());
+
+		}
+
+		// 登録ボタンにリスナーをセット
+		Button registButton = (Button) this.view.findViewById(R.id.registerachievebutton);
+		RegistAchieveAdapter raa = new RegistAchieveAdapter();
+		registButton.setOnClickListener(raa);
+
+		// 削除ボタンにリスナーをセット
+		Button deleteButton = (Button) this.view.findViewById(R.id.deleteachievebutton);
+		DeleteAchieveAdapter daa = new DeleteAchieveAdapter();
+		deleteButton.setOnClickListener(daa);
+
+		// ビューを返却
 		return view;
 
 	}
 
 	/**
-	 * ダイアログ生成時イベントクラス
-	 * @param Bundle savedInstanceState
-	 */
-	//@Override
-	//public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-		// ダイアログ系は必ずActivityに紐付ける
-		//Dialog dialog = new Dialog(getActivity());
-
-		// レイアウトビュー設定
-		//dialog.setContentView(R.layout.dialog_goal_edit);
-
-		// 各項目にBundleデータを取得・設定
-		//String achieveNumber = getArguments().getString("achieveNumber");
-		//achieveNumberText = (TextView)dialog.findViewById(R.id.editachievenumber);
-		//achieveNumberText.setText(achieveNumber);
-
-		//String comment = getArguments().getString("comment");
-		//commentText = (TextView)dialog.findViewById(R.id.editcomment);
-		//commentText.setText(comment);
-
-        //TextView selectMonthText = (TextView) dialog.findViewById(R.id.selectmonth_text);
-        //selectMonthText.setText("11");
-
-        //TextView selectDateText = (TextView) dialog.findViewById(R.id.selectdate_text);
-        //selectDateText.setText("11");
-
-        //TextView selectDayText = (TextView) dialog.findViewById(R.id.selectday_text);
-        //selectDayText.setText("水");
-
-		//mHasDataNothingDB = getArguments().getBoolean("NothingData");
-
-
-		//登録ボタンを取得
-        //Button registerAchieveButton = (Button) dialog.findViewById(R.id.registerachievebutton);
-
-		//登録ボタンを取得
-        //Button deleteAchieveButton = (Button) dialog.findViewById(R.id.deleteachievebutton);
-
-        // 自インスタンスをリスナーとしてセット
-        //registerAchieveButton.setOnClickListener(this);
-
-        //deleteAchieveButton.setOnClickListener(this);
-
-        //ダイアログを返却
-		//return dialog;
-	//}
-
-	/**
-	 * ボタンイベントクラス
-	 * @param View v
-	 */
-	/*public void onClick(View v) {
-
-		//各ボタンが押された場合で処理を分ける
-		switch(v.getId()){
-
-		//登録ボタンを選択した場合
-		case R.id.registerachievebutton:
-
-			// 未入力状態はNG 目標ジャンル・目標数・達成期限のチェック
-			if (achieveNumberText.getText() == null ) {
-
-				//未入力項目がある場合、エラーメッセージをセットする
-				Toast.makeText(getActivity(), "未入力項目を入力してください", Toast.LENGTH_SHORT).show();
-
-				return;
-			}
-
-			// DBオープン処理
-			mHelper = new MySQLiteOpenHelper(getActivity());
-			mDb = mHelper.getWritableDatabase();
-
-			// 編集後のデータをまとめる
-			//final dataAchieveJohoBean bean = new dataAchieveJohoBean(achieveNumberText.getText().toString(),
-			//		commentText.getText().toString(), selectMonthText.getText().toString(),
-			//		selectDayText.getText().toString(), selectDateText.getText().toString());
-
-			// データ挿入
-			//String msg = AchieveDAO.achieveInsertUpdate(mDb, bean, mHasDataNothingDB);
-			//Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-
-			// アクティビティへイベントを飛ばす
-			mListener.onUpdateEditData();
-
-			// ダイアログを閉じる
-			dismiss();
-
-			break;
-
-		//削除ボタンを選択した場合
-		case R.id.deleteachievebutton:
-
-			// DBにデータが存在する場合は削除ボタンを押下すると削除しにいく
-			if (mHasDataNothingDB) {
-
-				// DBオープン処理
-				mHelper = new MySQLiteOpenHelper(getActivity());
-				mDb = mHelper.getWritableDatabase();
-
-				// 編集後のデータをまとめる
-				//final dataAchieveJohoBean delbean = new dataAchieveJohoBean(achieveNumberText.getText().toString(),
-				//		commentText.getText().toString(), selectMonthText.getText().toString(),
-				//		selectDayText.getText().toString(), selectDateText.getText().toString());
-
-				// データ挿入
-				//AchieveDAO.achieveDelete(mDb, delbean, mHasDataNothingDB);
-
-				// アクティビティへイベントを飛ばす
-				//mListener.onUpdateEditData();
-
-			}
-
-			// ダイアログを閉じる
-			dismiss();
-
-
-			break;
-
-		}
-
-
-
-	}*/
-
-	/**
-	 * ダイアログサイズ指定クラス
-	 * @param Bundle savedInstanceState
+	 * ダイアログサイズ指定
+	 *
+	 * @param savedInstanceState バンドル
 	 */
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
 		Dialog dialog = getDialog();
-		AchieveDialogWindow(dialog);
-	}
-
-
-	/**
-	 * Dialogウィンドウカスタマイズクラス
-	 * @param Dialog dialog
-	 */
-	private void AchieveDialogWindow(Dialog dialog) {
-
 		WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
 
 		// ディスプレイ情報取得
 		DisplayMetrics metrics = getResources().getDisplayMetrics();
-		lp.width = (int)(metrics.widthPixels * 0.9);
-		lp.height = (int)(metrics.heightPixels * 0.9);
+		lp.width = (int)(metrics.widthPixels * 0.95);
+		lp.height = (int)(metrics.heightPixels * 0.95);
 		dialog.getWindow().setAttributes(lp);
+
+	}
+
+	/**
+	 * 登録ボタンリスナークラス
+	 */
+	class RegistAchieveAdapter implements OnClickListener {
+
+		/**
+		 * 日次実績登録処理
+		 */
+		@Override
+		public void onClick(View paramView) {
+
+			// 達成数EditTextコンポーネントを取得し、int型変数に変換
+			EditText editGoalNum = (EditText) view.findViewById(R.id.achieve_num_edittext);
+			int aNumber = Integer.parseInt(editGoalNum.getText().toString());
+
+			// コメントEditTextコンポーネントを取得
+			EditText editComment = (EditText) view.findViewById(R.id.comment_edittext);
+			String aComment = editComment.getText().toString();
+
+			// Bundleから目標IDを取得
+			int goalId = getArguments().getInt("goalId");
+
+			// DBに追加するデータをセット
+			ContentValues values = new ContentValues();
+			values.put(MySQLiteOpenHelper.A_GOAL_ID, goalId);
+			values.put(MySQLiteOpenHelper.A_NUMBER, aNumber);
+			values.put(MySQLiteOpenHelper.A_COMMENT, aComment);
+
+			// 登録済みデータ存在チェック
+			boolean result = false;
+			if(editAchieveBean == null){
+
+				// <登録済みデータが存在しない場合>
+
+				// 実績年月日を追加データにセット
+				values.put(MySQLiteOpenHelper.A_DATE, fullDate);
+
+				// DBにデータを追加
+				result = AchieveDAO.insert(getActivity(), values);
+
+			}else{
+
+				// <登録済みデータが存在する場合>
+
+				// DBの登録済みデータを更新
+				result = AchieveDAO.update(getActivity(), values, fullDate);
+
+			}
+
+			// DB処理結果判定
+			if(result){
+
+				// <データ追加が成功した場合>
+
+				// ダイアログを閉じる
+				dismiss();
+
+			}
+
+		}
+
+	}
+
+	/**
+	 * 削除ボタンリスナークラス
+	 */
+	class DeleteAchieveAdapter implements OnClickListener {
+
+		/**
+		 * 日次実績削除処理
+		 */
+		@Override
+		public void onClick(View paramView) {
+
+			// 選択日付のデータを削除
+			boolean result = AchieveDAO.deleteOneData(getActivity(), fullDate);
+
+			// 削除結果判定
+			if(result){
+
+				// <データ削除が成功した場合>
+
+				// ダイアログを閉じる
+				dismiss();
+
+			}
+
+		}
 
 	}
 

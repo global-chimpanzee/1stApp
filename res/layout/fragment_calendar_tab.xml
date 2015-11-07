@@ -15,6 +15,8 @@
         	    android:id="@+id/header_month_text"
         	    android:layout_width="wrap_content"
         	    android:layout_height="match_parent"
+        	    android:layout_marginLeft="10dp"
+        	    android:layout_marginStart="10dp"
         	    android:gravity="fill"
         	    android:textSize="25sp"
         	    android:textColor="#FFFFFF" />

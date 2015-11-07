@@ -1,21 +1,16 @@
 package mokuhyouKanriApp.fragment;
 
 
-import java.util.List;
-
+import mokuhyouKanriApp.activity.R;
+import mokuhyouKanriApp.bean.dataMokuhyoJohoBean;
+import mokuhyouKanriApp.dao.MySQLiteOpenHelper;
+import mokuhyouKanriApp.dialog.fragment.GoalEditDialog;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import mokuhyouKanriApp.activity.R;
-import mokuhyouKanriApp.activity.R.id;
-import mokuhyouKanriApp.bean.dataMokuhyoJohoBean;
-import mokuhyouKanriApp.dao.GoalDAO;
-import mokuhyouKanriApp.dao.MySQLiteOpenHelper;
-import mokuhyouKanriApp.dialog.fragment.GoalEditDialog;
 
 /**
  * 目標登録タブクラス
@@ -58,11 +53,11 @@ public class EditGoalTab extends Fragment {
 		}
 
 		// テーブル内のデータを全て取得
-		final List<dataMokuhyoJohoBean> dataList = GoalDAO.goalSelect(mDb);
+		//final List<dataMokuhyoJohoBean> dataList = GoalDAO.goalSelect(mDb);
 
 		mokuhyoJohoBean = null;
 
-		if(dataList.size() == 0) {
+		/*if(dataList.size() == 0) {
 
 			//目標が登録されていない場合、空白を格納する
 			int notGoalId = 0;
@@ -73,14 +68,14 @@ public class EditGoalTab extends Fragment {
 			// 最初のデータだけ取得する
 			mokuhyoJohoBean = dataList.get(0);
 			mHasDataNothingDB = false;
-		}
+		}*/
 
         //編集ボタンを呼び出す
         //View editButton = view.findViewById(R.id.register_button);
         //((Button)editButton).setOnClickListener(new GoalEditDialog());
 
         //目標ジャンル(登録情報)を呼び出す
-        TextView editGoalGenreText = (TextView) view.findViewById(id.achieve_num_edittext);
+        /*TextView editGoalGenreText = (TextView) view.findViewById(id.achieve_num_edittext);
         editGoalGenreText.setText(mokuhyoJohoBean.getGoalGenre());
 
         //目標(登録情報)を呼び出す
@@ -97,7 +92,7 @@ public class EditGoalTab extends Fragment {
 
         //memo(登録情報)を呼び出す
         TextView editMemoText = (TextView) view.findViewById(id.memo_text);
-        editMemoText.setText(mokuhyoJohoBean.getMemo());
+        editMemoText.setText(mokuhyoJohoBean.getMemo());*/
 
 		// Viewコンポーネントを返却
 		return view;
