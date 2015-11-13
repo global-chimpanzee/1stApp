@@ -55,6 +55,10 @@ public class SwipeTab extends Fragment {
 
 	}
 
+	public void reload(){
+		System.out.println();
+	}
+
 	private class SwipePagerAdapter extends FragmentStatePagerAdapter {
 
 		/** スワイプの最大ページ数 */

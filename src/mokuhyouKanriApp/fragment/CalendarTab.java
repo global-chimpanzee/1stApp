@@ -478,7 +478,7 @@ public class CalendarTab extends Fragment {
 			String date = textView.getText().toString();
 
 			// AchieveEditDialogインスタンスを生成
-			AchieveEditDialog dialog = AchieveEditDialog.newInstance(year, month, date);
+			AchieveEditDialog achieveEditDialog = AchieveEditDialog.newInstance(year, month, date);
 
 			// Bundle引数存在チェック
 			if(getArguments() != null){
@@ -486,12 +486,12 @@ public class CalendarTab extends Fragment {
 				// <引数が渡されてきた場合>
 
 				// 引数をcalendarTabにセット
-				dialog.setArguments(getArguments());
+				achieveEditDialog.setArguments(getArguments());
 
 			}
 
 			// ダイアログフラグメントを表示
-			dialog.show(getChildFragmentManager().beginTransaction(), "AchieveEditDialog");
+			achieveEditDialog.show(getChildFragmentManager().beginTransaction(), "AchieveEditDialog");
 
 		}
 

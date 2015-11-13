@@ -93,14 +93,15 @@
     </LinearLayout>
 
     <!-- エラーラベルrow -->
+
     <TextView
+        android:id="@+id/input_check_msg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="未入力項目があります"
-        android:textSize="15sp"
-        android:textColor="#FF8080" />
+        android:textColor="#FF8080"
+        android:textSize="15sp" />
 
     <!-- ボタンrow -->
     <RelativeLayout

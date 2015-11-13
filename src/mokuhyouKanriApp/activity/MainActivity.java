@@ -76,15 +76,18 @@ public class MainActivity extends AppCompatActivity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
+
 		if (id == R.id.action_settings) {
-			// FragmentManager fm = getSupportFragmentManager();
+
 			ResetDialog resetDialog = new ResetDialog();
 			resetDialog.show(getSupportFragmentManager(), "reset");
-			// resetDialog.show(fm, "fragment");
 
 			return true;
+
 		}
+
 		return super.onOptionsItemSelected(item);
+
 	}
 
 	/**
@@ -167,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
 					Bundle args1 = new Bundle();
 					args1.putInt("goalId", goalInfo.getGoalId());
 					args1.putString("mGenre", goalInfo.getmGenre());
+					args1.putInt("gNumber", goalInfo.getgNumber());
 
 					// フラグメントに引数をセット
 					swipeTab.setArguments(args1);
@@ -188,8 +192,29 @@ public class MainActivity extends AppCompatActivity {
 				icon = (ImageView) findViewById(R.id.rightIcon);
 				icon.setImageResource(R.drawable.tasseido_active);
 
-				//  進捗確認画面を表示
+				// CheckRecordTabインスタンスを生成
 				CheckRecordTab checkRecordTab = new CheckRecordTab();
+
+				// DBデータ存在チェック
+				if(goalInfo != null){
+
+					// <DB登録データが存在する場合>
+
+					// フラグメントに渡す引数を設定
+					// （目標ID、目標ジャンル、目標、目標数、達成期限）
+					Bundle args0 = new Bundle();
+					args0.putInt("goalId", goalInfo.getGoalId());
+					args0.putString("mGenre", goalInfo.getmGenre());
+					args0.putString("goal", goalInfo.getGoal());
+					args0.putInt("gNumber", goalInfo.getgNumber());
+					args0.putString("gDue", goalInfo.getgDue());
+
+					// フラグメントに引数をセット
+					checkRecordTab.setArguments(args0);
+
+				}
+
+				//  進捗確認画面を表示
 				ft.replace(R.id.main_container, checkRecordTab, "leftTab");
 
 				// コミット

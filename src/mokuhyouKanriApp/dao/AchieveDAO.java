@@ -276,6 +276,47 @@ public class AchieveDAO {
 	}
 
 	/**
+	 * 達成数の合計値を取得（SELECT）
+	 *
+	 * @param c コンテキスト
+	 * @param goalId 目標ID（検索条件）
+	 * @return 達成数の合計値
+	 */
+	public static int getSumOfAchieveNum(Context c, int goalId){
+
+		// MySQLiteOpenHelperインスタンスを取得
+		MySQLiteOpenHelper mHelper = new MySQLiteOpenHelper(c);
+
+		// SQLiteDatabaseインスタンスを取得
+		SQLiteDatabase db = mHelper.getWritableDatabase();
+
+		// 検索クエリを作成
+		String sql = "select sum(" + MySQLiteOpenHelper.A_NUMBER + ") from " + MySQLiteOpenHelper.DAY_ACHIEVE_TABLE + " where " + MySQLiteOpenHelper.A_GOAL_ID + " = ?";
+
+		// SELECTの実行
+		Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(goalId)});
+
+		// 検索結果をリストに格納
+		int sum = 0;
+		if(cursor.moveToNext()) {
+
+			// 達成数の合計値を取得
+			sum = cursor.getInt(0);
+
+		}
+
+		// Cursorクローズ処理
+		cursor.close();
+
+		// DBクローズ処理
+		db.close();
+
+		// リストを返却
+		return sum;
+
+	}
+
+	/**
 	 * 指定日付のデータ削除（DELETE）
 	 *
 	 * @param c コンテキスト
@@ -327,7 +368,7 @@ public class AchieveDAO {
 		SQLiteDatabase db = mHelper.getWritableDatabase();
 
 		// DELETEを実行
-		int result = db.delete(MySQLiteOpenHelper.GOAL_INFO_TABLE, null, null);
+		int result = db.delete(MySQLiteOpenHelper.DAY_ACHIEVE_TABLE, null, null);
 
 		// DBクローズ処理
 		db.close();

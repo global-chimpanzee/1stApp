@@ -32,7 +32,20 @@
     <string name ="achievenumber">達成数</string>
     <string name ="commentlabel">コメント</string>
     <string name ="deleteachievebutton">削除</string>
+    <string name ="delete_msg">削除しました</string>
+    <string name ="regist_msg">登録しました</string>
+    <string name ="reset_msg">リセットしました</string>
+    <string name="input_anum_msg">達成数を入力してください</string>
+    <string name="input_anum_stringnum_msg">達成数は6桁以内にしてください</string>
+    <string name="input_acomment_stringnum_msg">コメントは200字以内にしてください</string>
     <string name="achieve_edit_title">実績編集画面</string>
+    <string name="percentage_string">達成度 %1$d％</string>
+    <string name="num_per_day_string">目標達成までに1日あたり%1$d必要です</string>
+    <string name="reset_dialog_msg">一度削除したデータは復元することができません。\n\n本当に全てのデータを削除してよろしいですか？\n</string>
+    <string name="reset_dialog_title">データのリセット</string>
+    <string name="congraturations_title">Congraturations\r\n目標を達成しました</string>
+    <string name="close_btn">閉じる</string>
+    <string name="image_desc">お祝い用画像</string>
 
 
 </resources>

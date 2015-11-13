@@ -20,9 +20,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
- * 日次実績編集ダイアログクラス
+ * 日次実績編集ダイアログ
  *
  * @author global.chimpanzee
  * @version 1.0
@@ -31,7 +32,7 @@ import android.widget.TextView;
 public class AchieveEditDialog extends DialogFragment {
 
 	/** ビューコンポーネント */
-	View view = null;
+	private View view = null;
 
 	/** 選択年 */
 	private String year = null;
@@ -182,51 +183,136 @@ public class AchieveEditDialog extends DialogFragment {
 		@Override
 		public void onClick(View paramView) {
 
-			// 達成数EditTextコンポーネントを取得し、int型変数に変換
+			// 登録フラグ
+			boolean registFlg = false;
+
+			// 達成数EditTextコンポーネントを取得し、String型に変換
 			EditText editGoalNum = (EditText) view.findViewById(R.id.achieve_num_edittext);
-			int aNumber = Integer.parseInt(editGoalNum.getText().toString());
+			String editGoalNumString = editGoalNum.getText().toString();
 
 			// コメントEditTextコンポーネントを取得
 			EditText editComment = (EditText) view.findViewById(R.id.comment_edittext);
 			String aComment = editComment.getText().toString();
 
-			// Bundleから目標IDを取得
-			int goalId = getArguments().getInt("goalId");
+			//////////////////////////////////////////
+			// 入力チェック
+			//////////////////////////////////////////
+			if(editGoalNumString.isEmpty()){
 
-			// DBに追加するデータをセット
-			ContentValues values = new ContentValues();
-			values.put(MySQLiteOpenHelper.A_GOAL_ID, goalId);
-			values.put(MySQLiteOpenHelper.A_NUMBER, aNumber);
-			values.put(MySQLiteOpenHelper.A_COMMENT, aComment);
+				// <達成数が未入力の場合>
 
-			// 登録済みデータ存在チェック
-			boolean result = false;
-			if(editAchieveBean == null){
+				// 入力チェックメッセージを表示するテキストビューコンポーネントを取得
+				TextView inputCheckMsg = (TextView) view.findViewById(R.id.input_check_msg);
 
-				// <登録済みデータが存在しない場合>
+				// 入力チェックメッセージを表示
+				inputCheckMsg.setText(R.string.input_anum_msg);
 
-				// 実績年月日を追加データにセット
-				values.put(MySQLiteOpenHelper.A_DATE, fullDate);
+			} else if (editGoalNumString.length() > 6) {
 
-				// DBにデータを追加
-				result = AchieveDAO.insert(getActivity(), values);
+				// <達成数が6桁より多い場合>
 
-			}else{
+				// 入力チェックメッセージを表示するテキストビューコンポーネントを取得
+				TextView inputCheckMsg = (TextView) view.findViewById(R.id.input_check_msg);
 
-				// <登録済みデータが存在する場合>
+				// 入力チェックメッセージを表示
+				inputCheckMsg.setText(R.string.input_anum_stringnum_msg);
 
-				// DBの登録済みデータを更新
-				result = AchieveDAO.update(getActivity(), values, fullDate);
+			} else if (aComment.length() > 200) {
+
+				// <コメントが200文字より多い場合>
+
+				// 入力チェックメッセージを表示するテキストビューコンポーネントを取得
+				TextView inputCheckMsg = (TextView) view.findViewById(R.id.input_check_msg);
+
+				// 入力チェックメッセージを表示
+				inputCheckMsg.setText(R.string.input_acomment_stringnum_msg);
+
+			} else {
+
+				// <達成数が入力された場合>
+
+				// 登録フラグを立てる
+				registFlg = true;
 
 			}
 
-			// DB処理結果判定
-			if(result){
+			//////////////////////////////////////////
+			// DB登録処理
+			//////////////////////////////////////////
 
-				// <データ追加が成功した場合>
+			// 登録フラグチェック
+			if(registFlg){
 
-				// ダイアログを閉じる
-				dismiss();
+				// <入力チェックを通過した場合>
+
+				// 達成数EditTextコンポーネントをint型変数に変換
+				int aNumber = Integer.parseInt(editGoalNumString);
+
+
+				// Bundleから目標IDを取得
+				int goalId = getArguments().getInt("goalId");
+
+				// DBに追加するデータをセット
+				ContentValues values = new ContentValues();
+				values.put(MySQLiteOpenHelper.A_GOAL_ID, goalId);
+				values.put(MySQLiteOpenHelper.A_NUMBER, aNumber);
+				values.put(MySQLiteOpenHelper.A_COMMENT, aComment);
+
+				// 登録済みデータ存在チェック
+				boolean result = false;
+				if(editAchieveBean == null){
+
+					// <登録済みデータが存在しない場合>
+
+					// 実績年月日を追加データにセット
+					values.put(MySQLiteOpenHelper.A_DATE, fullDate);
+
+					// DBにデータを追加
+					result = AchieveDAO.insert(getActivity(), values);
+
+				}else{
+
+					// <登録済みデータが存在する場合>
+
+					// DBの登録済みデータを更新
+					result = AchieveDAO.update(getActivity(), values, fullDate);
+
+				}
+
+				// DB処理結果判定
+				if(result){
+
+					// <データ登録が成功した場合>
+
+					// トーストを表示
+					String registMsg = getString(R.string.regist_msg);
+					Toast.makeText(getActivity(), registMsg, Toast.LENGTH_LONG).show();
+
+					// ダイアログを閉じる
+					dismiss();
+
+				}
+
+				//////////////////////////////////////////
+				//お祝い画像表示判定
+				//////////////////////////////////////////
+
+				// 総達成数をDB検索で取得
+				int sumOfAchieveNum = AchieveDAO.getSumOfAchieveNum(getActivity(), goalId);
+
+				// 目標数をBundleより取得
+				int gNumber = getArguments().getInt("gNumber");
+
+				// 目標達成判定
+				if(sumOfAchieveNum >= gNumber){
+
+					// <目標を達成した場合>
+
+					// お祝い画像を表示
+					ShowImageDialog showImageDialog = ShowImageDialog.newInstance();
+					showImageDialog.show(getChildFragmentManager().beginTransaction(), "ShowImageDialog");
+
+				}
 
 			}
 
@@ -252,6 +338,10 @@ public class AchieveEditDialog extends DialogFragment {
 			if(result){
 
 				// <データ削除が成功した場合>
+
+				// トーストを表示
+				String deleteMsg = getString(R.string.delete_msg);
+				Toast.makeText(getActivity(), deleteMsg, Toast.LENGTH_LONG).show();
 
 				// ダイアログを閉じる
 				dismiss();

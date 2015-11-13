@@ -85,7 +85,7 @@ public class GoalEditDialog extends DialogFragment {
 		goalNumberText.setText(goalNumber);
 
 		String goalDue = getArguments().getString("goaldue");
-		goalDueText = (TextView)dialog.findViewById(R.id.editgoaldue);
+		//goalDueText = (TextView)dialog.findViewById(R.id.editgoaldue);
 		goalDueText.setText(goalDue);
 
 
@@ -114,7 +114,7 @@ public class GoalEditDialog extends DialogFragment {
 	 */
 	public void onClick(View v) {
 
-		if(v.getId() == R.id.registergoalbutton){
+		if(v.getId() == R.id.closebutton){
 			// 未入力状態はNG 目標ジャンル・目標数・達成期限のチェック
 			if (goalGenreText.getText() == null || goalGenreText.getText().length() == 0
 					|| goalNumberText.getText() == null || goalNumberText.getText().length() == 0) {
