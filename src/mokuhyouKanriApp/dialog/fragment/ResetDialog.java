@@ -3,7 +3,7 @@ package mokuhyouKanriApp.dialog.fragment;
 import mokuhyouKanriApp.activity.R;
 import mokuhyouKanriApp.dao.AchieveDAO;
 import mokuhyouKanriApp.dao.GoalDAO;
-import mokuhyouKanriApp.fragment.SwipeTab;
+import mokuhyouKanriApp.fragment.CalendarTab;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -64,8 +64,10 @@ public class ResetDialog extends DialogFragment {
 						FragmentTransaction ft = fm.beginTransaction();
 
 						// SwipeTabフラグメントを表示
-						SwipeTab swipeTab = (SwipeTab) fm.findFragmentByTag("centerTab");
-						swipeTab.reload();
+						CalendarTab c = new CalendarTab(500);
+						ft.replace(R.id.main_container, c);
+						//ft.addToBackStack(null);
+						ft.commit();
 
 					}
 
