@@ -1,5 +1,6 @@
 package mokuhyouKanriApp.dialog.fragment;
 
+import java.util.EventListener;
 import java.util.Locale;
 
 import mokuhyouKanriApp.activity.R;
@@ -48,6 +49,9 @@ public class AchieveEditDialog extends DialogFragment {
 
 	/** EditAchieveBeanインスタンス */
 	private EditAchieveBean editAchieveBean = null;
+
+	/** コールバックインターフェース */
+	private AchieveEditCallback callback = null;
 
 	/**
 	 * AchieveEditDialogインスタンス生成し、値をセットする
@@ -288,6 +292,9 @@ public class AchieveEditDialog extends DialogFragment {
 					String registMsg = getString(R.string.regist_msg);
 					Toast.makeText(getActivity(), registMsg, Toast.LENGTH_LONG).show();
 
+					// コールバックメソッドを呼ぶ
+					callback.insertRegisteredDataOnCallback(editGoalNumString);
+
 					// ダイアログを閉じる
 					dismiss();
 
@@ -343,6 +350,9 @@ public class AchieveEditDialog extends DialogFragment {
 				String deleteMsg = getString(R.string.delete_msg);
 				Toast.makeText(getActivity(), deleteMsg, Toast.LENGTH_LONG).show();
 
+				// コールバックメソッドを呼ぶ
+				callback.deleteLabelOnCallback();
+
 				// ダイアログを閉じる
 				dismiss();
 
@@ -350,6 +360,26 @@ public class AchieveEditDialog extends DialogFragment {
 
 		}
 
+	}
+
+	/**
+	 * コールバックインターフェース
+	 */
+	public interface AchieveEditCallback extends EventListener {
+
+		/** DB登録後、カレンダーに実績ラベルを追加する */
+		public void insertRegisteredDataOnCallback(String achievements);
+
+		/** DB削除後、カレンダーから実績ラベルを取り除く */
+		public void deleteLabelOnCallback();
+
+	}
+
+	/**
+	 * コールバック設定メソッド
+	 */
+	public void setCallback(AchieveEditCallback callback){
+		this.callback = callback;
 	}
 
 }

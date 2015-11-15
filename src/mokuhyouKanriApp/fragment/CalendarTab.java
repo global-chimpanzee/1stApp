@@ -11,6 +11,7 @@ import mokuhyouKanriApp.activity.R;
 import mokuhyouKanriApp.bean.DateDisplayObject;
 import mokuhyouKanriApp.dao.AchieveDAO;
 import mokuhyouKanriApp.dialog.fragment.AchieveEditDialog;
+import mokuhyouKanriApp.dialog.fragment.AchieveEditDialog.AchieveEditCallback;
 import mokuhyouKanriApp.logic.CalendarInfo;
 import mokuhyouKanriApp.logic.DayTextViewInfo;
 import android.graphics.Color;
@@ -30,7 +31,10 @@ import android.widget.TextView;
  * @version 1.0
  * @since 2015
  */
-public class CalendarTab extends Fragment {
+public class CalendarTab extends Fragment implements AchieveEditCallback {
+
+	/** 本フラグメントインスタンス */
+	CalendarTab thisFragment = this;
 
 	/** Viewコンポーネント */
 	private View view;
@@ -64,6 +68,9 @@ public class CalendarTab extends Fragment {
 
 	/** 当月分登録済み実績マップ */
 	private Map<String, String> map;
+
+	/** タップされたLinearLayout */
+	private LinearLayout touchedLinearLayout = null;
 
 	/**
 	 * コンストラクタ
@@ -472,6 +479,9 @@ public class CalendarTab extends Fragment {
 		@Override
 		public void onClick(View arg0) {
 
+			// タップされたLinearLayoutをフィールドにセット
+			touchedLinearLayout = (LinearLayout) arg0;
+
 			// 年月日文字列を取得（例："20151101"）
 			String year = String.valueOf(displayedYear);
 			String month = String.valueOf(displayedMonth);
@@ -490,10 +500,46 @@ public class CalendarTab extends Fragment {
 
 			}
 
+			// コールバックを設定
+			achieveEditDialog.setCallback(thisFragment);
+
 			// ダイアログフラグメントを表示
 			achieveEditDialog.show(getChildFragmentManager().beginTransaction(), "AchieveEditDialog");
 
 		}
+
+	}
+
+	/**
+	 * DB登録後、当該データをラベル表示するコールバックメソッド
+	 */
+	@Override
+	public void insertRegisteredDataOnCallback(String achievements) {
+
+		// TextViewコンポーネントを生成
+		TextView achieveLabel = new TextView(getContext());
+
+		// 背景を設定
+		achieveLabel.setBackgroundResource(R.drawable.registered_achievement);
+
+		// 表示するラベルを設定（例：英単語：46）
+		//achieveLabel.setText(getArguments().getString("mGenre") + "：" + this.map.get(dateString));
+		achieveLabel.setText("英単語" + ":" + achievements);
+		achieveLabel.setTextSize(8);
+
+		// レイアウトにTextViewコンポーネントをセット
+		touchedLinearLayout.addView(achieveLabel, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+
+	}
+
+	/**
+	 * DB削除後、表示ラベルを削除するコールバックメソッド
+	 */
+	@Override
+	public void deleteLabelOnCallback() {
+
+		// 選択されたLinearLayoutの子ビューを全て削除
+		touchedLinearLayout.removeAllViews();
 
 	}
 
