@@ -3,10 +3,6 @@ package mokuhyouKanriApp.dialog.fragment;
 import java.util.EventListener;
 import java.util.Locale;
 
-import mokuhyouKanriApp.activity.R;
-import mokuhyouKanriApp.bean.EditAchieveBean;
-import mokuhyouKanriApp.dao.AchieveDAO;
-import mokuhyouKanriApp.dao.MySQLiteOpenHelper;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.os.Bundle;
@@ -22,6 +18,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import mokuhyouKanriApp.activity.R;
+import mokuhyouKanriApp.bean.EditAchieveBean;
+import mokuhyouKanriApp.dao.AchieveDAO;
+import mokuhyouKanriApp.dao.MySQLiteOpenHelper;
 
 /**
  * 日次実績編集ダイアログ

@@ -68,7 +68,7 @@
 
             <!-- 目標ジャンルテキスト -->
             <TextView
-                android:id="@+id/achieve_num_edittext"
+                android:id="@+id/goal_genre_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -102,7 +102,7 @@
 
             <!-- 目標テキスト -->
             <TextView
-                android:id="@+id/comment_edittext"
+                android:id="@+id/goal_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -170,7 +170,7 @@
 
             <!-- 達成期限テキスト -->
             <TextView
-                android:id="@+id/due_text"
+                android:id="@+id/goal_due_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -204,7 +204,7 @@
 
             <!-- メモテキスト -->
             <TextView
-                android:id="@+id/memo_text"
+                android:id="@+id/goal_memo_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
