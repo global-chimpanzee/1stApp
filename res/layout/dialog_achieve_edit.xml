@@ -93,7 +93,6 @@
     </LinearLayout>
 
     <!-- エラーラベルrow -->
-
     <TextView
         android:id="@+id/input_check_msg"
         android:layout_width="match_parent"

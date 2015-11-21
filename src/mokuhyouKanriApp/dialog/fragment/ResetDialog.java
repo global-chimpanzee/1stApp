@@ -1,15 +1,14 @@
 package mokuhyouKanriApp.dialog.fragment;
 
+import java.util.EventListener;
+
 import mokuhyouKanriApp.activity.R;
 import mokuhyouKanriApp.dao.AchieveDAO;
 import mokuhyouKanriApp.dao.GoalDAO;
-import mokuhyouKanriApp.fragment.CalendarTab;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
@@ -21,6 +20,9 @@ import android.widget.Toast;
  * @since	2015
  */
 public class ResetDialog extends DialogFragment {
+
+	/** コールバックインターフェース */
+	private ResetCallback callback = null;
 
 	/**
 	 * リセットダイアログの表示
@@ -59,15 +61,8 @@ public class ResetDialog extends DialogFragment {
 
 						}
 
-						// FragmentTransactionインスタンスを取得
-						FragmentManager fm = getChildFragmentManager();
-						FragmentTransaction ft = fm.beginTransaction();
-
-						// SwipeTabフラグメントを表示
-						CalendarTab c = new CalendarTab(500);
-						ft.replace(R.id.main_container, c);
-						//ft.addToBackStack(null);
-						ft.commit();
+						// アクティビティを再描画
+						callback.redrawOnCallback();
 
 					}
 
@@ -85,6 +80,23 @@ public class ResetDialog extends DialogFragment {
 
 		return builder.create();
 
+	}
+
+	/**
+	 * コールバックインターフェース
+	 */
+	public interface ResetCallback extends EventListener {
+
+		/** リセット後、アクティビティを再描画する */
+		public void redrawOnCallback();
+
+	}
+
+	/**
+	 * コールバック設定メソッド
+	 */
+	public void setCallback(ResetCallback callback){
+		this.callback = callback;
 	}
 
 }

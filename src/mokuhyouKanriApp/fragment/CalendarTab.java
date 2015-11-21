@@ -516,6 +516,15 @@ public class CalendarTab extends Fragment implements AchieveEditCallback {
 	@Override
 	public void insertRegisteredDataOnCallback(String achievements) {
 
+		// 選択されたLinearLayoutの子ビューの数をチェック
+		if(touchedLinearLayout.getChildCount() == 2){
+
+			// <子ビューが2つあった場合（ビュー0=日付、ビュー1=既存実績）>
+
+			// 選択されたLinearLayoutに存在するラベルを削除
+			touchedLinearLayout.removeViewAt(1);
+		}
+
 		// TextViewコンポーネントを生成
 		TextView achieveLabel = new TextView(getContext());
 
@@ -538,8 +547,8 @@ public class CalendarTab extends Fragment implements AchieveEditCallback {
 	@Override
 	public void deleteLabelOnCallback() {
 
-		// 選択されたLinearLayoutの子ビューを全て削除
-		touchedLinearLayout.removeAllViews();
+		// 選択されたLinearLayoutに存在するラベルを削除
+		touchedLinearLayout.removeViewAt(1);
 
 	}
 

@@ -5,6 +5,7 @@ import java.util.List;
 import mokuhyouKanriApp.bean.dataMokuhyoJohoBean;
 import mokuhyouKanriApp.dao.GoalDAO;
 import mokuhyouKanriApp.dialog.fragment.ResetDialog;
+import mokuhyouKanriApp.dialog.fragment.ResetDialog.ResetCallback;
 import mokuhyouKanriApp.fragment.CheckRecordTab;
 import mokuhyouKanriApp.fragment.EditGoalTab;
 import mokuhyouKanriApp.fragment.SwipeTab;
@@ -25,7 +26,7 @@ import android.widget.ImageView;
  * @version 1.0
  * @since	2015
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ResetCallback {
 
 	/** TabLayoutコンポーネント */
 	private TabLayout tabLayout;
@@ -79,7 +80,13 @@ public class MainActivity extends AppCompatActivity {
 
 		if (id == R.id.action_settings) {
 
+			// リセットダイアログインスタンスを生成
 			ResetDialog resetDialog = new ResetDialog();
+
+			// コールバックをセット
+			resetDialog.setCallback(this);
+
+			// リセットダイアログを表示
 			resetDialog.show(getSupportFragmentManager(), "reset");
 
 			return true;
@@ -269,6 +276,27 @@ public class MainActivity extends AppCompatActivity {
 		public void onTabReselected(TabLayout.Tab tab) {
 
 		}
+
+	}
+
+	/**
+	 * リセット後、アクティビティを再描画するコールバックメソッド
+	 */
+	@Override
+	public void redrawOnCallback() {
+
+		// SwipeTabインスタンスを生成
+		SwipeTab swipeTab = new SwipeTab();
+
+		// FragmentTransactionインスタンスを取得
+		FragmentManager fm = getSupportFragmentManager();
+		FragmentTransaction ft = fm.beginTransaction();
+
+		// SwipeTabフラグメントを表示
+		ft.replace(R.id.main_container, swipeTab, "centerTab");
+
+		// コミット
+		ft.commit();
 
 	}
 }
