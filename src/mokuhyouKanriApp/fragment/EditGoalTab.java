@@ -1,5 +1,12 @@
 package mokuhyouKanriApp.fragment;
 
+import java.util.List;
+
+import mokuhyouKanriApp.activity.R;
+import mokuhyouKanriApp.bean.MokuhyoJohoBean;
+import mokuhyouKanriApp.dao.GoalDAO;
+import mokuhyouKanriApp.dialog.fragment.GoalEditDialog;
+import mokuhyouKanriApp.dialog.fragment.GoalEditDialog.GoalEditCallback;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,107 +15,111 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import mokuhyouKanriApp.activity.R;
-import mokuhyouKanriApp.bean.dataMokuhyoJohoBean;
-import mokuhyouKanriApp.dialog.fragment.GoalEditDialog;
 
 /**
- * 目標登録タブクラス
+ * 目標登録画面フラグメント
  *
  * @author global.chimpanzee
  * @version 1.0
  * @since	2015
  */
-public class EditGoalTab extends Fragment {
+public class EditGoalTab extends Fragment implements GoalEditCallback{
 
 	/** 本フラグメントインスタンス */
-	EditGoalTab thisFragment = this;
+	private EditGoalTab thisFragment = this;
 
-	/** データ格納用 */
-	dataMokuhyoJohoBean mokuhyoJohoBean = null;
+	/** 目標ジャンルテキストビュー */
+	private TextView goalGenreText = null;
+
+	/** 目標テキストビュー */
+	private TextView goalText = null;
+
+	/** 目標数テキストビュー */
+	private TextView goalNumberText = null;
+
+	/** 達成期限テキストビュー */
+	private TextView goalDueText = null;
+
+	/** memoテキストビュー */
+	private TextView memoText = null;
+
+	/** 目標情報Bean */
+	private MokuhyoJohoBean goalInfo = null;
 
 	/**
-	 * コンストラクタ
+	 * 目標登録画面フラグメントの表示
+	 *
+	 * @param inflater LayoutInflaterインスタンス
+	 * @param container ViewGroupインスタンス
+	 * @param savedInstanceStateインスタンス
 	 */
-	public EditGoalTab() {}
-
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
 		// レイアウトファイル"fragment_goal_tab.xml"をセットしたViewコンポーネントを取得
 		View view = inflater.inflate(R.layout.fragment_goal_tab, container, false);
 
-		// Bundle引数を格納する変数を初期化
-		int goalId = 0;
+		// 変数をを格納する変数を初期化
 		String mGenre = "";
 		String goal = "";
 		int gNumber = 0;
 		String gDue = "";
 		String gMemo = "";
 
-		// Bundle引数存在チェック
-		if(getArguments() != null){
+		// 目標情報DB検索
+		List<MokuhyoJohoBean> goalInfoList = GoalDAO.selectAllDatas(getActivity());
+		if(goalInfoList.size() != 0){
 
-			// <引数が渡されてきた場合>
-
-			// 引数Bundleから取得
-			goalId = getArguments().getInt("goalId");
-			mGenre = getArguments().getString("mGenre");
-			goal = getArguments().getString("goal");
-			gNumber = getArguments().getInt("gNumber");
-			gDue = getArguments().getString("gDue");
-			gMemo = getArguments().getString("gMemo");
+			// 取得値をフィールドにセット
+			this.goalInfo = goalInfoList.get(0);
+			mGenre = this.goalInfo.getmGenre();
+			goal = this.goalInfo.getGoal();
+			gNumber = this.goalInfo.getgNumber();
+			gDue = this.goalInfo.getgDue();
+			gMemo = this.goalInfo.getgMemo();
 
 		}
 
 		// 目標ジャンルをセット
-		TextView goalGenreText = (TextView) view.findViewById(R.id.goal_genre_text);
-		goalGenreText.setText(mGenre);
+		this.goalGenreText = (TextView) view.findViewById(R.id.goal_genre_text);
+		this.goalGenreText.setText(mGenre);
 
 		// 目標をセット
-		TextView goalText = (TextView) view.findViewById(R.id.goal_text);
-		goalText.setText(goal);
+		this.goalText = (TextView) view.findViewById(R.id.goal_text);
+		this.goalText.setText(goal);
 
 		// 目標数をセット
-		TextView goalNumberText = (TextView) view.findViewById(R.id.goal_num_text);
-		goalNumberText.setText(String.valueOf(gNumber));
+		this.goalNumberText = (TextView) view.findViewById(R.id.goal_num_text);
+		if(gNumber != 0){
 
-		// 達成期限をセット
-		// 達成期限を画面表示用に加工する
-		String gDueYear = "";
-		String gDueMonth = "";
-		String gDueDay = "";
+			this.goalNumberText.setText(String.valueOf(gNumber));
 
-		if(gDue.length() == 8){
-			gDueYear = gDue.substring(0, 4);
-			gDueMonth = gDue.substring(4, 4+2);
-			gDueDay = gDue.substring(6, 6+2);
+		} else {
+
+			this.goalNumberText.setText("");
 
 		}
 
-		String processDue = gDueYear + "年" + gDueMonth + "月" + gDueDay + "日";
-		TextView goalDueText = (TextView) view.findViewById(R.id.goal_due_text);
-		goalDueText.setText(processDue);
+		// DBに目標が登録済みの場合、達成期限を画面表示用に加工する
+		String gDueForDisplay = "";
+		if(!gDue.isEmpty()){
 
-		// 目標MEMOをセット
-		TextView goalMemoText = (TextView) view.findViewById(R.id.goal_memo_text);
-		goalMemoText.setText(gMemo);
+			gDueForDisplay = getString(R.string.year_month_date, gDue.substring(0, 4), gDue.substring(4, 4+2), gDue.substring(6, 6+2));
 
-		//各値をbeanにセットする
-		mokuhyoJohoBean = new dataMokuhyoJohoBean();
-		mokuhyoJohoBean.setGoalId(goalId);
-		mokuhyoJohoBean.setmGenre(mGenre);
-		mokuhyoJohoBean.setGoal(goal);
-		mokuhyoJohoBean.setgNumber(gNumber);
-		mokuhyoJohoBean.setgDue(gDue);
-		mokuhyoJohoBean.setgMemo(gMemo);
+		}
+
+		// 達成期限をセット
+		this.goalDueText = (TextView) view.findViewById(R.id.goal_due_text);
+		this.goalDueText.setText(gDueForDisplay);
+
+		// memoをセット
+		this.memoText = (TextView) view.findViewById(R.id.goal_memo_text);
+		this.memoText.setText(gMemo);
 
 		// 登録ボタンにリスナーをセット
 		Button registButton = (Button) view.findViewById(R.id.register_button);
 		EditGoalAdapter ega = new EditGoalAdapter();
 		registButton.setOnClickListener(ega);
-
 
 		// Viewコンポーネントを返却
 		return view;
@@ -120,42 +131,17 @@ public class EditGoalTab extends Fragment {
 	 */
 	class EditGoalAdapter implements OnClickListener{
 
-//		// テキストビュー
-//		TextView textView = null;
-//
-//		/**
-//		 * コンストラクタ
-//		 */
-//		EditGoalAdapter(TextView textView){
-//
-//			this.textView = textView;
-//
-//		}
-
 		/**
 		 * 目標編集ダイアログの表示
 		 */
 		@Override
 		public void onClick(View arg0) {
 
-			//各値をbeanに格納する
-			//
-
 			// GoalEditDialogインスタンスを生成
-			GoalEditDialog goalEditDialog = GoalEditDialog.newInstance(mokuhyoJohoBean);
+			GoalEditDialog goalEditDialog = GoalEditDialog.newInstance();
 
-			// Bundle引数存在チェック
-			if(getArguments() != null){
-
-				// <引数が渡されてきた場合>
-
-				// 引数をgoalEditTabにセット
-				goalEditDialog.setArguments(getArguments());
-
-			}
-
-//			// コールバックを設定
-//			GoalEditDialog.setCallback(thisFragment);
+			// コールバックを設定
+			goalEditDialog.setCallback(thisFragment);
 
 			// ダイアログフラグメントを表示
 			goalEditDialog.show(getChildFragmentManager().beginTransaction(), "GoalEditDialog");
@@ -165,25 +151,30 @@ public class EditGoalTab extends Fragment {
 	}
 
 	/**
-	 * DB登録後、当該データをラベル表示するコールバックメソッド
+	 * DB登録後、登録済み情報を表示するコールバックメソッド
 	 */
-//	@Override
-//	public void insertGoalDataOnCallback(String achievements) {
-//
-//		// TextViewコンポーネントを生成
-//		TextView achieveLabel = new TextView(getContext());
-//
-//		// 背景を設定
-//		achieveLabel.setBackgroundResource(R.drawable.registered_achievement);
-//
-//		// 表示するラベルを設定（例：英単語：46）
-//		//achieveLabel.setText(getArguments().getString("mGenre") + "：" + this.map.get(dateString));
-//		achieveLabel.setText("英単語" + ":" + achievements);
-//		achieveLabel.setTextSize(8);
-//
-//		// レイアウトにTextViewコンポーネントをセット
-//		touchedLinearLayout.addView(achieveLabel, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
-//
-//	}
+	@Override
+	public void displayRegisteredDataOnCallback(MokuhyoJohoBean mokuhyoJohoBean) {
+
+		// 目標ジャンルを設定
+		this.goalGenreText.setText(mokuhyoJohoBean.getmGenre());
+
+		// 目標を設定
+		this.goalText.setText(mokuhyoJohoBean.getGoal());
+
+		// 目標数を設定
+		this.goalNumberText.setText(String.valueOf(mokuhyoJohoBean.getgNumber()));
+
+		// 達成期限文字列を加工（例："2015年11月21日"）
+		String gDue = mokuhyoJohoBean.getgDue();
+		String gDueForDisplay = getString(R.string.year_month_date, gDue.substring(0, 4), gDue.substring(4, 4+2), gDue.substring(6, 6+2));
+
+		// 達成期限を設定
+		this.goalDueText.setText(gDueForDisplay);
+
+		// memoを設定
+		this.memoText.setText(mokuhyoJohoBean.getgMemo());
+
+	}
 
 }

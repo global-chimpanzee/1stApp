@@ -2,10 +2,15 @@ package mokuhyouKanriApp.fragment;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import mokuhyouKanriApp.activity.R;
+import mokuhyouKanriApp.bean.MokuhyoJohoBean;
 import mokuhyouKanriApp.dao.AchieveDAO;
+import mokuhyouKanriApp.dao.GoalDAO;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -24,30 +29,37 @@ import android.widget.TextView;
  */
 public class CheckRecordTab extends Fragment {
 
+	/**
+	 * 進捗確認画面フラグメントの表示
+	 *
+	 * @param inflater LayoutInflaterインスタンス
+	 * @param container ViewGroupインスタンス
+	 * @param savedInstanceState バンドル
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
 		// レイアウトファイル"fragment_record_tab.xml"をセットしたViewコンポーネントを取得
 		View view = inflater.inflate(R.layout.fragment_record_tab, container, false);
 
-		// Bundle引数を格納する変数を初期化
+		// 変数を初期化
 		int goalId = 0;
 		String mGenre = "";
 		String goal = "";
 		int gNumber = 0;
 		String gDue = "";
 
-		// Bundle引数存在チェック
-		if(getArguments() != null){
+		// 目標情報DB検索
+		List<MokuhyoJohoBean> goalInfoList = GoalDAO.selectAllDatas(getActivity());
+		if(goalInfoList.size() != 0){
 
-			// <引数が渡されてきた場合>
-
-			// 引数Bundleから取得
-			goalId = getArguments().getInt("goalId");
-			mGenre = getArguments().getString("mGenre");
-			goal = getArguments().getString("goal");
-			gNumber = getArguments().getInt("gNumber");
-			gDue = getArguments().getString("gDue");
+			// 取得値をフィールドにセット
+			MokuhyoJohoBean goalInfo = goalInfoList.get(0);
+			goalId = goalInfo.getGoalId();
+			mGenre = goalInfo.getmGenre();
+			goal = goalInfo.getGoal();
+			gNumber = goalInfo.getgNumber();
+			gDue = goalInfo.getgDue();
 
 		}
 
@@ -67,13 +79,20 @@ public class CheckRecordTab extends Fragment {
 		String percentageString = null;
 		if(gNumber != 0){
 
-			// <Bundle引数が存在する場合（目標数が0でない場合）>
+			// <目標情報が登録済みの場合（目標数が0でない場合）>
 
-			percentageString = getString(R.string.percentage_string, sumOfAchieve/gNumber);
+			// sumOfAchieveとgNumberをdouble型に変換
+			double sumOfAchieveDouble = sumOfAchieve;
+			double gNumberDouble = gNumber;
+			// 達成率を計算し、int型へ変換
+			double percentage = (sumOfAchieveDouble/gNumberDouble)*100;
+			int percentageInt = (int) percentage;
+
+			percentageString = getString(R.string.percentage_string, percentageInt);
 
 		}else{
 
-			// <Bundle引数が存在しない場合（目標数が0の場合）>
+			// <目標情報が未登録の場合（目標数が0の場合）>
 
 			percentageString = getString(R.string.percentage_string, gNumber);
 
@@ -87,40 +106,83 @@ public class CheckRecordTab extends Fragment {
 		// プログレスバーの値を設定
 		progressBar.setProgress(sumOfAchieve);
 
+		// プログレスバーの現在値目盛りに達成総数をセット
+		TextView currentScaleText = (TextView) view.findViewById(R.id.currentScale);
+		currentScaleText.setText(getString(R.string.achieve_scale, sumOfAchieve));
+
+		// プログレスバーの最大値目盛りに目標数をセット
+		TextView maxScaleText = (TextView) view.findViewById(R.id.maxScale);
+		maxScaleText.setText(String.valueOf(gNumber));
+
 		// 目標達成までの1日あたりの数をセット
 		TextView numPerDayText = (TextView) view.findViewById(R.id.numPerDay);
 		String numPerDayString = null;
 		if(!gDue.isEmpty()){
 
-			// <Bundle引数が存在する場合（達成期限が空でない場合）>
+			// <目標情報が登録済みの場合（達成期限が空でない場合）>
 
-			// 達成期限にスラッシュを入れる（例："2015/11/09"）
-			StringBuilder sb = new StringBuilder();
-			sb.append(gDue);
-			sb.insert(6, "/");
-			sb.insert(4, "/");
+			if((gNumber - sumOfAchieve) > 0){
 
-			// 達成期限のDateインスタンスを取得
-			Date goalDue = null;
-			try{
-				goalDue = DateFormat.getDateInstance().parse(sb.toString());
-			}catch(ParseException e){
-				e.printStackTrace();
+				// <目標未達成の場合>
+
+				// 達成期限にスラッシュを入れる（例："2015/11/09"）
+				StringBuilder sb = new StringBuilder();
+				sb.append(gDue);
+				sb.insert(6, "/");
+				sb.insert(4, "/");
+
+				// 達成期限のDateインスタンスを取得
+				Date goalDue = null;
+				try{
+					goalDue = DateFormat.getDateInstance().parse(sb.toString());
+				}catch(ParseException e){
+					e.printStackTrace();
+				}
+
+				// 今日のDateインスタンスを取得
+				Date now = new Date();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.JAPANESE);
+				String nowString = sdf.format(now);
+				Date today = new Date();
+				try{
+					today = DateFormat.getDateInstance().parse(nowString);
+				}catch(ParseException e){
+					e.printStackTrace();
+				}
+
+				// 達成期限と今日の日付の差の日数を取得
+				// （今日もカウントするため1を足す）
+				int daysLeft = differenceDays(goalDue, today) + 1;
+
+				if(daysLeft >= 0){
+
+					// <達成期限が過ぎていない場合>
+
+					numPerDayString = getString(R.string.num_per_day_string, (gNumber - sumOfAchieve)/daysLeft);
+
+				} else {
+
+					//<達成期限が過ぎた場合>
+
+					// メッセージ "達成期限が過ぎています"
+					numPerDayString = getString(R.string.achievement_due_over);
+
+				}
+
+			} else {
+
+				// <目標達成済みの場合>
+
+				// メッセージ"目標を達成しました！"
+				numPerDayString = getString(R.string.already_achieved_msg);
+
 			}
-
-			// 今日のDateインスタンスを取得
-			Date today = new Date();
-
-			// 達成期限と今日の日付の差の日数を取得
-			int daysLeft = differenceDays(goalDue, today);
-
-			numPerDayString = getString(R.string.num_per_day_string, (gNumber - sumOfAchieve)/daysLeft);
 
 		}else{
 
-			// <Bundle引数が存在しない場合（達成期限が空の場合）>
+			// <目標情報が未登録の場合（達成期限が空の場合）>
 
-			numPerDayString = getString(R.string.num_per_day_string, 0);
+			numPerDayString = "";
 
 		}
 		numPerDayText.setText(numPerDayString);

@@ -8,7 +8,7 @@ import java.util.Locale;
 
 import mokuhyouKanriApp.bean.DateDisplayObject;
 import mokuhyouKanriApp.bean.EditAchieveBean;
-import mokuhyouKanriApp.bean.dataAchieveJohoBean;
+import mokuhyouKanriApp.bean.AchieveJohoBean;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -106,7 +106,7 @@ public class AchieveDAO {
 	 *
 	 * @param c コンテキスト
 	 */
-	public static List<dataAchieveJohoBean> selectAllDatas(Context c) {
+	public static List<AchieveJohoBean> selectAllDatas(Context c) {
 
 		// MySQLiteOpenHelperインスタンスを取得
 		MySQLiteOpenHelper mHelper = new MySQLiteOpenHelper(c);
@@ -115,7 +115,7 @@ public class AchieveDAO {
 		SQLiteDatabase db = mHelper.getWritableDatabase();
 
 		//検索結果を格納するリストを生成
-		List<dataAchieveJohoBean> tableDataList = new ArrayList<dataAchieveJohoBean>();
+		List<AchieveJohoBean> tableDataList = new ArrayList<AchieveJohoBean>();
 
 		// 取得するカラム名の配列を生成
 		String[] columns = new String[]{MySQLiteOpenHelper.A_DATE, MySQLiteOpenHelper.A_GOAL_ID, MySQLiteOpenHelper.A_NUMBER, MySQLiteOpenHelper.A_COMMENT};
@@ -136,7 +136,7 @@ public class AchieveDAO {
 			String aComment = cursor.getString(cursor.getColumnIndex(MySQLiteOpenHelper.A_COMMENT));
 
 			// ビーンに値をセット
-			dataAchieveJohoBean bean = new dataAchieveJohoBean();
+			AchieveJohoBean bean = new AchieveJohoBean();
 			bean.setaDate(aDate);
 			bean.setaGoalId(aGoalId);
 			bean.setaNumber(aNumber);

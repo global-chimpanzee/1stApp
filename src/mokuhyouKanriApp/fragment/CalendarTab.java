@@ -9,7 +9,9 @@ import java.util.Map;
 
 import mokuhyouKanriApp.activity.R;
 import mokuhyouKanriApp.bean.DateDisplayObject;
+import mokuhyouKanriApp.bean.MokuhyoJohoBean;
 import mokuhyouKanriApp.dao.AchieveDAO;
+import mokuhyouKanriApp.dao.GoalDAO;
 import mokuhyouKanriApp.dialog.fragment.AchieveEditDialog;
 import mokuhyouKanriApp.dialog.fragment.AchieveEditDialog.AchieveEditCallback;
 import mokuhyouKanriApp.logic.CalendarInfo;
@@ -34,7 +36,13 @@ import android.widget.TextView;
 public class CalendarTab extends Fragment implements AchieveEditCallback {
 
 	/** 本フラグメントインスタンス */
-	CalendarTab thisFragment = this;
+	private CalendarTab thisFragment = this;
+
+	/** 目標情報Bean */
+	private MokuhyoJohoBean goalInfo = null;
+
+	/** 目標ジャンル */
+	private String mGenre = "";
 
 	/** Viewコンポーネント */
 	private View view;
@@ -97,6 +105,16 @@ public class CalendarTab extends Fragment implements AchieveEditCallback {
 		view = inflater.inflate(R.layout.fragment_calendar_tab, container,
 				false);
 
+		// 目標情報DB検索
+		List<MokuhyoJohoBean> goalInfoList = GoalDAO.selectAllDatas(getActivity());
+		if(goalInfoList.size() != 0){
+
+			// 取得値をフィールドにセット
+			this.goalInfo = goalInfoList.get(0);
+			this.mGenre = this.goalInfo.getmGenre();
+
+		}
+
 		// 表示年月を計算し、フィールドにセット
 		calculateDisplayedMonth();
 
@@ -107,8 +125,8 @@ public class CalendarTab extends Fragment implements AchieveEditCallback {
 		this.headerMonthText.setText(String.valueOf(this.displayedYear)
 				+ "年" + String.valueOf(this.displayedMonth) + "月" );
 
-		// DB検索
-		String targetMonth = String.valueOf(displayedYear) + String.valueOf(displayedMonth);
+		// 日次実績DB検索
+		String targetMonth = String.valueOf(displayedYear) + String.format(Locale.JAPANESE, "%2s", String.valueOf(displayedMonth)).replace(" ", "0");;
 		List<DateDisplayObject> displayObjectList = AchieveDAO.selectMonthDatas(getActivity(), targetMonth);
 
 		// 検索結果取得値をマップにセット
@@ -409,8 +427,8 @@ public class CalendarTab extends Fragment implements AchieveEditCallback {
 						achieveLabel.setBackgroundResource(R.drawable.registered_achievement);
 
 						// 表示するラベルを設定（例：英単語：46）
-						//achieveLabel.setText(getArguments().getString("mGenre") + "：" + this.map.get(dateString));
-						achieveLabel.setText("英単語" + ":" + this.map.get(dateString));
+						achieveLabel.setText(this.mGenre + ":" + this.map.get(dateString));
+						// achieveLabel.setText("英単語" + ":" + this.map.get(dateString));
 						achieveLabel.setTextSize(8);
 
 						// レイアウトにTextViewコンポーネントをセット
@@ -482,21 +500,27 @@ public class CalendarTab extends Fragment implements AchieveEditCallback {
 			// タップされたLinearLayoutをフィールドにセット
 			touchedLinearLayout = (LinearLayout) arg0;
 
-			// 年月日文字列を取得（例："20151101"）
+			// 年月日文字列を取得（例："2015", "11", "1"）
 			String year = String.valueOf(displayedYear);
 			String month = String.valueOf(displayedMonth);
 			String date = textView.getText().toString();
 
 			// AchieveEditDialogインスタンスを生成
-			AchieveEditDialog achieveEditDialog = AchieveEditDialog.newInstance(year, month, date);
+			AchieveEditDialog achieveEditDialog = new AchieveEditDialog(year, month, date);
 
-			// Bundle引数存在チェック
-			if(getArguments() != null){
+			// バンドル引数を設定
+			if(goalInfo != null){
 
-				// <引数が渡されてきた場合>
+				// <目標が登録済みの場合>
 
-				// 引数をcalendarTabにセット
-				achieveEditDialog.setArguments(getArguments());
+				// DBから取得した目標情報をバンドルにセット
+				Bundle args = new Bundle();
+				args.putInt("goalId", goalInfo.getGoalId());
+				args.putString("mGenre", goalInfo.getmGenre());
+				args.putInt("gNumber", goalInfo.getgNumber());
+
+				// バンドルをachieveEditDialogにセット
+				achieveEditDialog.setArguments(args);
 
 			}
 
@@ -532,8 +556,8 @@ public class CalendarTab extends Fragment implements AchieveEditCallback {
 		achieveLabel.setBackgroundResource(R.drawable.registered_achievement);
 
 		// 表示するラベルを設定（例：英単語：46）
-		//achieveLabel.setText(getArguments().getString("mGenre") + "：" + this.map.get(dateString));
-		achieveLabel.setText("英単語" + ":" + achievements);
+		achieveLabel.setText(this.mGenre + ":" + achievements);
+		// achieveLabel.setText("英単語" + ":" + achievements);
 		achieveLabel.setTextSize(8);
 
 		// レイアウトにTextViewコンポーネントをセット

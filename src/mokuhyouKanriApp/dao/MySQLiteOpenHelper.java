@@ -86,7 +86,7 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
 		createGoalInfo.append(GOAL + " text not null,");
 		createGoalInfo.append(G_NUMBER + " integer not null,");
 		createGoalInfo.append(G_DUE + " text not null,");
-		createGoalInfo.append(G_MEMO + " text,");
+		createGoalInfo.append(G_MEMO + " text not null,");
 		createGoalInfo.append(G_TIMESTAMP + " text not null);");
 		db.execSQL(createGoalInfo.toString());
 
@@ -96,7 +96,7 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
 		createDayAchieve.append(A_DATE + " text primary key,");
 		createDayAchieve.append(A_GOAL_ID + " integer not  null,");
 		createDayAchieve.append(A_NUMBER + " integer not null,");
-		createDayAchieve.append(A_COMMENT + " text,");
+		createDayAchieve.append(A_COMMENT + " text not null,");
 		createDayAchieve.append(A_TIMESTAMP + " text not null);");
 		db.execSQL(createDayAchieve.toString());
 

@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import mokuhyouKanriApp.bean.dataMokuhyoJohoBean;
+import mokuhyouKanriApp.bean.MokuhyoJohoBean;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -81,7 +81,7 @@ public class GoalDAO {
 		String whereClause = MySQLiteOpenHelper.GOAL_ID + " = " + goalId;
 
 		// UPDATEを実行
-		int result = db.update("goalInfoTable", values, whereClause, null);
+		int result = db.update(MySQLiteOpenHelper.GOAL_INFO_TABLE, values, whereClause, null);
 
 		// DBクローズ処理
 		db.close();
@@ -104,7 +104,7 @@ public class GoalDAO {
 	 *
 	 * @param c コンテキスト
 	 */
-	public static List<dataMokuhyoJohoBean> selectAllDatas(Context c) {
+	public static List<MokuhyoJohoBean> selectAllDatas(Context c) {
 
 		// MySQLiteOpenHelperインスタンスを取得
 		MySQLiteOpenHelper mHelper = new MySQLiteOpenHelper(c);
@@ -113,7 +113,7 @@ public class GoalDAO {
 		SQLiteDatabase db = mHelper.getWritableDatabase();
 
 		//検索結果を格納するリストを生成
-		List<dataMokuhyoJohoBean> tableDataList = new ArrayList<dataMokuhyoJohoBean>();
+		List<MokuhyoJohoBean> tableDataList = new ArrayList<MokuhyoJohoBean>();
 
 		// 取得するカラム名の配列を生成
 		String[] columns = new String[]{MySQLiteOpenHelper.GOAL_ID, MySQLiteOpenHelper.M_GENRE, MySQLiteOpenHelper.GOAL, MySQLiteOpenHelper.G_NUMBER, MySQLiteOpenHelper.G_DUE, MySQLiteOpenHelper.G_MEMO};
@@ -136,7 +136,7 @@ public class GoalDAO {
 			String gMemo = cursor.getString(cursor.getColumnIndex(MySQLiteOpenHelper.G_MEMO));
 
 			// ビーンに値をセット
-			dataMokuhyoJohoBean bean = new dataMokuhyoJohoBean();
+			MokuhyoJohoBean bean = new MokuhyoJohoBean();
 			bean.setGoalId(goalId);
 			bean.setmGenre(mGenre);
 			bean.setGoal(goal);

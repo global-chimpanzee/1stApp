@@ -50,7 +50,7 @@ public class ShowImageDialog extends DialogFragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
 		// dialog_fragment_image.xmlを紐付ける
-		this.view = inflater.inflate(R.layout.dialog_achieve_edit, container, false);
+		this.view = inflater.inflate(R.layout.dialog_fragment_achievement, container, false);
 
 		// タイトルを非表示にする
 		getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);

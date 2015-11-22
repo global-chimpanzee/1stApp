@@ -3,6 +3,10 @@ package mokuhyouKanriApp.dialog.fragment;
 import java.util.EventListener;
 import java.util.Locale;
 
+import mokuhyouKanriApp.activity.R;
+import mokuhyouKanriApp.bean.EditAchieveBean;
+import mokuhyouKanriApp.dao.AchieveDAO;
+import mokuhyouKanriApp.dao.MySQLiteOpenHelper;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.os.Bundle;
@@ -18,10 +22,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import mokuhyouKanriApp.activity.R;
-import mokuhyouKanriApp.bean.EditAchieveBean;
-import mokuhyouKanriApp.dao.AchieveDAO;
-import mokuhyouKanriApp.dao.MySQLiteOpenHelper;
 
 /**
  * 日次実績編集ダイアログ
@@ -61,24 +61,12 @@ public class AchieveEditDialog extends DialogFragment {
 	 * @param date 選択日
 	 * @return 日次実績編集画面ダイアログフラグメント
 	 */
-	public static AchieveEditDialog newInstance(String year, String month, String date) {
+	public AchieveEditDialog (String year, String month, String date) {
 
-		// AchieveEditDialogインスタンスの生成
-		AchieveEditDialog achieveEditDialog = new AchieveEditDialog();
-
-		// バンドルの生成
-		Bundle args = new Bundle();
-
-		// バンドルに値をセット
-		args.putString("year", year);
-		args.putString("month", month);
-		args.putString("date", date);
-
-		// バンドルをダイアログフラグメントにセット
-		achieveEditDialog.setArguments(args);
-
-		// ダイアログフラグメントを返却
-		return achieveEditDialog;
+		// 選択された年月日をフィールドにセット
+		this.year = year;
+		this.month = month;
+		this.date = date;
 
 	}
 
@@ -88,11 +76,6 @@ public class AchieveEditDialog extends DialogFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-
-		// バンドルから年月日文字列を取得
-		this.year = getArguments().getString("year");
-		this.month = getArguments().getString("month");
-		this.date = getArguments().getString("date");
 
 		// 月と日が1文字だった場合先頭に0を付ける
 		String monthString = String.format(Locale.JAPANESE, "%2s", this.month).replace(" ", "0");
@@ -108,6 +91,7 @@ public class AchieveEditDialog extends DialogFragment {
 
 	/**
 	 * 日次実績編集画面ダイアログフラグメントを表示する
+	 *
 	 * @param inflater LayoutInflaterインスタンス
 	 * @param container ViewGroupインスタンス
 	 * @param savedInstanceState バンドル
@@ -117,14 +101,14 @@ public class AchieveEditDialog extends DialogFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
 		// dialog_goal_edit.xmlを紐付ける
-		this.view = inflater.inflate(R.layout.dialog_achieve_edit, container, false);
+		this.view = inflater.inflate(R.layout.dialog_fragment_achievement, container, false);
 
 		// タイトルを非表示にする
 		getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
 		// 選択日付表示テキストビューを取得し、選択日付をセット
 		TextView selectedDate = (TextView) this.view.findViewById(R.id.selected_date);
-		selectedDate.setText(this.year + "年" + this.month + "月" + this.date + "日");
+		selectedDate.setText(getString(R.string.year_month_date, this.year, this.month, this.date));
 
 		// DB検索結果nullチェック
 		if(this.editAchieveBean != null){
@@ -183,6 +167,8 @@ public class AchieveEditDialog extends DialogFragment {
 
 		/**
 		 * 日次実績登録処理
+		 *
+		 * @param paramView クリックされたビュー
 		 */
 		@Override
 		public void onClick(View paramView) {
@@ -194,22 +180,33 @@ public class AchieveEditDialog extends DialogFragment {
 			EditText editGoalNum = (EditText) view.findViewById(R.id.achieve_num_edittext);
 			String editGoalNumString = editGoalNum.getText().toString();
 
-			// コメントEditTextコンポーネントを取得
+			// コメントEditTextコンポーネントを取得し、String型に変換
 			EditText editComment = (EditText) view.findViewById(R.id.comment_edittext);
 			String aComment = editComment.getText().toString();
 
 			//////////////////////////////////////////
 			// 入力チェック
 			//////////////////////////////////////////
-			if(editGoalNumString.isEmpty()){
+			if(getArguments() == null){
+
+				// <目標が未登録の場合>
+
+				// 入力チェックメッセージを表示するテキストビューコンポーネントを取得
+				TextView inputCheckMsg = (TextView) view.findViewById(R.id.input_check_msg);
+
+				// 入力チェックメッセージを表示（"先に目標を登録してください"）
+				inputCheckMsg.setText(R.string.input_no_goal_msg);
+
+
+			}else if(editGoalNumString.isEmpty()){
 
 				// <達成数が未入力の場合>
 
 				// 入力チェックメッセージを表示するテキストビューコンポーネントを取得
 				TextView inputCheckMsg = (TextView) view.findViewById(R.id.input_check_msg);
 
-				// 入力チェックメッセージを表示
-				inputCheckMsg.setText(R.string.input_anum_msg);
+				// 入力チェックメッセージを表示（"達成数を入力してください"）
+				inputCheckMsg.setText(getString(R.string.input_nothing_msg, getString(R.string.achievenumber)));
 
 			} else if (editGoalNumString.length() > 6) {
 
@@ -218,8 +215,8 @@ public class AchieveEditDialog extends DialogFragment {
 				// 入力チェックメッセージを表示するテキストビューコンポーネントを取得
 				TextView inputCheckMsg = (TextView) view.findViewById(R.id.input_check_msg);
 
-				// 入力チェックメッセージを表示
-				inputCheckMsg.setText(R.string.input_anum_stringnum_msg);
+				// 入力チェックメッセージを表示（"達成数は6桁以内にしてください"）
+				inputCheckMsg.setText(getString(R.string.input_lengthover_msg, getString(R.string.achievenumber), 6));
 
 			} else if (aComment.length() > 200) {
 
@@ -228,12 +225,12 @@ public class AchieveEditDialog extends DialogFragment {
 				// 入力チェックメッセージを表示するテキストビューコンポーネントを取得
 				TextView inputCheckMsg = (TextView) view.findViewById(R.id.input_check_msg);
 
-				// 入力チェックメッセージを表示
-				inputCheckMsg.setText(R.string.input_acomment_stringnum_msg);
+				// 入力チェックメッセージを表示（"コメントは200文字以内にしてください"）
+				inputCheckMsg.setText(getString(R.string.input_charover_msg, getString(R.string.commentlabel), 200));
 
 			} else {
 
-				// <達成数が入力された場合>
+				// <エラー項目が無い場合>
 
 				// 登録フラグを立てる
 				registFlg = true;
@@ -251,7 +248,6 @@ public class AchieveEditDialog extends DialogFragment {
 
 				// 達成数EditTextコンポーネントをint型変数に変換
 				int aNumber = Integer.parseInt(editGoalNumString);
-
 
 				// Bundleから目標IDを取得
 				int goalId = getArguments().getInt("goalId");
@@ -334,12 +330,24 @@ public class AchieveEditDialog extends DialogFragment {
 
 		/**
 		 * 日次実績削除処理
+		 *
+		 * @param paramView クリックされたビュー
 		 */
 		@Override
 		public void onClick(View paramView) {
 
 			// 選択日付のデータを削除
-			boolean result = AchieveDAO.deleteOneData(getActivity(), fullDate);
+			boolean result = false;
+
+			if(getArguments() != null){
+
+				// <目標が未登録の場合>
+
+				// 選択日付のデータを削除
+				result = AchieveDAO.deleteOneData(getActivity(), fullDate);
+
+			}
+
 
 			// 削除結果判定
 			if(result){

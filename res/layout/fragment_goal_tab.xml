@@ -36,13 +36,14 @@
         <Button
             android:id="@+id/register_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginEnd="10dp"
             android:layout_gravity="end"
             android:background="#FFD961"
-            android:text="@string/register" />
+            android:text="@string/register"
+            android:textSize="16sp" />
 
         <!-- 目標ジャンルrow -->
         <LinearLayout
@@ -61,7 +62,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:gravity="fill"
                 android:text="@string/goal_genre"
                 android:textSize="15sp" />
@@ -71,7 +72,7 @@
                 android:id="@+id/goal_genre_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:gravity="fill"
                 android:textSize="15sp" />
 
@@ -95,7 +96,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:gravity="fill"
                 android:text="@string/goal"
                 android:textSize="15sp" />
@@ -105,7 +106,7 @@
                 android:id="@+id/goal_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:gravity="fill"
                 android:textSize="15sp" />
 
@@ -129,7 +130,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:gravity="fill"
                 android:text="@string/goal_num"
                 android:textSize="15sp" />
@@ -139,7 +140,7 @@
                 android:id="@+id/goal_num_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:gravity="fill"
                 android:textSize="15sp" />
 
@@ -163,7 +164,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:gravity="fill"
                 android:text="@string/achievement_due"
                 android:textSize="15sp" />
@@ -173,7 +174,7 @@
                 android:id="@+id/goal_due_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:gravity="fill"
                 android:textSize="15sp" />
 
@@ -197,7 +198,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:gravity="fill"
                 android:text="@string/memo"
                 android:textSize="15sp" />
@@ -207,7 +208,7 @@
                 android:id="@+id/goal_memo_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:gravity="fill"
                 android:textSize="15sp" />
 

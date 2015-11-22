@@ -19,32 +19,28 @@
     <string name="goal_tab_title">あなたの目標</string>
     <string name="goal_num">目標数</string>
     <string name="achievement_due">達成期限</string>
+    <string name="achievement_due_over">達成期限を過ぎています</string>
+    <string name="already_achieved_msg">目標を達成しました！</string>
     <string name="memo">memo</string>
     <string name="register">編集</string>
     <string name="record_tab_title">達成度</string>
     <string name ="editbutton">編集</string>
     <string name ="registergoalbutton">登録</string>
     <string name ="yourgoal">あなたの目標</string>
-    <string name ="goalgenre">目標ジャンル</string>
-    <string name ="goalnumber">目標数</string>
-    <string name ="goaldue">期限</string>
     <string name ="achieveregisterlabel">実績登録画面</string>
+    <string name="year_month_date">%1$s年%2$s月%3$s日</string>
     <string name ="achievenumber">達成数</string>
+    <string name ="achieve_scale">達成数：%1$d</string>
     <string name ="commentlabel">コメント</string>
     <string name ="deleteachievebutton">削除</string>
     <string name ="delete_msg">削除しました</string>
     <string name ="regist_msg">登録しました</string>
     <string name ="reset_msg">リセットしました</string>
-    <string name="input_anum_msg">達成数を入力してください</string>
-    <string name="input_anum_stringnum_msg">達成数は6桁以内にしてください</string>
-    <string name="input_acomment_stringnum_msg">コメントは200字以内にしてください</string>
-    <string name="input_goal_genre_null_msg">目標ジャンルを入力してください</string>
-    <string name="input_goal_genre_msg">目標ジャンルは20文字以内にしてください</string>
-    <string name="input_goal_msg">目標は150文字以内にしてください</string>
-    <string name="input_goal_number_msg">目標数を入力してください</string>
-    <string name="input_goal_number_over_msg">目標数は6桁以内にしてください</string>
-    <string name="input_goal_due_msg">達成期限は未来日を設定してください</string>
-    <string name="input_goal_due_miss_msg">達成期限が不正です</string>
+    <string name="input_nothing_msg">%1$sを入力してください</string>
+    <string name="input_lengthover_msg">%1$sは%2$d桁以内にしてください</string>
+    <string name="input_charover_msg">%1$sは%2$d文字以内にしてください</string>
+    <string name="input_no_goal_msg">先に目標を登録してください</string>
+    <string name="input_incorrect_date_msg">達成期限は今日以降の日付を指定してください</string>
     <string name="achieve_edit_title">実績編集画面</string>
     <string name="percentage_string">達成度 %1$d％</string>
     <string name="num_per_day_string">目標達成までに1日あたり%1$d必要です</string>
@@ -53,7 +49,8 @@
     <string name="congraturations_title">Congraturations\r\n目標を達成しました</string>
     <string name="close_btn">閉じる</string>
     <string name="image_desc">お祝い用画像</string>
-    <string name="mokuhyou_settei_string">目標設定画面</string>
+    <string name="goal_edit_title">目標設定画面</string>
+    <string name="zero_scale">0</string>
 
 
 </resources>

@@ -8,7 +8,7 @@ package mokuhyouKanriApp.bean;
  * @version 1.0
  * @since	2015
  */
-public class dataAchieveJohoBean {
+public class AchieveJohoBean {
 
 	/** 実績年月日 */
 	private String aDate;

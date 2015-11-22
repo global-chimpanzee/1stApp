@@ -8,7 +8,7 @@ package mokuhyouKanriApp.bean;
  * @version 1.0
  * @since	2015
  */
-final public class dataMokuhyoJohoBean {
+final public class MokuhyoJohoBean {
 
 	/** 目標ID */
 	private  int goalId;

@@ -117,10 +117,58 @@
             android:layout_width="match_parent"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="0dp"
             android:layout_marginLeft="10dp"
             android:indeterminate="false"
             style="@android:style/Widget.ProgressBar.Horizontal" />
+
+        <!-- 目標進捗率バーの目盛り -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- 0目盛り -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:gravity="fill"
+                android:text="@string/zero_scale"
+                android:textSize="12sp" />
+
+            <!-- 現在達成数目盛り -->
+            <TextView
+                android:id="@+id/currentScale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_centerInParent="true"
+                android:gravity="fill"
+                android:textSize="12sp" />
+
+            <!-- 最大値目盛り -->
+            <TextView
+                android:id="@+id/maxScale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:gravity="fill"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
 
         <!-- 目標達成のために必要な1日あたりの数 -->
         <TextView
